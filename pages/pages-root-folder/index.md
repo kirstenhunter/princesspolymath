@@ -5,23 +5,22 @@
 # this work, you have to use › layout: frontpage
 #
 layout: frontpage
-header:
-  image_fullwidth: header_unsplash_12.jpg
 widget1:
-  title: "Blog & Portfolio"
-  url: 'http://phlow.github.io/feeling-responsive/blog/'
-  image: widget-1-302x182.jpg
-  text: 'Every good portfolio website has a blog with fresh news, thoughts and develop&shy;ments of your activities. <em>Feeling Responsive</em> offers you a fully functional blog with an archive page to give readers a quick overview of all your posts.'
+  title: "Becoming a Polyglot"
+  url: "/becoming-a-polyglot"
+  image: polyglot.png
+  text: 'Learn how to translate between different programming languages with this simple set of API engines in 5 different interpreted languages.  Become a programming language polyglot and play with some working code!'
 widget2:
-  title: "Why use this theme?"
-  url: 'http://phlow.github.io/feeling-responsive/info/'
-  text: '<em>Feeling Responsive</em> is heavily customizable.<br/>1. Language-Support :)<br/>2. Optimized for speed and it&#39;s responsive.<br/>3. Built on <a href="http://foundation.zurb.com/">Foundation Framework</a>.<br/>4. Seven different Headers.<br/>5. Customizable navigation, footer,...'
-  video: '<a href="#" data-reveal-id="videoModal"><img src="http://phlow.github.io/feeling-responsive/images/start-video-feeling-responsive-302x182.jpg" width="302" height="182" alt=""/></a>'
+  title: "Telling your Story: Speaking for Non-Speakers"
+  image: 'storytelling-1.jpg'
+  text: '<em>Telling your Story</em> gives an overview of thinking about presentations in a new way - as stories you share with your audience to help them understand what you are conveying.  You have a story to tell, and people want to hear it!'
+  url: '/telling-your-story-speaking-for-non-speakers.html'
 widget3:
-  title: "Download Theme"
-  url: 'https://github.com/Phlow/feeling-responsive'
-  image: widget-github-303x182.jpg
-  text: '<em>Feeling Responsive</em> is free and licensed under a MIT License. Make it your own and start building. Grab the <a href="https://github.com/Phlow/feeling-responsive/tree/bare-bones-version">Bare-Bones-Version</a> for a fresh start or learn how to use it with the <a href="https://github.com/Phlow/feeling-responsive/tree/gh-pages">education-version</a> with sample posts and images. Then tell me via Twitter <a href="http://twitter.com/phlow">@phlow</a>.'
+  title: "Irresistible APIs"
+  url: '/irresistible/'
+  image: 'http://irresistibleapis.com/CoverSmall.jpg'
+  text: 'My new book on "Irresistible APIs" will be published in paper form by the end of August in 2016.  In the meantime, you can see the <a href="/irresistible/">post</a> and watch the video to decide if you want to buy the book.  Note that you can purchase it in electronic form now from Manning and get the paper version when it is ready!'
+sidebar: left
 #
 # Use the call for action to show a button on the frontpage
 #
@@ -33,11 +32,10 @@ widget3:
 # To change colors see sass/_01_settings_colors.scss
 #
 callforaction:
-  url: https://tinyletter.com/feeling-responsive
-  text: Inform me about new updates and features ›
+  url: http://irresistibleapis.com/
+  text: Check out Irresistible APIs!
   style: alert
 permalink: /index.html
-#
 # This is a nasty hack to make the navigation highlight
 # this page as active in the topbar navigation
 #

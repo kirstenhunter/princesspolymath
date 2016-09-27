@@ -10,8 +10,10 @@ layout: compress
 	{% unless page.skip_boilerplate %}
 	{% include _navigation.html %}
 	{% endunless %}
-
+	{% unless page.skip_masthead %}
 	{% include _masthead.html %}
+	{% endunless %}
+
 	{{ content }}
 
 	{% unless page.skip_boilerplate %}

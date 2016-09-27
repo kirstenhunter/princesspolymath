@@ -5,13 +5,15 @@ sitemap:
 ---
 @charset "utf-8";
 
+$primary-color: #D50002;
+
 @import "functions.scss";
 @import "01_settings_colors.scss";
 @import "02_settings_typography.scss";
 @import "03_settings_mixins_media_queries.scss";
 @import "04_settings_global.scss";
 @import "05_normalize.scss"; // normalize.css v3.0.2
-
+@import "font-awesome.scss";
 @import "foundation-components/top-bar";
 @import "foundation-components/accordion";
 @import "foundation-components/alert-boxes";
@@ -43,3 +45,198 @@ sitemap:
 @import "09_elements.scss";
 
 @import "11_syntax-highlighting.scss";
+.sidebar h2,.sidebar h3,.sidebar h4,.sidebar h5,.sidebar h6 {
+margin-bottom: 0;
+font-family: -apple-system,".SFNSText-Regular","San Francisco","Roboto","Segoe UI","Helvetica Neue","Lucida Grande",Arial,sans-serif
+}
+.sidebar h3,.sidebar h4 {
+font-size: 1em
+}
+.sidebar p,.sidebar li {
+font-family: -apple-system,".SFNSText-Regular","San Francisco","Roboto","Segoe UI","Helvetica Neue","Lucida Grande",Arial,sans-serif;
+font-size: .75em;
+line-height: 1.5
+}
+.sidebar img {
+width: 100%
+}
+.sidebar__right {
+margin-bottom: 1em
+}
+@media (min-width: 64em) {.sidebar__right {
+position: relative;
+float: right;
+width: 200px;
+margin-left: 2.54237%;
+z-index: 10
+}
+
+}
+@media (min-width: 80em) {.sidebar__right {
+width: 300px
+}
+
+}
+
+.author__avatar {
+display: table-cell;
+vertical-align: top;
+width: 36px;
+height: 36px
+}
+@media (min-width: 64em) {.author__avatar {
+display: block;
+width: auto;
+height: auto
+}
+
+}
+.author__avatar img {
+max-width: 110px;
+border-radius: 50%
+}
+@media (min-width: 64em) {.author__avatar img {
+padding: 5px;
+border: 1px solid #f2f3f3
+}
+
+}
+.author__content {
+display: table-cell;
+vertical-align: top;
+padding-left: 15px;
+padding-right: 25px;
+line-height: 1
+}
+@media (min-width: 64em) {.author__content {
+display: block;
+width: 100%;
+padding-left: 0;
+padding-right: 0
+}
+
+}
+
+.author__name {
+margin: 0
+}
+@media (min-width: 64em) {.author__name {
+margin-top: 10px;
+margin-bottom: 10px
+}
+
+}
+.sidebar .author__name {
+font-family: -apple-system,".SFNSText-Regular","San Francisco","Roboto","Segoe UI","Helvetica Neue","Lucida Grande",Arial,sans-serif;
+font-size: 1em
+}
+.author__bio {
+margin: 0
+}
+@media (min-width: 64em) {.author__bio {
+margin-top: 10px;
+margin-bottom: 20px
+}
+
+}
+.author__urls-wrapper {
+position: relative;
+display: table-cell;
+vertical-align: middle;
+font-family: -apple-system,".SFNSText-Regular","San Francisco","Roboto","Segoe UI","Helvetica Neue","Lucida Grande",Arial,sans-serif;
+z-index: 10;
+position: relative;
+cursor: pointer
+}
+.author__urls-wrapper li:last-child a {
+margin-bottom: 0
+}
+@media (min-width: 64em) {.author__urls-wrapper {
+display: block
+}
+
+}
+
+.author__urls-wrapper button {
+margin-bottom: 0
+}
+@media (min-width: 64em) {.author__urls-wrapper button {
+display: none
+}
+
+}
+.author__urls {
+display: none;
+position: absolute;
+right: 0;
+margin-top: 15px;
+padding: 10px;
+list-style-type: none;
+border: 1px solid #f2f3f3;
+border-radius: 4px;
+background: #fff;
+z-index: -1;
+box-shadow: 0 0 10px rgba(0,0,0,0.25)
+}
+@media (min-width: 64em) {.author__urls {
+display: block;
+position: relative;
+margin: 0;
+padding: 0;
+border: 0;
+background: transparent;
+box-shadow: none
+}
+
+}
+.author__urls:before {
+display: block;
+content: "";
+position: absolute;
+top: -11px;
+left: calc(50% - 10px);
+width: 0;
+border-style: solid;
+border-width: 0 10px 10px;
+border-color: #f2f3f3 transparent;
+z-index: 0
+}
+@media (min-width: 64em) {.author__urls:before {
+display: none
+}
+
+}
+.author__urls:after {
+display: block;
+content: "";
+position: absolute;
+top: -10px;
+left: calc(50% - 10px);
+width: 0;
+border-style: solid;
+border-width: 0 10px 10px;
+border-color: #fff transparent;
+z-index: 1
+}
+@media (min-width: 64em) {.author__urls:after {
+display: none
+}
+
+}
+.author__urls li {
+white-space: nowrap
+}
+.author__urls a {
+display: block;
+margin-bottom: 5px;
+padding-right: 5px;
+padding-top: 2px;
+padding-bottom: 2px;
+color: inherit;
+font-size: 1em;
+text-decoration: none
+}
+.author__urls a:hover {
+text-decoration: underline
+}
+
