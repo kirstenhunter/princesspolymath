@@ -6,20 +6,20 @@
 #
 layout: frontpage
 widget1:
-  title: "Becoming a Polyglot"
-  url: "/becoming-a-polyglot"
-  image: polyglot.png
-  text: 'Learn how to translate between different programming languages with this simple set of API engines in 5 different interpreted languages.  Become a programming language polyglot and play with some working code!'
+  title: "Fitbit: The Best Tracker for Hackers and Makers"
+  url: "/fitbit"
+  image: fitbit.png
+  text: 'Musings on why the <a href="https://www.amazon.com/dp/B01K9S247E/ref=sr_ph_1_a_it?ie=UTF8&qid=1475551315&sr=sr-1&keywords=fitbit+charge+2">Fitbit system</a> is the best fitness tracker for folks who want to build their own integrations.'
 widget2:
-  title: "Telling your Story: Speaking for Non-Speakers"
-  image: 'storytelling-1.jpg'
-  text: '<em>Telling your Story</em> gives an overview of thinking about presentations in a new way - as stories you share with your audience to help them understand what you are conveying.  You have a story to tell, and people want to hear it!'
-  url: '/telling-your-story-speaking-for-non-speakers.html'
+  title: "Hacking the Philips Hue Remote API"
+  image: 'hue.jpg'
+  text: 'Using your <a href="https://www.amazon.com/Philips-456210-Ambiance-Starter-Generation/dp/B014H2P4KW/ref=sr_1_2?ie=UTF8&qid=1475551498&sr=8-2&keywords=hue+starter+kit">Philips Hue lights</a> to give feedback for your day is a great use of this technology.  Find out how you can train these lights to give you props for progress!'
+  url: '/hacking-a-philips-hue-remote-api-in-node.html'
 widget3:
   title: "Irresistible APIs"
   url: '/irresistible/'
   image: 'http://irresistibleapis.com/CoverSmall.jpg'
-  text: 'My new book on "Irresistible APIs" will be published in paper form by the end of August in 2016.  In the meantime, you can see the <a href="/irresistible/">post</a> and watch the video to decide if you want to buy the book.  Note that you can purchase it in electronic form now from Manning and get the paper version when it is ready!'
+  text: 'My new book on "Irresistible APIs" has now been published!  Purchase it on <a href="http://amzn.to/2cOAqZ9">Amazon</a> or see the <a href="/irresistible/">post</a>.'
 sidebar: left
 #
 # Use the call for action to show a button on the frontpage
