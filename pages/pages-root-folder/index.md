@@ -12,7 +12,7 @@ widget1:
   text: 'Musings on why the <a href="https://www.amazon.com/dp/B01K9S247E/ref=sr_ph_1_a_it?ie=UTF8&qid=1475551315&sr=sr-1&keywords=fitbit+charge+2">Fitbit system</a> is the best fitness tracker for folks who want to build their own integrations.'
 widget2:
   title: "Hacking the Philips Hue Remote API"
-  image: 'hue.jpg'
+  image: 'hue.png'
   text: 'Using your <a href="https://www.amazon.com/Philips-456210-Ambiance-Starter-Generation/dp/B014H2P4KW/ref=sr_1_2?ie=UTF8&qid=1475551498&sr=8-2&keywords=hue+starter+kit">Philips Hue lights</a> to give feedback for your day is a great use of this technology.  Find out how you can train these lights to give you props for progress!'
   url: '/hacking-a-philips-hue-remote-api-in-node.html'
 widget3:
