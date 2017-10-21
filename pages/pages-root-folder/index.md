@@ -5,6 +5,12 @@
 # this work, you have to use › layout: frontpage
 #
 layout: frontpage
+
+callforaction:
+  url: https://princesspolymath.com/assets/ReturnOfTheCLI.pdf
+  text: Get the CLI presentation
+  style: alert
+
 widget1:
   title: "Fitbit: The Best Tracker for Hackers and Makers"
   url: "/fitbit"
@@ -16,11 +22,12 @@ widget2:
   text: 'Using your <a href="https://www.amazon.com/Philips-456210-Ambiance-Starter-Generation/dp/B014H2P4KW/ref=sr_1_2?ie=UTF8&qid=1475551498&sr=8-2&keywords=hue+starter+kit">Philips Hue lights</a> to give feedback for your day is a great use of this technology.  Find out how you can train these lights to give you props for progress!'
   url: '/hacking-a-philips-hue-remote-api-in-node.html'
 widget3:
-  title: "Irresistible APIs"
-  url: '/irresistible/'
-  image: 'http://irresistibleapis.com/CoverSmall.jpg'
-  text: 'My new book on "Irresistible APIs" has now been published!  Purchase it on <a href="http://amzn.to/2cOAqZ9">Amazon</a> or see the <a href="/irresistible/">post</a>.'
+  title: "Becoming a Polyglot"
+  url: "/becoming-a-polyglot"
+  image: polyglot.png
+  text: 'Learn how to translate between different programming languages with this simple set of API engines in 5 different interpreted languages.  Become a programming polyglot.'
 sidebar: left
+
 #
 # Use the call for action to show a button on the frontpage
 #
@@ -31,11 +38,8 @@ sidebar: left
 # to use the main color or success, alert or secondary.
 # To change colors see sass/_01_settings_colors.scss
 #
-callforaction:
-  url: http://irresistibleapis.com/
-  text: Check out Irresistible APIs!
-  style: alert
 permalink: /index.html
+
 # This is a nasty hack to make the navigation highlight
 # this page as active in the topbar navigation
 #
