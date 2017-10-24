@@ -136,18 +136,6 @@
 
           
           
-        
-
-              
-
-          
-          
-        
-
-              
-
-          
-          
             
             
               <li class="divider"></li>
@@ -218,38 +206,6 @@
             
 	    
 		<li><a href="http://github.com/synedra" target="_blank">CODE</a></li>
-              <li class="divider"></li>
-		
-            
-            
-          
-        
-
-              
-
-          
-          
-
-            
-            
-	    
-		<li><a href="https://www.princesspolymath.com/presentations">Presentations</a></li>
-              <li class="divider"></li>
-		
-            
-            
-          
-        
-
-              
-
-          
-          
-
-            
-            
-	    
-		<li><a href="https://www.princesspolymath.com/reviews">Reviews</a></li>
               <li class="divider"></li>
 		
             
