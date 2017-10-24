@@ -11,7 +11,7 @@
 			<item>
 				<title>Fitbit - the Best Activity Tracker for Hackers and Makers</title>
 				<link>https://www.princesspolymath.com/fitbit</link>
-				<pubDate>Mon, 03 Oct 2016 00:00:00 -0700</pubDate>
+				<pubDate>Mon, 03 Oct 2016 00:00:00 -0400</pubDate>
 				<description>&lt;p&gt;One of the presentations I give frequently is a talk on &lt;a href=&quot;https://www.youtube.com/watch?v=5J87wPapTiw&quot;&gt;Quantifying your Fitness&lt;/a&gt;.  In doing research for this topic, 
 I’ve worked with devices and APIs for a multitude of systems.  Everyone has their favorite device, and I want to give some reasons to consider the Fitbit family of products
 as a great tool for anyone who wants to integrate their fitness into other parts of their lives.&lt;/p&gt;
@@ -72,7 +72,7 @@ as it has heart rate monitoring, some SMS functionality, and is generally small 
 			<item>
 				<title>Irresistible APIs Book</title>
 				<link>https://www.princesspolymath.com/irresistible-apis-book</link>
-				<pubDate>Tue, 27 Sep 2016 00:00:00 -0700</pubDate>
+				<pubDate>Tue, 27 Sep 2016 00:00:00 -0400</pubDate>
 				<description>&lt;p&gt;My book is out!  &lt;a href=&quot;http://amzn.to/2dhkoaT&quot;&gt;Irresistible APIs&lt;/a&gt; is now available on Manning, on Amazon, and probably even
 at bookstores in your area.  Check it out and let me know what you think on twitter :-)&lt;/p&gt;
 
@@ -85,7 +85,7 @@ I’ll have a link to the presentation I gave at Abstractions earlier this year 
 			<item>
 				<title>Becoming a Polyglot</title>
 				<link>https://www.princesspolymath.com/becoming-a-polyglot</link>
-				<pubDate>Thu, 30 Jun 2016 00:00:00 -0700</pubDate>
+				<pubDate>Thu, 30 Jun 2016 00:00:00 -0400</pubDate>
 				<description>&lt;p&gt;This article goes with the talk I gave at PolyConf 16 this year, on “Being a Polyglot.”&lt;/p&gt;
 
 &lt;p&gt;As an API evangelist, I’m frequently put in a position where I need to provide sample code for my client developers, the folks who consume the API I’m charged with evangelizing.  Our sample code is mostly in python at this point, because it’s the easiest language to understand if you don’t know python (if that makes any sense). These samples are really simple, demonstrating how to use the signing library for the language and then make a few HTTP calls to the actual APIs.  However, I’ve run into several cases where customers are simply unwilling or unable to look at a “foreign” programming language to suss out what’s happening.&lt;/p&gt;
@@ -167,7 +167,7 @@ To insert the information from the quoteid.json file to get your DB started, use
 			<item>
 				<title>Hacking a Philips Hue Remote API in Node</title>
 				<link>https://www.princesspolymath.com/hacking-a-philips-hue-remote-api-in-node.html</link>
-				<pubDate>Tue, 03 May 2016 06:07:28 -0700</pubDate>
+				<pubDate>Tue, 03 May 2016 09:07:28 -0400</pubDate>
 				<description>&lt;p&gt;I’m giving one of my favorite talks at &lt;a href=&quot;http://stirtrek.com&quot;&gt;Stir Trek&lt;/a&gt; this year – &lt;a href=&quot;https://skillsmatter.com/skillscasts/6767-wrangling-the-internet-of-things-using-node-js&quot;&gt;Quantifying your Fitness&lt;/a&gt;.  Unfortunately, the IFTTT-&amp;gt;Philips Hue connector has ceased to work and neither IFTTT nor Philips Hue has deigned to answer my plea for help.  So, while Quantifying your Fitness used to use Twitter as glue, I needed to create a remote API client that would run on &lt;a href=&quot;http://modulus.io&quot;&gt;Modulus&lt;/a&gt; in Node.js.&lt;/p&gt;
 
 &lt;p&gt;There are lots of people who have created clients in various languages, including Paul Shi, who wrote a &lt;a href=&quot;http://blog.paulshi.me/technical/2013/11/27/Philips-Hue-Remote-API-Explained.html&quot;&gt;fabulous blog post&lt;/a&gt;, but I wanted to do this directly in Node, so that other people looking for guidance would understand exactly what they needed to create and send.&lt;/p&gt;
@@ -311,7 +311,7 @@ http PUT http://{ip_from_meethue}/api/{username}/groups/0/action on=false
 			<item>
 				<title>Telling Your Story: Speaking for Non-Speakers</title>
 				<link>https://www.princesspolymath.com/telling-your-story-speaking-for-non-speakers.html</link>
-				<pubDate>Thu, 23 Jul 2015 14:31:18 -0700</pubDate>
+				<pubDate>Thu, 23 Jul 2015 17:31:18 -0400</pubDate>
 				<description>&lt;div style=&quot;width: 640px; &quot; class=&quot;wp-video&quot;&gt;
   &lt;!--[if lt IE 9]&gt;&lt;![endif]--&gt;&lt;video class=&quot;wp-video-shortcode&quot; id=&quot;video-818-1&quot; width=&quot;640&quot; height=&quot;360&quot; preload=&quot;metadata&quot; controls=&quot;controls&quot;&gt;&lt;source type=&quot;video/mp4&quot; src=&quot;http://www.princesspolymath.com/assets/videos/TellingYourStory.mp4?_=1&quot; /&gt;
   
@@ -412,7 +412,7 @@ http PUT http://{ip_from_meethue}/api/{username}/groups/0/action on=false
 			<item>
 				<title>Quick Docker Getting Started</title>
 				<link>https://www.princesspolymath.com/quick-docker-getting-started.html</link>
-				<pubDate>Thu, 28 May 2015 09:25:27 -0700</pubDate>
+				<pubDate>Thu, 28 May 2015 12:25:27 -0400</pubDate>
 				<description>&lt;p&gt;Docker’s cool.  I mentioned this before, but hadn’t really made a great example for you to use for your own nefarious purposes… until now.&lt;/p&gt;
 
 &lt;p&gt;I’ve created a base github repository where you can fork it, create your own docker container, and you and your users cal pull it to wreak consistently architected havoc all over your curriculum, tutorial or workshop.&lt;/p&gt;
@@ -486,7 +486,7 @@ root@0bef28a21e83:/opt/webapp#
 			<item>
 				<title>Promises, promises</title>
 				<link>https://www.princesspolymath.com/promises-promises.html</link>
-				<pubDate>Tue, 26 May 2015 07:27:54 -0700</pubDate>
+				<pubDate>Tue, 26 May 2015 10:27:54 -0400</pubDate>
 				<description>&lt;p&gt;This has got to be the fifty-bazillionth post about javascript promises with the same title out there, but I had a very particular problem I was trying to solve and had trouble finding the answer so once I got it working I wanted to share it with you.&lt;/p&gt;
 
 &lt;p&gt;The challenge came about because I was somewhat embarrassed by the implementation I had for my &lt;a href=&quot;http://www.princesspolymath.com/princess_polymath/?p=787&quot;&gt;fitbit-twilio-twitter-ifttt-phillipshue mashup&lt;/a&gt; – it had race conditions pretty frequently because of the asynchronous nature of the API calls, and I didn’t really want to chain everything together.  So it turned out that what I wanted was to use Promise.all() to tell the script to wait until both of the calls finished before pestering me to tell me to eat or exercise.  I hunted around, asked on &lt;a href=&quot;http://stackoverflow.com/questions/30428045/using-promise-all-for-multiple-http-oauth-queries&quot;&gt;StackOverflow&lt;/a&gt;, and got pointed in the right direction, and it turns out that the actual answer was much more elegant than the original code for a single API call.&lt;/p&gt;
@@ -519,7 +519,7 @@ root@0bef28a21e83:/opt/webapp#
 			<item>
 				<title>Glue-ing together APIs for GlueCon</title>
 				<link>https://www.princesspolymath.com/glue-ing-together-apis-for-gluecon.html</link>
-				<pubDate>Thu, 21 May 2015 01:44:28 -0700</pubDate>
+				<pubDate>Thu, 21 May 2015 04:44:28 -0400</pubDate>
 				<description>&lt;p&gt;Last year, at Defrag, I made my IoT rube goldberg machine made up of a sphero, hue lightbulb, raspberry pi and my drone.  I might have accidentally almost attacked the audience with the drone.  But it was a success and entertaining for all.&lt;/p&gt;
 
 &lt;p&gt;This year, instead of doing that, I’m doing a fitness Rube Goldberg machine.  I’m going with the carrot/stick approach to making sure that people keep up their activity.  During the day, it checks your fitbit/myfitnesspal and sends you an SMS if you’re falling behind.  Also, it updates the color of a Philips hue lightbulb as you advance through the day.  If I had an IoT lock I’d unlock the freezer to get some Ben and Jerry’s ice cream as soon as I was done with my activity and protein.&lt;/p&gt;
@@ -540,7 +540,7 @@ root@0bef28a21e83:/opt/webapp#
 			<item>
 				<title>New Book on MEAP: Irresistible APIs</title>
 				<link>https://www.princesspolymath.com/new-book-on-meap-irresistible-apis.html</link>
-				<pubDate>Sat, 18 Apr 2015 08:46:50 -0700</pubDate>
+				<pubDate>Sat, 18 Apr 2015 11:46:50 -0400</pubDate>
 				<description>&lt;p&gt;&lt;img class=&quot; size-medium wp-image-777 alignleft&quot; src=&quot;/assets/img/2015/02/Cover-238x300.jpg&quot; alt=&quot;Cover&quot; width=&quot;238&quot; height=&quot;300&quot; srcset=&quot;/assets/img/2015/02/Cover-238x300.jpg 238w, /assets/img/2015/02/Cover-814x1024.jpg 814w&quot; sizes=&quot;(max-width: 238px) 100vw, 238px&quot; /&gt;APIs have been exploding across the internet for several years now, but we are just now getting to the point where the industry can start implementing best practices in design.  Up until now, most APIs have been designed at the architecture level, figuring out what the backend system does and exposing that functionality to users in the most direct way possible.  Unfortunately, this does not make for a usable API, and we need to start moving to a new system – a process to build APIs that are easy to understand, clear, and a delight to use.  I’m writing a book describing a better way of creating APIs that are irresistible to developers and companies – Web APIs that have the best chance of being successful.&lt;/p&gt;
 
 &lt;p&gt;The book is in early preview on the &lt;a href=&quot;http://www.manning.com/hunter/&quot;&gt;Manning Early Access Program&lt;/a&gt;, and you can download a sample chapter, purchase the book, and help me to make it the best book possible for API creators.&lt;/p&gt;
@@ -553,7 +553,7 @@ root@0bef28a21e83:/opt/webapp#
 			<item>
 				<title>Ask the Princess: Episode 1</title>
 				<link>https://www.princesspolymath.com/ask-the-princess-episode-1.html</link>
-				<pubDate>Tue, 27 Jan 2015 12:43:43 -0800</pubDate>
+				<pubDate>Tue, 27 Jan 2015 15:43:43 -0500</pubDate>
 				<description>&lt;p&gt;&lt;a href=&quot;/assets/img/2014/10/Logosmall4.png&quot; class=&quot;grouped_elements&quot; rel=&quot;tc-fancybox-group773&quot;&gt;&lt;img class=&quot; size-full wp-image-735 alignleft&quot; src=&quot;/assets/img/2014/10/Logosmall4.png&quot; alt=&quot;Logosmall&quot; width=&quot;100&quot; height=&quot;99&quot; /&gt;&lt;/a&gt;This is the first in a series of posts entitled “Ask the Princess.”  I am a princess and a polymath, and I’ve got lots of opinions and experience around various things.  Topics covered here will be mostly about building APIs, but can cover martial arts, parenting, politics, or anything else anyone chooses to ask me about.  Bring it on, I’ll answer with all the information and snark I can summon for your topic.    Without any further introduction, here’s the first column.  The questions and answers are both mine.  Send me an email or tweet with a question and I promise to address it in a future column.&lt;/p&gt;
 
 &lt;h3 id=&quot;who-are-you-and-why-should-i-listen-to-your-advice&quot;&gt;&lt;em&gt;Who are you, and why should I listen to your advice?&lt;/em&gt;&lt;/h3&gt;
