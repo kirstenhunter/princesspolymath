@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 	<id>https://www.princesspolymath.com/</id>
 	<title>Princess Polymath</title>
-	<updated>2017-10-23T22:54:58-04:00</updated>
+	<updated>2017-10-23T23:21:59-04:00</updated>
 
 	<subtitle>Princess Polymath is a website focused on programming, web design, APIs and general amusement.</subtitle>
 
@@ -56,6 +56,18 @@
 &lt;p&gt;I build the files on my local server, so there’s no reason I couldn’t push those files to the production server using git, which, as it turns out, cares &lt;em&gt;deeply&lt;/em&gt; about which files have changed on the site.&lt;/p&gt;
 
 &lt;p&gt;Having added the _site files to my repository, it was a simple thing to push the changes from my local system to the web server, so that only left one order of business - the original goal, purging the cache when a file had changed.  For that I used a git webhook which runs a git diff at the end of each push and clears the cache for each file that’s changed.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;git-hook.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I’ll walk through the functionality here so you can see what’s happening.&lt;/p&gt;
+
+&lt;p&gt;First, we’re only looking at the master branch - otherwise the command is a no-op.&lt;/p&gt;
+
+&lt;p&gt;Next, in my installation, the git files live in a separate directory from the content.  You can see here that the first action is to checkout the newest commit from the git directory.&lt;/p&gt;
+
+&lt;p&gt;Now we get to the meat of the issue.  Once the files are received, we can ask git which files have changed between the previous commit and this one (both are available in the hook).  For each of those files, a simple string substitution is done to make it match the URLs on my site, and then the files are purged using the &lt;a href=&quot;https://github.com/akamai/cli&quot;&gt;Akamai CLI&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;And that’s it.  The CLI for purge expects that you’ve gone through the authentication and provisioning portion of the “Get Started” section of &lt;a href=&quot;https://developer.akamai.com&quot;&gt;https://developer.akamai.com&lt;/a&gt; but once you’ve done that you’re good to go with your publication process, without having to manually purge changed files.&lt;/p&gt;
 </content>
 
 			

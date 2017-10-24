@@ -36,7 +36,19 @@ So I set forth on my goal of automating the cache purging when the Jekyll site i
 
 I build the files on my local server, so there’s no reason I couldn’t push those files to the production server using git, which, as it turns out, cares deeply about which files have changed on the site.
 
-Having added the _site files to my repository, it was a simple thing to push the changes from my local system to the web server, so that only left one order of business - the original goal, purging the cache when a file had changed.  For that I used a git webhook which runs a git diff at the end of each push and clears the cache for each file that’s changed.">
+Having added the _site files to my repository, it was a simple thing to push the changes from my local system to the web server, so that only left one order of business - the original goal, purging the cache when a file had changed.  For that I used a git webhook which runs a git diff at the end of each push and clears the cache for each file that’s changed.
+
+
+
+I’ll walk through the functionality here so you can see what’s happening.
+
+First, we’re only looking at the master branch - otherwise the command is a no-op.
+
+Next, in my installation, the git files live in a separate directory from the content.  You can see here that the first action is to checkout the newest commit from the git directory.
+
+Now we get to the meat of the issue.  Once the files are received, we can ask git which files have changed between the previous commit and this one (both are available in the hook).  For each of those files, a simple string substitution is done to make it match the URLs on my site, and then the files are purged using the Akamai CLI.
+
+And that’s it.  The CLI for purge expects that you’ve gone through the authentication and provisioning portion of the “Get Started” section of https://developer.akamai.com but once you’ve done that you’re good to go with your publication process, without having to manually purge changed files.">
   	<meta name="google-site-verification" content="Vk0IOJ2jwG_qEoG7fuEXYqv0m2rLa8P778Fi_GrsgEQ">
 	<meta name="msvalidate.01" content="0FB4C028ABCF07C908C54386ABD2D97F" >
 	<link rel="author" href="https://plus.google.com/u/0/118311555303973066167">
@@ -59,7 +71,19 @@ So I set forth on my goal of automating the cache purging when the Jekyll site i
 
 I build the files on my local server, so there’s no reason I couldn’t push those files to the production server using git, which, as it turns out, cares deeply about which files have changed on the site.
 
-Having added the _site files to my repository, it was a simple thing to push the changes from my local system to the web server, so that only left one order of business - the original goal, purging the cache when a file had changed.  For that I used a git webhook which runs a git diff at the end of each push and clears the cache for each file that’s changed.">
+Having added the _site files to my repository, it was a simple thing to push the changes from my local system to the web server, so that only left one order of business - the original goal, purging the cache when a file had changed.  For that I used a git webhook which runs a git diff at the end of each push and clears the cache for each file that’s changed.
+
+
+
+I’ll walk through the functionality here so you can see what’s happening.
+
+First, we’re only looking at the master branch - otherwise the command is a no-op.
+
+Next, in my installation, the git files live in a separate directory from the content.  You can see here that the first action is to checkout the newest commit from the git directory.
+
+Now we get to the meat of the issue.  Once the files are received, we can ask git which files have changed between the previous commit and this one (both are available in the hook).  For each of those files, a simple string substitution is done to make it match the URLs on my site, and then the files are purged using the Akamai CLI.
+
+And that’s it.  The CLI for purge expects that you’ve gone through the authentication and provisioning portion of the “Get Started” section of https://developer.akamai.com but once you’ve done that you’re good to go with your publication process, without having to manually purge changed files.">
 	<meta property="og:url" content="https://www.princesspolymath.com/static-publication-process.html">
 	<meta property="og:locale" content="en_EN">
 	<meta property="og:type" content="website">
@@ -87,7 +111,19 @@ So I set forth on my goal of automating the cache purging when the Jekyll site i
 
 I build the files on my local server, so there’s no reason I couldn’t push those files to the production server using git, which, as it turns out, cares deeply about which files have changed on the site.
 
-Having added the _site files to my repository, it was a simple thing to push the changes from my local system to the web server, so that only left one order of business - the original goal, purging the cache when a file had changed.  For that I used a git webhook which runs a git diff at the end of each push and clears the cache for each file that’s changed.">
+Having added the _site files to my repository, it was a simple thing to push the changes from my local system to the web server, so that only left one order of business - the original goal, purging the cache when a file had changed.  For that I used a git webhook which runs a git diff at the end of each push and clears the cache for each file that’s changed.
+
+
+
+I’ll walk through the functionality here so you can see what’s happening.
+
+First, we’re only looking at the master branch - otherwise the command is a no-op.
+
+Next, in my installation, the git files live in a separate directory from the content.  You can see here that the first action is to checkout the newest commit from the git directory.
+
+Now we get to the meat of the issue.  Once the files are received, we can ask git which files have changed between the previous commit and this one (both are available in the hook).  For each of those files, a simple string substitution is done to make it match the URLs on my site, and then the files are purged using the Akamai CLI.
+
+And that’s it.  The CLI for purge expects that you’ve gone through the authentication and provisioning portion of the “Get Started” section of https://developer.akamai.com but once you’ve done that you’re good to go with your publication process, without having to manually purge changed files.">
 	
 	
 
@@ -344,6 +380,18 @@ Having added the _site files to my repository, it was a simple thing to push the
 <p>I build the files on my local server, so there’s no reason I couldn’t push those files to the production server using git, which, as it turns out, cares <em>deeply</em> about which files have changed on the site.</p>
 
 <p>Having added the _site files to my repository, it was a simple thing to push the changes from my local system to the web server, so that only left one order of business - the original goal, purging the cache when a file had changed.  For that I used a git webhook which runs a git diff at the end of each push and clears the cache for each file that’s changed.</p>
+
+<p><img src="git-hook.png" alt="" /></p>
+
+<p>I’ll walk through the functionality here so you can see what’s happening.</p>
+
+<p>First, we’re only looking at the master branch - otherwise the command is a no-op.</p>
+
+<p>Next, in my installation, the git files live in a separate directory from the content.  You can see here that the first action is to checkout the newest commit from the git directory.</p>
+
+<p>Now we get to the meat of the issue.  Once the files are received, we can ask git which files have changed between the previous commit and this one (both are available in the hook).  For each of those files, a simple string substitution is done to make it match the URLs on my site, and then the files are purged using the <a href="https://github.com/akamai/cli">Akamai CLI</a>.</p>
+
+<p>And that’s it.  The CLI for purge expects that you’ve gone through the authentication and provisioning portion of the “Get Started” section of <a href="https://developer.akamai.com">https://developer.akamai.com</a> but once you’ve done that you’re good to go with your publication process, without having to manually purge changed files.</p>
 
 			</div>
 
