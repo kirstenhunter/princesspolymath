@@ -1,0 +1,830 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="/assets/xslt/atom.xslt" ?>
+<?xml-stylesheet type="text/css" href="/assets/css/atom.css" ?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+	<id>https://www.princesspolymath.com/</id>
+	<title>Princess Polymath</title>
+	<updated>2017-10-21T15:13:59-07:00</updated>
+
+	<subtitle>Princess Polymath is a website focused on programming, web design, APIs and general amusement.</subtitle>
+
+	
+		
+		<author>
+			
+				<name>synedra</name>
+			
+			
+			
+		</author>
+	
+
+	<link href="https://www.princesspolymath.com/atom.xml" rel="self" type="application/rss+xml" />
+	<link href="https://www.princesspolymath.com/" rel="alternate" type="text/html" />
+
+	<generator uri="http://jekyllrb.com" version="3.0.2">Jekyll</generator>
+
+	
+		<entry>
+			<id>https://www.princesspolymath.com/fitbit</id>
+			<title>Fitbit - the Best Activity Tracker for Hackers and Makers</title>
+			<link href="https://www.princesspolymath.com/fitbit" rel="alternate" type="text/html" title="Fitbit - the Best Activity Tracker for Hackers and Makers" />
+			<updated>2016-10-03T00:00:00-07:00</updated>
+
+			
+				
+				<author>
+					
+						<name>admin</name>
+					
+					
+					
+				</author>
+			
+			<summary></summary>
+			<content type="html" xml:base="https://www.princesspolymath.com/fitbit">&lt;p&gt;One of the presentations I give frequently is a talk on &lt;a href=&quot;https://www.youtube.com/watch?v=5J87wPapTiw&quot;&gt;Quantifying your Fitness&lt;/a&gt;.  In doing research for this topic, 
+I’ve worked with devices and APIs for a multitude of systems.  Everyone has their favorite device, and I want to give some reasons to consider the Fitbit family of products
+as a great tool for anyone who wants to integrate their fitness into other parts of their lives.&lt;/p&gt;
+
+&lt;p&gt;Most fitness trackers integrate with closed systems - the Apple Watch, which I love, unfortunately only integrates with the Apple Health application.  It’s my data, I created
+it with my body, but I am contracturally disallowed from getting data out of the system to use it as I want - whether that’s integrating with other applications, making cool
+graphs and charts, integrating with IFTTT, or anything else.  Yes, many of the devices out there are “open source,” but that means something very different to me than it does
+to the makers.  If the system only allows me to integrate with a device I own, and I’m not allowed to access the data from the cloud, I consider it a closed system.&lt;/p&gt;
+
+&lt;p&gt;So, Fitbit.  There are a variety of reasons why their devices and API are consistently featured in my talks.  Here are some of the things I’ve come to appreciate with their
+system in comparison to their competitors.&lt;/p&gt;
+
+&lt;h2 id=&quot;long-term-prospects&quot;&gt;Long term prospects&lt;/h2&gt;
+&lt;p&gt;One of the biggest concerns when integrating with a new system is wondering whether or not the system will be around for the long haul.  Too many times, APIs have been
+spawned, and because of business concerns or simple changes in direction, those APIs disappear into the ether, leaving your integrations out in the cold. The Fitbit API
+is a large part of Fitbit’s strategy - they have put a lot of resources into development, they have developer evangelists and a vibrant community, and the sheer number
+of integrations they support demonstrates their commitment to keeping the API around for the long term.  Contrast this with Runkeeper, a fine API with a great design, 
+but I’m unsure that their business model will be strong enough to keep them alive and kicking.  Give me a stable, strong company with a clear business model any day.&lt;/p&gt;
+
+&lt;h2 id=&quot;breadth&quot;&gt;Breadth&lt;/h2&gt;
+&lt;p&gt;Fitbit’s API covers not just the items their trackers track, such as steps, calories and heartrate, but also things like glucose, blood pressure, and other biometrics.  Someday
+perhaps they’ll have trackers for these items, but in the meantime it’s possible to use their API as a grand central station of health information, and as a maker or hacker,
+this means that you can combine information into a single place for consumption, whether you want to explore the measurements or simply have them stored away for future use.&lt;/p&gt;
+
+&lt;h2 id=&quot;subscription-api&quot;&gt;Subscription API&lt;/h2&gt;
+&lt;p&gt;Integrating with a fitness device is much less useful if you can’t get notified when there’s a change to the data.  Fitbit’s publication model allows API developers to listen
+for changes in any of the measurement types so they can create actions based on the change - for instance, as I go through the day, I use my philips hue lights to reflect my
+progress in activity and food logging.&lt;/p&gt;
+
+&lt;h2 id=&quot;api-developer-experience&quot;&gt;API Developer Experience&lt;/h2&gt;
+&lt;p&gt;The developer experience for this API is really quite excellent.&lt;br /&gt;
+* They’ve got good documentation
+* The signup flow is relatively painless
+* Their evangelists answer questions in the active forum
+* Nice sample code and integration examples&lt;/p&gt;
+
+&lt;p&gt;I always say that the developer experience is one of the main drivers for an API’s success, and Fitbit does an excellent job of making this pleasant.&lt;/p&gt;
+
+&lt;h2 id=&quot;existing-integrations&quot;&gt;Existing integrations&lt;/h2&gt;
+&lt;p&gt;Sure, I like writing code.  I have an app that sends me SMS messages and updates my philips hue lightbulbs based on how my activity is going throughout the day.  But for a 
+regular maker/hacker, sometimes IFTTT is just fine, and the existing integrations that Fitbit has created and maintained make it painless to add a variety of different
+notifications and behaviors based on your progress.  I like that I can use my withings scale and blood pressure monitor to put more information into the system.  I’m looking
+forward to the day when there’s a glucose monitoring watch that also integrates with Fitbit.  It’s unfortunate that Fitbit and Apple couldn’t agree on integrations together,
+but I suspect it had to do with the fact that Apple wants to own all the data going into the system and that’s not the model Fitbit uses.  I prefer having my own access to 
+my own data and it rankles a bit that I can’t get it from the Apple ecosystem.&lt;/p&gt;
+
+&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
+&lt;p&gt;I’ll likely write up a few more reviews of other fitness devices presently, but this one really focuses on integration and application development.  If you want to interact
+with your biometric data in a custom manner, or just work with a system that allows you to pull down the information you’ve generated for whatever reason, you should almost
+certainly go with Fitbit.  They’ve got a ton of different trackers - the one I currently like the best is the &lt;a href=&quot;https://www.amazon.com/dp/B01K9S247E/ref=sr_ph_1_a_it?ie=UTF8&amp;amp;qid=1475551315&amp;amp;sr=sr-1&amp;amp;keywords=fitbit+charge+2&quot;&gt;Fitbit Charge 2&lt;/a&gt;,
+as it has heart rate monitoring, some SMS functionality, and is generally small enough not to be annoying.&lt;/p&gt;
+
+&lt;p&gt;Let me know if this is useful for folks, and I’ll keep writing more about various APIs and integrations going forward.&lt;/p&gt;
+</content>
+
+			
+				<category term="Geek Stuff" />
+			
+				<category term="Web APIs" />
+			
+			
+
+			<published>2016-10-03T00:00:00-07:00</published>
+		</entry>
+	
+		<entry>
+			<id>https://www.princesspolymath.com/irresistible-apis-book</id>
+			<title>Irresistible APIs Book</title>
+			<link href="https://www.princesspolymath.com/irresistible-apis-book" rel="alternate" type="text/html" title="Irresistible APIs Book" />
+			<updated>2016-09-27T00:00:00-07:00</updated>
+
+			
+				
+				<author>
+					
+						<name>admin</name>
+					
+					
+					
+				</author>
+			
+			<summary></summary>
+			<content type="html" xml:base="https://www.princesspolymath.com/irresistible-apis-book">&lt;p&gt;My book is out!  &lt;a href=&quot;http://amzn.to/2dhkoaT&quot;&gt;Irresistible APIs&lt;/a&gt; is now available on Manning, on Amazon, and probably even
+at bookstores in your area.  Check it out and let me know what you think on twitter :-)&lt;/p&gt;
+
+&lt;p&gt;See also my related post on &lt;a href=&quot;http://www.princesspolymath.com/irresistible/&quot;&gt;Irresistible APIs&lt;/a&gt; on the site, and
+I’ll have a link to the presentation I gave at Abstractions earlier this year as soon as it’s up and available.&lt;/p&gt;
+</content>
+
+			
+				<category term="Geek Stuff" />
+			
+				<category term="Web APIs" />
+			
+			
+
+			<published>2016-09-27T00:00:00-07:00</published>
+		</entry>
+	
+		<entry>
+			<id>https://www.princesspolymath.com/becoming-a-polyglot</id>
+			<title>Becoming a Polyglot</title>
+			<link href="https://www.princesspolymath.com/becoming-a-polyglot" rel="alternate" type="text/html" title="Becoming a Polyglot" />
+			<updated>2016-06-30T00:00:00-07:00</updated>
+
+			
+				
+				<author>
+					
+						<name>admin</name>
+					
+					
+					
+				</author>
+			
+			<summary></summary>
+			<content type="html" xml:base="https://www.princesspolymath.com/becoming-a-polyglot">&lt;p&gt;This article goes with the talk I gave at PolyConf 16 this year, on “Being a Polyglot.”&lt;/p&gt;
+
+&lt;p&gt;As an API evangelist, I’m frequently put in a position where I need to provide sample code for my client developers, the folks who consume the API I’m charged with evangelizing.  Our sample code is mostly in python at this point, because it’s the easiest language to understand if you don’t know python (if that makes any sense). These samples are really simple, demonstrating how to use the signing library for the language and then make a few HTTP calls to the actual APIs.  However, I’ve run into several cases where customers are simply unwilling or unable to look at a “foreign” programming language to suss out what’s happening.&lt;/p&gt;
+
+&lt;p&gt;I am a firm believer that any programmer can read another programming language and understand what the underlying logic is, especially for fairly simple examples.  The &lt;a href=&quot;https://github.com/synedra/polyglot&quot;&gt;polyglot repository&lt;/a&gt; shows the same functionality (a very simple API engine) in 5 different languages.  I’m hoping that providing this kind of apples to apples comparison will make it easier for developers to feel comfortable and confident looking at code in different languages.  This is great for your career, for lowering your frustration level, and for just generally increasing your ability to code creatively and efficiently.&lt;/p&gt;
+
+&lt;p&gt;If you are on a platform which doesn’t appreciate interpreted languages, you can use the Docker Image (fastest way to get started) by starting at the &lt;a href=&quot;https://www.docker.com&quot;&gt;Docker Website&lt;/a&gt;.  The new native clients for docker in Mac and Windows are fantastic and I highly recommend them.  Just start up the docker engine and grab the repository with:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run -i -t -p 8080:8080 synedra/polyglot
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;You can use the github repository linked above, or the docker version.  Instructions for each language are included in the repository itself, so give it a go.&lt;/p&gt;
+
+&lt;p&gt;More instructions below:&lt;/p&gt;
+
+&lt;h2 id=&quot;polyglot-repository-walkthrough&quot;&gt;Polyglot Repository Walkthrough&lt;/h2&gt;
+
+&lt;p&gt;This is a walkthrough of how you would get the python example up and running.&lt;/p&gt;
+
+&lt;h3 id=&quot;docker&quot;&gt;Docker&lt;/h3&gt;
+
+&lt;p&gt;To get the system working using docker:
+* Install docker from https://docker.com/toolbox
+* Grab the container with&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run -i -t -p 8080:8080 synedra/polyglot
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Run the following commands to populate the database and start the server:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# /etc/init.d/mongodb start
+# mongoimport --collection quotes --file data/quoteid.json --type json --jsonArray
+# cd python
+# python flask-server.py
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Browse to &lt;a href=&quot;http://localhost:8080&quot;&gt;http://localhost:8080&lt;/a&gt; to see the welcome message&lt;/li&gt;
+  &lt;li&gt;Browse to &lt;a href=&quot;http://localhost:8080/api/quotes&quot;&gt;http://localhost:8080/api/quotes&lt;/a&gt; to see the json response&lt;/li&gt;
+  &lt;li&gt;Browse to &lt;a href=&quot;http://localhost:8080/demo&quot;&gt;http://localhost:8080/demo&lt;/a&gt; to see the application, and you can watch the traffic in chrome developer tools and see both the application response and JSON requests and responses&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;github&quot;&gt;Github&lt;/h3&gt;
+&lt;p&gt;Pull the repository here:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;https://github.com/synedra/polyglot
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;You will need to have mongodb installed and running. Installation info for the major platforms is at &lt;a href=&quot;https://docs.mongodb.org/manual/installation/&quot;&gt;https://docs.mongodb.org/manual/installation/&lt;/a&gt;
+To insert the information from the quoteid.json file to get your DB started, use the following command:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mongoimport --collection quotes --file data/quoteid.json --type json --jsonArray 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;To set up the python application, do the following:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# cd python
+# python setup.py install
+# python flask-server.py
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Browse to &lt;a href=&quot;http://localhost:8080&quot;&gt;http://localhost:8080&lt;/a&gt; to see the welcome message&lt;/li&gt;
+  &lt;li&gt;Browse to &lt;a href=&quot;http://localhost:8080/api/quotes&quot;&gt;http://localhost:8080/api/quotes&lt;/a&gt; to see the json response&lt;/li&gt;
+  &lt;li&gt;Browse to &lt;a href=&quot;http://localhost:8080/demo&quot;&gt;http://localhost:8080/demo&lt;/a&gt; to see the application, and you can watch the traffic in chrome developer tools and see both the application response and JSON requests and responses&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Try playing with the application, edit some things, add some functionality and send me a pull request (I like pull requests better than issues).&lt;/p&gt;
+</content>
+
+			
+				<category term="Geek Stuff" />
+			
+				<category term="Web APIs" />
+			
+			
+
+			<published>2016-06-30T00:00:00-07:00</published>
+		</entry>
+	
+		<entry>
+			<id>https://www.princesspolymath.com/hacking-a-philips-hue-remote-api-in-node.html</id>
+			<title>Hacking a Philips Hue Remote API in Node</title>
+			<link href="https://www.princesspolymath.com/hacking-a-philips-hue-remote-api-in-node.html" rel="alternate" type="text/html" title="Hacking a Philips Hue Remote API in Node" />
+			<updated>2016-05-03T06:07:28-07:00</updated>
+
+			
+				
+				<author>
+					
+						<name>admin</name>
+					
+					
+					
+				</author>
+			
+			<summary></summary>
+			<content type="html" xml:base="https://www.princesspolymath.com/hacking-a-philips-hue-remote-api-in-node.html">&lt;p&gt;I’m giving one of my favorite talks at &lt;a href=&quot;http://stirtrek.com&quot;&gt;Stir Trek&lt;/a&gt; this year – &lt;a href=&quot;https://skillsmatter.com/skillscasts/6767-wrangling-the-internet-of-things-using-node-js&quot;&gt;Quantifying your Fitness&lt;/a&gt;.  Unfortunately, the IFTTT-&amp;gt;Philips Hue connector has ceased to work and neither IFTTT nor Philips Hue has deigned to answer my plea for help.  So, while Quantifying your Fitness used to use Twitter as glue, I needed to create a remote API client that would run on &lt;a href=&quot;http://modulus.io&quot;&gt;Modulus&lt;/a&gt; in Node.js.&lt;/p&gt;
+
+&lt;p&gt;There are lots of people who have created clients in various languages, including Paul Shi, who wrote a &lt;a href=&quot;http://blog.paulshi.me/technical/2013/11/27/Philips-Hue-Remote-API-Explained.html&quot;&gt;fabulous blog post&lt;/a&gt;, but I wanted to do this directly in Node, so that other people looking for guidance would understand exactly what they needed to create and send.&lt;/p&gt;
+
+&lt;p&gt;So here’s the tutorial for what I did:&lt;/p&gt;
+
+&lt;h3 id=&quot;get-a-token&quot;&gt;Get a Token&lt;/h3&gt;
+
+&lt;p&gt;In order to interact with the unsupported/hidden remote API, you have to pretend to be a known partner.  I chose to masquerade as an iPhone for this particular exercise.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Login to &lt;a href=&quot;http://meethue.com&quot;&gt;meethue.com&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Send a request to  &lt;a href=&quot;https://www.meethue.com/api/nupnp&quot;&gt;https://www.meethue.com/api/nupnp&lt;/a&gt;. (or in &lt;a href=&quot;https://www.meethue.com/en-US/user/preferencessmartbridge&quot;&gt;My bridge&lt;/a&gt; page on the meethue website and by clicking on “Show me more”)&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Get your access token by sending a request in your browser to&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
+http://www.meethue.com/en-US/api/gettoken?devicename=iPhone+5&amp;amp;appid=hueapp&amp;amp;deviceid=**BRIDGEID**
+&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;and then right click on “Back to the app” to find the token inside of the response (phhueapp://sdk/login/&lt;strong&gt;ACCESSTOKEN&lt;/strong&gt;)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;I promise this is the grossest part of the process, but you do need to do this manually to get the API to respond correctly.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;From here, you can do a tl;dr if you want and just checkout my &lt;a href=&quot;https://github.com/synedra/fitfood-demo-pluralsight&quot;&gt;code on github&lt;/a&gt;.  Otherwise, let’s sally forth.&lt;/p&gt;
+
+&lt;h3 id=&quot;make-a-call&quot;&gt;Make a Call&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Now we have an access token and a bridge ID, so we can make a very easy call.  I’m using &lt;a href=&quot;http://httpie.org&quot;&gt;httpie&lt;/a&gt; for examples here, I strongly recommend it for any interaction with a REST API on the command line.&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;First, let’s get the status for the bridge.  Make the following call:&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
+http --form POST https://www.meethue.com/api/getbridge token==\*\*ACCESSTOKEN\*\*
+&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;If all has gone well, you will get information about your lights and the system.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;make-a-harder-call&quot;&gt;Make a Harder Call&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Now let’s turn all the lights off.&lt;/li&gt;
+  &lt;li&gt;The format for this call is pretty convoluted, but you can figure out what the actions/state items are by reading the &lt;a href=&quot;http://www.developers.meethue.com/philips-hue-api&quot;&gt;Philips Hue local API documentation&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Here’s a sample.  Copy it very carefully&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
+http --form POST https://www.meethue.com/api/sendmessage token==**ACCESSTOKEN** 
+clipmessage=&#39;{&quot;bridgeId&quot;:**BRIDGEID*, &quot;clipCommand&quot;: 
+{ &quot;url&quot;: &quot;/api/0/groups/0/action&quot;, &quot;method&quot;: &quot;PUT&quot; , &quot;body&quot;: {&quot;on&quot;:false} }}&#39;
+&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;From here, you should be able to make calls against the API.  Again, the code on github is in node, and it’s part of my Quantified Fitness talk, but the juicy bits are all there for you to peruse and copy at will.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;local-api-usage&quot;&gt;Local API Usage&lt;/h2&gt;
+
+&lt;p&gt;Along with making calls remotely from the internet, you can also (more easily) control your Philips Hue device using the local network, if you want to set up a server to work with the bulbs.  Here are some pointers to getting started:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;First, you’ll want to find the IP address for your bridge.  It’s a little unintuitive, but you can get this from the website.  Click “My Hue” on the meethue.com website, then “Settings.”  Choose “My bridge” from the links at the top, then “More bridge details” in the middle of the page.  This misses the goal of making it easy to find information, but now you should have your IP address.  Hurray!&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Now, you have a couple of choices.  The first option is to use the web server on the bridge (it’s more than just a bridge!)  Browse to:&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
+http://{IP_ADDRESS_FROM_MEETHUE}/debug/clip.html
+&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;From here you can start making API calls.  In order to get started, you’ll need to get the anonymous user identifier so you can use it in your calls.  Put &lt;code class=&quot;highlighter-rouge&quot;&gt;/api&lt;/code&gt; in the field and the following text in the body box:&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;devicetype&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;my_hue_app#iphone philips&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;Then click &lt;code class=&quot;highlighter-rouge&quot;&gt;POST&lt;/code&gt;.&lt;/p&gt;
+
+    &lt;p&gt;Hmm, “Link button not pressed.”  So press the link button and try again and you’ll end up with that username.  I’ll put a sample username here for subsequent calls.  Your response will look something like this:&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
+[
+    {
+   &quot;success&quot;: {
+       &quot;username&quot;: &quot;0000000000000000000000000000000&quot;
+   }
+    }
+]  
+&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;Now you’ve got a username, which is needed for your local API calls.  When using the remote API, the first zero in the path indicates that it’s the current user, but for the local API you need to express it explicitly.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Next up, a simple command using the API Debug Tool.  You can access specific lights with &lt;code class=&quot;highlighter-rouge&quot;&gt;/api/{username}/lights/{lightnumber}&lt;/code&gt; or you can group your lights.  By default, there’s a group 0 which includes all of your lights, so you can do whatever you like all at the same time.  Note that if you are changing the state of a single light the endpoint is&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
+/api/{username}/lights/{lightnumber}/state
+&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;Where the method to change a group of lights is as follows:&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
+/api/{username}/groups/{groupnumber}/action
+&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;So let’s change the status of all lights to off (or on, if you prefer).  To do that, put the following in the URL field:&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
+/api/{username}/groups/0/action
+&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;Use the following for the body:&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;on&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;Then push “PUT” and see what happens.&lt;/p&gt;
+
+    &lt;p&gt;Now you’ve got the API Debugger working, and you can see all the magic you can create in the &lt;a href=&quot;http://www.developers.meethue.com/philips-hue-api&quot;&gt;API Documentation&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;This tutorial wouldn’t be complete if I didn’t give an example of making a call directly on the local network.  In order to do the same command in httpie, using the local network, give the following command:&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
+http PUT http://{ip_from_meethue}/api/{username}/groups/0/action on=false
+&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;This command does precisely what the remote call did above.  The difference is that the system making this call &lt;em&gt;must&lt;/em&gt; be on the same local network as the bridge, so it can’t work from a cloud provider or a hosted system.  For some people this is a fine setup, but for me I always want to make sure that things work no matter what my local computer is doing.&lt;/p&gt;
+
+    &lt;p&gt;I hope this tour has been helpful in learning how to work with the philips hue lights.  It’s really quite fun, and you can do many more complex actions, setting specific colors, blinking, rotating through colors.  These commands work with the lamp bulbs as well as the “Go” bulbs and the lightstrips (which are quite excellent).&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+</content>
+
+			
+				<category term="API Codex" />
+			
+				<category term="Geek Stuff" />
+			
+				<category term="Irresistible APIs" />
+			
+				<category term="Web APIs" />
+			
+			
+
+			<published>2016-05-03T06:07:28-07:00</published>
+		</entry>
+	
+		<entry>
+			<id>https://www.princesspolymath.com/telling-your-story-speaking-for-non-speakers.html</id>
+			<title>Telling Your Story: Speaking for Non-Speakers</title>
+			<link href="https://www.princesspolymath.com/telling-your-story-speaking-for-non-speakers.html" rel="alternate" type="text/html" title="Telling Your Story: Speaking for Non-Speakers" />
+			<updated>2015-07-23T14:31:18-07:00</updated>
+
+			
+				
+				<author>
+					
+						<name>admin</name>
+					
+					
+					
+				</author>
+			
+			<summary></summary>
+			<content type="html" xml:base="https://www.princesspolymath.com/telling-your-story-speaking-for-non-speakers.html">&lt;div style=&quot;width: 640px; &quot; class=&quot;wp-video&quot;&gt;
+  &lt;!--[if lt IE 9]&gt;&lt;![endif]--&gt;&lt;video class=&quot;wp-video-shortcode&quot; id=&quot;video-818-1&quot; width=&quot;640&quot; height=&quot;360&quot; preload=&quot;metadata&quot; controls=&quot;controls&quot;&gt;&lt;source type=&quot;video/mp4&quot; src=&quot;http://www.princesspolymath.com/assets/videos/TellingYourStory.mp4?_=1&quot; /&gt;
+  
+  &lt;a href=&quot;http://www.princesspolymath.com/assets/videos/TellingYourStory.mp4&quot;&gt;http://www.princesspolymath.com/videos/TellingYourStory.mp4&lt;/a&gt;&lt;/video&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This year I was honored to be invited to contribute to the OSCON talks on presentation skills with my own take, Telling Your Story. I was placed into a slot where I was likely to have plenty of worn out attendees, the last slot on the second full day, so I went in there determined to give them a fun presentation and send them off into the evening chuckling.&lt;/p&gt;
+
+&lt;p&gt;My slide deck, as usual, is, well, not that easy to understand without my interpretive dance. But I’ve posted the video above, and I’ll explain what my main points were so you can follow along. I think it was a lot of fun for the people in the audience (it sure was for me!), and I hope it helps you out as well.&lt;/p&gt;
+
+&lt;p&gt;&lt;span style=&quot;font-family: arial, sans-serif; font-size: 8pt;&quot;&gt;&lt;a title=&quot;Telling your Story Science and Technology Presentation&quot; href=&quot;https://www.haikudeck.com/p/2FPcOXCZCC/telling-your-story?utm_campaign=embed&amp;amp;utm_source=webapp&amp;amp;utm_medium=text-link&quot;&gt;Telling your Story&lt;/a&gt; – Created with Haiku Deck, presentation software that inspires&lt;/span&gt;&lt;/p&gt;
+
+&lt;div id=&quot;attachment_826&quot; style=&quot;width: 235px&quot; class=&quot;wp-caption alignright&quot;&gt;
+  &lt;a href=&quot;/assets/img/2015/07/19347908744_8ad04f9fe9_k.jpg&quot; class=&quot;grouped_elements&quot; rel=&quot;tc-fancybox-group818&quot;&gt;&lt;img class=&quot;wp-image-826 size-medium&quot; src=&quot;/assets/img/2015/07/19347908744_8ad04f9fe9_k-225x300.jpg&quot; alt=&quot;Sketch notes by Aaron Sumner&quot; width=&quot;225&quot; height=&quot;300&quot; srcset=&quot;/assets/img/2015/07/19347908744_8ad04f9fe9_k-225x300.jpg 225w, /assets/img/2015/07/19347908744_8ad04f9fe9_k-768x1024.jpg 768w, /assets/img/2015/07/19347908744_8ad04f9fe9_k.jpg 1536w&quot; sizes=&quot;(max-width: 225px) 100vw, 225px&quot; /&gt;&lt;/a&gt;
+  
+  &lt;p class=&quot;wp-caption-text&quot;&gt;
+    Sketch notes by &lt;a href=&quot;https://www.flickr.com/photos/rockchalk/&quot;&gt;Aaron Sumner&lt;/a&gt;
+  &lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Here’s my interpretive dance, in text. Let me know at @synedra on twitter if you need more context or examples and I’ll update the post!&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 30px;&quot;&gt;
+  I&amp;#8217;ve been in the tech industry for almost 20 years, but it&amp;#8217;s only been relatively recently that I&amp;#8217;ve come to enjoy speaking to audiences &amp;#8211; and now I just love it, I love telling people my stories to help them avoid my speed bumps or learn from my experiences.  I&amp;#8217;m energetic and excited to give talks, and my only anxiety is small, just at the beginning of the talk, which I usually disperse with a few comments about a funny thing that happened to me on the way to the talk&amp;#8230; So, what happened to allow for this change?
+&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 30px;&quot;&gt;
+  To me, there are two kinds of talks.
+&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 30px;&quot;&gt;
+  There are prescriptive talks, where the speaker is set up as the expert in the field, and the audience members are essentially students in a classroom.  This tends to create a barrier between the audience and the speaker, as questions can feel confrontational, so there usually aren&amp;#8217;t very many.  When I&amp;#8217;ve seen this happen, I feel like the speaker lost an opportunity to really interact with the audience.  And I personally, in all my time speaking, have never given this kind of talk&amp;#8230; &amp;#8220;This is how we do it&amp;#8221; (I managed not to bust out into song at that point, so proud!)
+&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 30px;&quot;&gt;
+  The other type of talks are narrative talks.  &amp;#8220;This is my experience.  This is the problem I/we had, the ways we tried to solve it, and the things we learned along the way.&amp;#8221;  When you are telling a story from your own experience, you aren&amp;#8217;t going to be called out as wrong.  If your audience members ask questions, well, that probably just means they need more context.  Thinking of your presentation in this way helps relax you as a speaker as well, since you can&amp;#8217;t forget your lines when you&amp;#8217;re just talking from your experience.  Take a breath, grab a drink of water, and realize that your 5 second break may feel like an eternity to you, but it will seem like a natural pause to your attendees.
+&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 30px;&quot;&gt;
+  Ok, and yes, like all teachers of presentation skills I have to bring the impostor syndrome into the picture.  We all feel that way sometimes, some of us more often.  Listen to the people you work with and for.  Don&amp;#8217;t second guess yourself or compare yourself poorly to others.  Realize that you&amp;#8217;re learning more about how to do things because you&amp;#8217;re creative, smart, and good at what you do.  You&amp;#8217;re not a fluffy white dog dressed up as a pug.  You might be a white dog (and that&amp;#8217;s what&amp;#8217;s needed!) or a pug.  But you don&amp;#8217;t have to be the best at everything to be great at what you do.
+&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 30px;&quot;&gt;
+  The slide about Paris can be summed up pretty quickly.  Kirsten goes to Paris to give a talk.  Kirsten rehearses the heck out of her talk.  Kirsten turns into a robot chipmunk and gives the talk 2 octaves higher and in 1/3 the allotted time.  Fun times.  Kirsten never wants to be a public speaker again after that.
+&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 30px;&quot;&gt;
+  Rehearsing: Find the method that works for *you*.  For me, mirrors are awful. I critique everything about myself except the actual talk I&amp;#8217;m giving (my hair, my clothes, the pitch of my voice), and eventually give up in frustration.  Rehearsing a scripted talk in front of friends is much better, you&amp;#8217;ll find the right rhythm and help yourself remember the right phrases at the right time during your presentation.  My favorite technique is to tell the same story to different groups of people, with different wording, different phrasing, and no notes.  Buy your friends lunch and ask them to listen.  Use your slides sometimes and not sometimes.  Write down notes after you&amp;#8217;re done, then erase them.  You&amp;#8217;ll find some phrases with punch that you want to include, and they&amp;#8217;ll come to you when you&amp;#8217;re speaking.  The other thing I like to do is talk to my slides, taking notes as I do.  This helps me during the talk because if I&amp;#8217;m drawing a blank, looking at the slide will remind me exactly what I meant to say during the slide.
+&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 30px;&quot;&gt;
+  Slides.  Fewer words is better.  If you have too many words and you&amp;#8217;re anxious, you&amp;#8217;ll bury your face in your laptop and read the words. Your audience will read the words.  Soon, you&amp;#8217;re all reading them together and it&amp;#8217;s like story time.  Followed closely by nap time with the cute kitten.  Putting fewer words on the slides may mean you need to take a few breaks to remember what you were going to say, but your audience will be absorbing the awesome stuff you said on the previous slide, and you&amp;#8217;ll find your footing again.  I really don&amp;#8217;t like speaker notes as you&amp;#8217;ll end up using them as a crutch and talking to your computer and it doesn&amp;#8217;t really care what you have to say.  Also, don&amp;#8217;t forget, if you forget to say something you meant to say, you&amp;#8217;ll have the opportunity to bring it in later.  It&amp;#8217;s not on your slide.  How will they know?
+&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 30px;&quot;&gt;
+  I love putting pictures on slides. I use &lt;a href=&quot;http://www.haikudeck.com&quot;&gt;haikudeck&lt;/a&gt; for most of my presentations (really, check it out).  When I have code to show, I usually do so from my editor, if I&amp;#8217;m giving a tour of a website or application I&amp;#8217;ll do that live as well (what can I say, I live dangerously) &amp;#8211; I still tend to wrap the conceptual ideas in haiku.  But if you are teaching something more conceptual, this is a great tool.  A few words.  Gorgeous pictures.  Bring your audience along with some visceral, emotional response that helps them feel what you want them to feel while you&amp;#8217;re making with the vocal track.
+&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 30px;&quot;&gt;
+  As far as slide quantity, I generally find that one minute per slide is just about right.  I can talk longer than that, but that&amp;#8217;s about the right amount of time for me to hit the right number of concepts during each slide, and it keeps me moving along.  I was asked about slide timers, but I don&amp;#8217;t like them because I am always watching the audience to see if they&amp;#8217;re enjoying particular parts of my talk or confused by others, and tailor the rest of the talk to match that&amp;#8230; auto-advancing would kill my entire presentation style.  But if it works for you, great!
+&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 30px;&quot;&gt;
+  Anxiety, yep, it&amp;#8217;s a thing.  It played a huge role in my Paris Flop, and the first several times you talk you&amp;#8217;ll be anxious.  You need to find your rhythm, seek out your style.  For me, my main nemesis is that robot chipmunk.  But your talk is not a race.  Nor is it a play.  When you&amp;#8217;re speaking from your own experience you can&amp;#8217;t &amp;#8220;forget your lines&amp;#8221;.  Again, take a breath.  Drink some water.  Walk across the stage or forward a bit.  Count to 5 in your head. Peek at your slide.
+&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 30px;&quot;&gt;
+  That having been said, go ahead and memorize what you want to say for your first two slides.  They&amp;#8217;ll likely be one about your talk, and one about yourself, and you&amp;#8217;ll likely be struggling between too long and too short.  I try to keep these as short as I can, while giving folks an idea what they&amp;#8217;re in for and giving them a good taste of my style to set the mood.
+&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 30px;&quot;&gt;
+  Your audience is your friends.  These people are here to hear what you have to say about the topic you&amp;#8217;re talking about.  They want you to succeed.  They&amp;#8217;re rooting for you.  Meet a couple at the beginning of the talk, or bring some friends to be in the audience.  And talk to the friendly folks.  The grumpy people&amp;#8230; I know this is shocking but&amp;#8230; psst&amp;#8230; it might not be about you.  That person may be struggling with a work problem they can&amp;#8217;t solve, or have had a rough day.  Don&amp;#8217;t focus your energy on them, focus on the smiling and nodding people.  Watch what they enjoy and put more of that in there, and cater your presentation toward them, phrasing things in a way that they respond well to.  It&amp;#8217;s kind of a fun game, actually.
+&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 30px;&quot;&gt;
+  The next several slides&amp;#8230; hah!  I &lt;a href=&quot;https://www.socialtext.net/open/kirsten_2007_06_27&quot;&gt;wrote it up&lt;/a&gt; when it happened &amp;#8211; I worked at a company where we blogged &lt;strong&gt;EVERYTHING&lt;/strong&gt; so it&amp;#8217;s on the internet forever.  Thank you, 2007 self!
+&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 30px;&quot;&gt;
+  10 years later, I&amp;#8217;m loving my life.  I love to speak, and I&amp;#8217;m paid to speak.  I love helping people be successful and teaching them new skills.  I like writing sample code to inspire people, and tutorials to give them context.  I&amp;#8217;m paid for all of that, and I go to conferences &amp;#8211; sometimes to talk about my company and sometimes, like this time, to talk about other things that I&amp;#8217;m passionate about.
+&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 30px;&quot;&gt;
+  I&amp;#8217;ve learned that people love stories, and they remember them.  They come up to me a couple of years later to tell me how my wacky rube goldberg internet of things presentation inspired them to set up something fun with their kids, or they reach out to me to tell me I inspired them to try something new. This is awesome.
+&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 30px;&quot;&gt;
+  So, in summary.  Find your passion. Your story is there.
+&lt;/p&gt;
+
+&lt;p&gt;The best part of the presentation is that my hero, Damian Conway, was in the audience and appreciated my style. He was happy to hear that his presentation skills workshops were so influential. They were – they changed my life! Our styles are different, but we are both jazzed to have the opportunity to help people get out there and tell their stories.&lt;/p&gt;
+
+&lt;p&gt; &lt;/p&gt;
+</content>
+
+			
+				<category term="Ask the Princess" />
+			
+				<category term="Geek Stuff" />
+			
+			
+
+			<published>2015-07-23T14:31:18-07:00</published>
+		</entry>
+	
+		<entry>
+			<id>https://www.princesspolymath.com/quick-docker-getting-started.html</id>
+			<title>Quick Docker Getting Started</title>
+			<link href="https://www.princesspolymath.com/quick-docker-getting-started.html" rel="alternate" type="text/html" title="Quick Docker Getting Started" />
+			<updated>2015-05-28T09:25:27-07:00</updated>
+
+			
+				
+				<author>
+					
+						<name>admin</name>
+					
+					
+					
+				</author>
+			
+			<summary></summary>
+			<content type="html" xml:base="https://www.princesspolymath.com/quick-docker-getting-started.html">&lt;p&gt;Docker’s cool.  I mentioned this before, but hadn’t really made a great example for you to use for your own nefarious purposes… until now.&lt;/p&gt;
+
+&lt;p&gt;I’ve created a base github repository where you can fork it, create your own docker container, and you and your users cal pull it to wreak consistently architected havoc all over your curriculum, tutorial or workshop.&lt;/p&gt;
+
+&lt;p&gt;How does this work?&lt;/p&gt;
+
+&lt;p&gt;Well, first, here’s the &lt;a href=&quot;https://github.com/synedra/docker-demo&quot;&gt;base github repository&lt;/a&gt;.  Since I love repeating myself so much I actually put all the instructions there too, so you can bail on this post and go over there and find your way to the shining diamond at the end of the puzzle… or follow along over here.  Makes no never mind to me, I just want you to have a container you own yourself so you can play with it willy nilly.&lt;/p&gt;
+
+&lt;p&gt;The first thing you’ll need to do is fork the repository.  This means you need a github login, but you should have one of those anyhow.  It’s a great way to build up your developer portfolio.  You can make things secret and private or leave them out there for all the world to see.  A note here – my code is frequently rushed and at the level of prototype/proof of concept, and rarely has anyone ever judged me (out loud) for having crappy code.  Shout it to the world.  Someone will learn from your code and the world will be a happier place.&lt;/p&gt;
+
+&lt;p&gt;Ok, now where were we before I went on my github digression?  Oh, right. Fork my repository.  Then you’ll have &lt;yourusername&gt;/docker-demo as a repository. It&amp;#8217;s got a little pizza topping list REST API Server which has a front-end single page app where you can fiddle with the system.  Not terribly exciting, but it does have some requirements. You can pull this repository and run it on your system if you want&amp;#8230; assuming you have node, and npm, and express&amp;#8230;&lt;/yourusername&gt;&lt;/p&gt;
+
+&lt;p&gt;But we’re going to do this an easier way, a way you can share your repository contents with anyone and make sure they have the base items they need available to them right up front.&lt;/p&gt;
+
+&lt;p&gt;So now, browse over to http://hub.docker.com.  Login with github (hey, aren’t you glad you have that login now?)  Click the “New Repository” button and select “Automated Build” – choose GitHub, and the repository you want to use.  The Automated Build setup means that every time you commit a change to your git repository a new build will be kicked off and any future pulls of docker will magically do the right thing.&lt;/p&gt;
+
+&lt;p&gt;At this point the docker hub will start building your container.  I’m not gonna lie – sometimes this takes just a few minutes and sometimes you age a bit before it’s done.  Usually it’s somewhere in between, but you can expect that when you need it most it’ll take several hours.  Just be patient. In the meantime you can get the right setup ready for docker on your system.&lt;/p&gt;
+
+&lt;p&gt;Go to the &lt;a href=&quot;https://docs.docker.com/installation/#installation&quot;&gt;Docker Installation page&lt;/a&gt; and find the right installation path for your system.  The rest of this tutorial assumes that you’re going to be using Windows or Mac, because the linux stuff is easier and I trust if you’re a linux user you’re just a little bit more tolerant to fiddly bits.&lt;/p&gt;
+
+&lt;p&gt;Install boot2docker from boot2docker.io.  Follow the installation prompts, then do:&lt;/p&gt;
+
+&lt;pre&gt;MacBook-Pro:~ synedra$ boot2docker init
+Virtual machine boot2docker-vm already exists
+MacBook-Pro:~ synedra$ boot2docker start
+Waiting for VM and Docker daemon to start
+.....................oooo
+Started.
+Writing /Users/synedra/.boot2docker/certs/boot2docker-vm/ca.pem
+Writing /Users/synedra/.boot2docker/certs/boot2docker-vm/cert.pem
+Writing /Users/synedra/.boot2docker/certs/boot2docker-vm/key.pem
+To connect the Docker client to the Docker daemon, please set:
+    export DOCKER_HOST=tcp://192.168.59.103:2376
+    export DOCKER_CERT_PATH=/Users/synedra/.boot2docker/certs/boot2docker-vm
+    export DOCKER_TLS_VERIFY=1&lt;/pre&gt;
+
+&lt;p&gt;At this point you probably think you’re done.  You’re not.  Copy and paste those three export lines to set the right stuff in your environment.  Why they don’t just do this for you, I do not know, but you have to set them so please do.&lt;/p&gt;
+
+&lt;p&gt;We’re almost there.  Check docker hub to see if your container has progressed to “Finished”, in which case you can pull it.  Pulling it to run it is very simple – we’re going to build this ubuntu system and run a node server on it.  There are ways to simply have the docker container run and do its thing without interacting with it, but this is a learning environment so we want people to be able to see, touch, fiddle with and break the code in question.&lt;/p&gt;
+
+&lt;pre&gt;MacBook-Pro:~ synedra$ docker pull synedra/docker-demo
+Pulling repository synedra/docker-demo
+9260ebbb31f0: Download complete
+b68f8c8d2140: Download complete
+1d57666667e5: Download complete
+a216ec781532: Download complete
+bd94ae587483: Download complete
+c0ba4d33b334: Download complete
+d6278a50beb0: Download complete
+89495cd3e29b: Download complete
+688fd0d83467: Download complete
+e0013b00d1a1: Download complete
+907e20b54361: Download complete
+0bff597b5788: Download complete
+c432b7a3c324: Download complete
+c29af0b01296: Download complete
+Status: Downloaded newer image for synedra/docker-demo:latest
+MacBook-Pro:~ synedra$ docker run -i -t synedra/docker-demo /bin/bash
+root@0bef28a21e83:/opt/webapp#
+&lt;/pre&gt;
+
+&lt;p&gt;There, you’ve got a container running that can run node. All you need to do at the prompt is type “node toppings.js” to start the server. You do have a slight challenge here in that you aren’t sure what the IP address is for your container – it maintains a separate IP within your system. In a separate window type boot2docker ip and it’ll give you that number. Node is running the server at port 3000 (if you look into toppings.js you can see this at the bottom) so simply point your browser to &amp;lt;ip_address_for_docker&amp;gt;:3000 and you’ll get the toppings application.&lt;/p&gt;
+
+&lt;p&gt;To understand the power of this, make some changes to your github repository and watch them bubble through to the docker container. Anytime anyone pulls the container they’ll get the most recent version of the github repository.&lt;/p&gt;
+
+&lt;p&gt;I’ll be giving a live workshop on this at OSBridge in Portland in a couple of weeks (Wednesday, June 24th) where we’ll go through this together, along with some extra fun times working with each others’ containers. Don’t miss it!&lt;/p&gt;
+</content>
+
+			
+				<category term="Geek Stuff" />
+			
+				<category term="Web APIs" />
+			
+			
+
+			<published>2015-05-28T09:25:27-07:00</published>
+		</entry>
+	
+		<entry>
+			<id>https://www.princesspolymath.com/promises-promises.html</id>
+			<title>Promises, promises</title>
+			<link href="https://www.princesspolymath.com/promises-promises.html" rel="alternate" type="text/html" title="Promises, promises" />
+			<updated>2015-05-26T07:27:54-07:00</updated>
+
+			
+				
+				<author>
+					
+						<name>admin</name>
+					
+					
+					
+				</author>
+			
+			<summary></summary>
+			<content type="html" xml:base="https://www.princesspolymath.com/promises-promises.html">&lt;p&gt;This has got to be the fifty-bazillionth post about javascript promises with the same title out there, but I had a very particular problem I was trying to solve and had trouble finding the answer so once I got it working I wanted to share it with you.&lt;/p&gt;
+
+&lt;p&gt;The challenge came about because I was somewhat embarrassed by the implementation I had for my &lt;a href=&quot;http://www.princesspolymath.com/princess_polymath/?p=787&quot;&gt;fitbit-twilio-twitter-ifttt-phillipshue mashup&lt;/a&gt; – it had race conditions pretty frequently because of the asynchronous nature of the API calls, and I didn’t really want to chain everything together.  So it turned out that what I wanted was to use Promise.all() to tell the script to wait until both of the calls finished before pestering me to tell me to eat or exercise.  I hunted around, asked on &lt;a href=&quot;http://stackoverflow.com/questions/30428045/using-promise-all-for-multiple-http-oauth-queries&quot;&gt;StackOverflow&lt;/a&gt;, and got pointed in the right direction, and it turns out that the actual answer was much more elegant than the original code for a single API call.&lt;/p&gt;
+
+&lt;p&gt;These calls aren’t promises by default, so you have to promisify them in order to get them to work, but the process is pretty easy.  Here, for your copying and pasting pleasure, is the code I ended up with.  It’s not embarrassing at all!&lt;/p&gt;
+
+&lt;pre&gt;function fitbit_oauth_getP(path, accessToken, accessSecret) {
+     return new Promise (function(resolve, reject) {
+         fitbit_oauth.get(path, accessToken, accessSecret, function(err, data, res) {
+             if (err) {
+                reject(err);
+             } else {
+                resolve(data);
+             }
+          })
+     })
+  };
+
+ Promise.all([fitbit_oauth_getP(foodpath, user.accessToken, user.accessSecret), 
+ fitbit_oauth_getP(activitypath, user.accessToken, user.accessSecret)])
+      .then(function(arrayOfResults) {
+          console.log(arrayOfResults);
+          // do more stuff
+      })
+ The whole code lives on &lt;a href=&quot;https://github.com/synedra/fitfood&quot;&gt;github&lt;/a&gt;, as it should.  I&#39;ll add more functionality later, but for now, this should help you get started if you&#39;re trying to make a couple of web calls to APIs and process the results in one big clump at the end.&lt;/pre&gt;
+</content>
+
+			
+				<category term="Web APIs" />
+			
+			
+
+			<published>2015-05-26T07:27:54-07:00</published>
+		</entry>
+	
+		<entry>
+			<id>https://www.princesspolymath.com/glue-ing-together-apis-for-gluecon.html</id>
+			<title>Glue-ing together APIs for GlueCon</title>
+			<link href="https://www.princesspolymath.com/glue-ing-together-apis-for-gluecon.html" rel="alternate" type="text/html" title="Glue-ing together APIs for GlueCon" />
+			<updated>2015-05-21T01:44:28-07:00</updated>
+
+			
+				
+				<author>
+					
+						<name>admin</name>
+					
+					
+					
+				</author>
+			
+			<summary></summary>
+			<content type="html" xml:base="https://www.princesspolymath.com/glue-ing-together-apis-for-gluecon.html">&lt;p&gt;Last year, at Defrag, I made my IoT rube goldberg machine made up of a sphero, hue lightbulb, raspberry pi and my drone.  I might have accidentally almost attacked the audience with the drone.  But it was a success and entertaining for all.&lt;/p&gt;
+
+&lt;p&gt;This year, instead of doing that, I’m doing a fitness Rube Goldberg machine.  I’m going with the carrot/stick approach to making sure that people keep up their activity.  During the day, it checks your fitbit/myfitnesspal and sends you an SMS if you’re falling behind.  Also, it updates the color of a Philips hue lightbulb as you advance through the day.  If I had an IoT lock I’d unlock the freezer to get some Ben and Jerry’s ice cream as soon as I was done with my activity and protein.&lt;/p&gt;
+
+&lt;p&gt;This was made possible by a couple of other peoples’ excellent demos, which I basically glommed together into a new thing.  So here, for your coding pleasure, are the original repos and mine as well, so you can also nag yourself to do the right thing.  And buy one of those lock things.  Seriously, that seems so cool!&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Jeremiah Cohick’s &lt;a href=&quot;https://github.com/jeremiahlee/fitbit-twilio-demo&quot;&gt;fitbit-twilio-demo&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Romain Huet’s &lt;a href=&quot;https://github.com/romainhuet/twitter-platform-demos&quot;&gt;twitter-platform-demos&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Kirsten Hunter (that’s me)’s &lt;a href=&quot;https://github.com/synedra/fitfood&quot;&gt;fitfood&lt;/a&gt; (patches strongly encouraged, appreciated, and rewarded 🙂&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;My slides are on &lt;a href=&quot;https://www.haikudeck.com/quantifying-your-fitness-uncategorized-presentation-VUf5BNH6E1#slide-4&quot;&gt;HaikuDeck&lt;/a&gt;.&lt;/p&gt;
+</content>
+
+			
+				<category term="Uncategorized" />
+			
+			
+
+			<published>2015-05-21T01:44:28-07:00</published>
+		</entry>
+	
+		<entry>
+			<id>https://www.princesspolymath.com/new-book-on-meap-irresistible-apis.html</id>
+			<title>New Book on MEAP: Irresistible APIs</title>
+			<link href="https://www.princesspolymath.com/new-book-on-meap-irresistible-apis.html" rel="alternate" type="text/html" title="New Book on MEAP: Irresistible APIs" />
+			<updated>2015-04-18T08:46:50-07:00</updated>
+
+			
+				
+				<author>
+					
+						<name>admin</name>
+					
+					
+					
+				</author>
+			
+			<summary></summary>
+			<content type="html" xml:base="https://www.princesspolymath.com/new-book-on-meap-irresistible-apis.html">&lt;p&gt;&lt;img class=&quot; size-medium wp-image-777 alignleft&quot; src=&quot;/assets/img/2015/02/Cover-238x300.jpg&quot; alt=&quot;Cover&quot; width=&quot;238&quot; height=&quot;300&quot; srcset=&quot;/assets/img/2015/02/Cover-238x300.jpg 238w, /assets/img/2015/02/Cover-814x1024.jpg 814w&quot; sizes=&quot;(max-width: 238px) 100vw, 238px&quot; /&gt;APIs have been exploding across the internet for several years now, but we are just now getting to the point where the industry can start implementing best practices in design.  Up until now, most APIs have been designed at the architecture level, figuring out what the backend system does and exposing that functionality to users in the most direct way possible.  Unfortunately, this does not make for a usable API, and we need to start moving to a new system – a process to build APIs that are easy to understand, clear, and a delight to use.  I’m writing a book describing a better way of creating APIs that are irresistible to developers and companies – Web APIs that have the best chance of being successful.&lt;/p&gt;
+
+&lt;p&gt;The book is in early preview on the &lt;a href=&quot;http://www.manning.com/hunter/&quot;&gt;Manning Early Access Program&lt;/a&gt;, and you can download a sample chapter, purchase the book, and help me to make it the best book possible for API creators.&lt;/p&gt;
+
+&lt;p&gt; &lt;/p&gt;
+</content>
+
+			
+				<category term="Irresistible APIs" />
+			
+				<category term="Uncategorized" />
+			
+			
+
+			<published>2015-04-18T08:46:50-07:00</published>
+		</entry>
+	
+		<entry>
+			<id>https://www.princesspolymath.com/ask-the-princess-episode-1.html</id>
+			<title>Ask the Princess: Episode 1</title>
+			<link href="https://www.princesspolymath.com/ask-the-princess-episode-1.html" rel="alternate" type="text/html" title="Ask the Princess: Episode 1" />
+			<updated>2015-01-27T12:43:43-08:00</updated>
+
+			
+				
+				<author>
+					
+						<name>admin</name>
+					
+					
+					
+				</author>
+			
+			<summary></summary>
+			<content type="html" xml:base="https://www.princesspolymath.com/ask-the-princess-episode-1.html">&lt;p&gt;&lt;a href=&quot;/assets/img/2014/10/Logosmall4.png&quot; class=&quot;grouped_elements&quot; rel=&quot;tc-fancybox-group773&quot;&gt;&lt;img class=&quot; size-full wp-image-735 alignleft&quot; src=&quot;/assets/img/2014/10/Logosmall4.png&quot; alt=&quot;Logosmall&quot; width=&quot;100&quot; height=&quot;99&quot; /&gt;&lt;/a&gt;This is the first in a series of posts entitled “Ask the Princess.”  I am a princess and a polymath, and I’ve got lots of opinions and experience around various things.  Topics covered here will be mostly about building APIs, but can cover martial arts, parenting, politics, or anything else anyone chooses to ask me about.  Bring it on, I’ll answer with all the information and snark I can summon for your topic.    Without any further introduction, here’s the first column.  The questions and answers are both mine.  Send me an email or tweet with a question and I promise to address it in a future column.&lt;/p&gt;
+
+&lt;h3 id=&quot;who-are-you-and-why-should-i-listen-to-your-advice&quot;&gt;&lt;em&gt;Who are you, and why should I listen to your advice?&lt;/em&gt;&lt;/h3&gt;
+
+&lt;p&gt;I’m Princess Polymath, and I’ve had a lot of experience as a developer, an evangelist, a mom and, well, a human. I have insight and experience to share, and lots of snark to season it with.  If you’re a developer or consumer of web APIs my questions and answers should be particularly useful to you, but I’m aiming for columns that are funny and fun for any humans who care to take the time to read them.  My goal in life is to entertain, engage, and help people to get past frustrations – and this seemed like another good tool for my tool belt.  But since I’m asking my own questions, let’s start with something easy.&lt;/p&gt;
+
+&lt;h3 id=&quot;i8217ve-got-a-great-api-but-haven8217t-had-time-to-make-any-documentation-i-want-to-release-it-right-now-what-do-you-think&quot;&gt;&lt;em&gt;I’ve got a great API but haven’t had time to make any documentation.  I want to release it right now!  What do you think?&lt;/em&gt;&lt;/h3&gt;
+
+&lt;p&gt;APIs aren’t like other products.  If a developer comes to use your API and ends up with a poor experience, they’re unlikely to ever come back.  Remember that a lack of documentation, without any context for how it’s expected to work, can and will result in an extremely frustrated developer, and they’ll do whatever they can never to use your system again.&lt;/p&gt;
+
+&lt;p&gt;To quote a trite but appropriate cliche, you only get one chance to make a first impression, and in the world of APIs the bar is high for a great first experience.  Developers can get frustrated easily, and have little patience for someone who doesn’t value their time and energy.&lt;/p&gt;
+
+&lt;p&gt;Make the documentation.  Create some tutorials.  Write and show sample code, and be available to give good support to your developers.  Show them that their time is important and valuable to you and they’ll pay you back by becoming advocates for your system within their community.&lt;/p&gt;
+
+&lt;h3 id=&quot;i-have-a-fantastic-idea-for-an-api-i-whipped-it-up-last-night-and-it8217s-awesome-why-isn8217t-my-manager-excited-about-it-it8217s-totally-not-fair-&quot;&gt;&lt;em&gt;I have a fantastic idea for an API.  I whipped it up last night, and it’s awesome!!!  Why isn’t my manager excited about it?  It’s totally not fair 🙁&lt;/em&gt;&lt;/h3&gt;
+
+&lt;p&gt;Sorry, I’m siding with your manager here.  You made an API… to solve what problem?  What is the purpose of the API?  Creating additional interfaces into your system without understanding what they should be used for is really not gonna make for an excellent product.  Your API has to be a first class product, and I’m sorry to say that skipping the steps of figuring out the business value and use cases, and how you’re going to measure success mean that what you’ve created is a toy, a hobby, and not a product the company will want to support.&lt;/p&gt;
+
+&lt;p&gt;If you’re certain that your API is super awesome, you can actually back into the right information by figuring out use cases for your API and creating prototypes for them.  Then determine what value this product can have for your company.  APIs don’t have to create money from thin air – many of them aren’t even going to increase monetization – but they can make your main products better, more appealing, more accessible to your customers.  You can improve the user experience, keep partners more engaged, and create more love and attention for your company’s system.&lt;/p&gt;
+
+&lt;p&gt;Just imagine you’re trapped in an elevator with your CEO and you’re trying to explain why you have an API – and that “Because… API!!!” isn’t going to fly.&lt;/p&gt;
+
+&lt;h3 id=&quot;you-have-a-lot-of-things-to-say-about-irresistible-apis-but-my-api-is-only-for-use-inside-of-my-company-8211-the-developers-are-forced-to-use-the-system-and-so-i-don8217t-have-to-worry-about-their-8220experience8221-so-thanks-for-the-thoughts-but-i-don8217t-need-them&quot;&gt;&lt;em&gt;You have a lot of things to say about irresistible APIs, but my API is only for use inside of my company – the developers are forced to use the system and so I don’t have to worry about their “Experience.”  So thanks for the thoughts, but I don’t need them.&lt;/em&gt;&lt;/h3&gt;
+
+&lt;p&gt;Ok, sure, you can think that way.  But let me just tell you that in my experience, people who are forced to do something that’s unnecessarily difficult tend to become very recalcitrant – nobody wants to be told how they have to achieve a goal.  Sure, they’ll use your system, but a poorly designed API will cause them to try to figure out how to achieve their goals in whatever way they can, and they’ll likely end up pushing the edges of your system to try to achieve their goals, cursing your name the entire time.  Without excellent documentation they’ll waste time attempting to figure out what the system needs to function.  Without example code or tutorials they’ll use the system in ways you likely don’t expect.  All of these will create a much larger support burden for your team, and worse yet, these developers likely have the ability to escalate to your management chain and create trouble for you in the future.  Take my advice, make a system that’s straightforward, well documented, and simple to use, and save yourself the headache and heartache of having to support cranky developers who have no choice but to use your system.  Plus, maybe they’ll give you beer.&lt;/p&gt;
+
+&lt;h3 id=&quot;as-a-favor-to-my-users-i8217ve-created-convenience-api-resources-like-8220latest8221-for-the-most-recent-item-in-a-list-but-they-are-whining-that-redirects-aren8217t-usable-with-complicated-authentication-schemes-what8217s-wrong-with-these-people&quot;&gt;&lt;em&gt;As a favor to my users, I’ve created convenience API resources like “latest” for the most recent item in a list, but they are whining that redirects aren’t usable with complicated authentication schemes.  What’s *wrong* with these people???&lt;/em&gt;&lt;/h3&gt;
+
+&lt;p&gt;What’s wrong with you?  My apologies, but there are two different ways to approach problem solving in the development world.  You can make things easy for yourself, but hard for your users… or you can do the opposite.  One major goal of web APIs, REST in particular, is to create a system that’s simple for developers to use for integration and automation.  Since you’re working to make the system accessible for developers using different languages, frameworks, or platforms, you need to keep this goal at the top of your priority list.  Don’t get lazy – even though it may take a little longer to do the right thing, not doing the right thing can create a support nightmare.&lt;/p&gt;
+
+&lt;p&gt;For instance, in this case, a call to /my/resource/latest can act in one of two ways (from the developer’s perspective).  In the simplest case, they make the (signed) call to the latest endpoint and get back the correct information, likely with information about the resource’s actual URL.  One call, getting the data back, just as the developer would expect.  You’ll find that I yammer pretty constantly about making sure you don’t surprise your developers – much as UX experts talk about how important it is not to surprise your users.  In this case, the developers are your users, and making them make two separate calls is certainly not what they expect.  It seems like it’s not a big deal, but consider the following:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;It’s not a convenience method if the developer has to write code to make a second call.  They might as well get the list to find the last member and then pull the correct resource.  You haven’t created a “convenience” method if it requires the same amount of effort as existing resources, and you’ve created an incorrect expectation by apparently offering something easier – which isn’t really.&lt;/li&gt;
+  &lt;li&gt;More importantly, this process (making a call, getting back a redirect and then signing/making a second request) is *more* work than the more standard approach I described above.  Most HTTP libraries can handle 302’s with grace, but many won’t know to re-sign the request with the authentication scheme when making the second request.  So now, the developer who was able to use a standard library for their language has to update it to add new functionality&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;So, no.  Making convenience functions or resources is a great idea – but consider carefully how people will use those resources and make sure that your implementation makes it easier for your users to access the system.  In this case, your server should do the work, not the client.  Find the resource represented by “latest” and just return that to the client.  Problem solved!  Yes, it’s more work for you, but a little extra work on your part will save a lot of time and heartache for your users.&lt;/p&gt;
+
+&lt;h3 id=&quot;ask-the-princess&quot;&gt;&lt;em&gt;Ask the Princess&lt;/em&gt;&lt;/h3&gt;
+
+&lt;p&gt;So here you have it, Ask the Princess.  You are welcome to ask me questions about *anything*.  Programming, fitness, data, martial arts, cooking, APIs, anything at all, and I will do my best to answer them in a way that gives you what you’re looking for.  Send questions to me at @synedra on twitter or post them here as comments and I’ll write another column when I have enough questions.  Or when I’ve put together enough of my own questions and feel like writing some more.&lt;/p&gt;
+
+&lt;p&gt;Thanks for your time, and get out there and make something amazing!&lt;/p&gt;
+</content>
+
+			
+				<category term="Uncategorized" />
+			
+			
+
+			<published>2015-01-27T12:43:43-08:00</published>
+		</entry>
+	
+</feed>

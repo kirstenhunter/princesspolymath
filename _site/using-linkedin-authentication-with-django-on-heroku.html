@@ -1,0 +1,1864 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<meta http-equiv="Edge-Cache-Tag" content="princess" />
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Using LinkedIn Authentication with Django on Heroku</title>
+	<link rel="stylesheet" type="text/css" href="https://www.princesspolymath.com/assets/css/styles_feeling_responsive.css">
+	<script src="https://www.princesspolymath.com/assets/js/modernizr.min.js"></script>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
+	<script>
+		WebFont.load({
+			google: {
+				families: [ 'Lato:400,700,400italic:latin', 'Volkhov::latin' ]
+			}
+		});
+	</script>
+
+	<noscript>
+		<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic%7CVolkhov' rel='stylesheet' type='text/css'>
+	</noscript>
+
+
+	<!-- Search Engine Optimization -->
+	<meta name="description" content="To build the LinkedIn Today SMS Notification System, I needed to find a framework where I could do the following:
+
+
+  Integrate LinkedIn OAuth with a more general user management system
+  Post the system to a public site
+  Handle POST requests from external clients
+
+
+For this set of criteria, I chose to use Django and publish it using Heroku.  This post is similar to the Django Getting Started Guide for Heroku, but it’s designed for this specific use case – Using LinkedIn OAuth as the login system and integrating it with the Django user management system.  The code for this example is available here.
+
+Here are the prerequisites for this tutorial:
+
+
+  Python, virtualenv, pip, and the Heroku toolbelt as described in Getting Started with Python on Heroku/Cedar.
+  An installed version of Postgres to test locally
+  A Postgres user and a database to use for Django (in this case I’m using ‘linkedin’)
+  A LinkedIn API Key.  If you haven’t worked with the LinkedIn API before, you’re encouraged to go through the Quick Start Guide.
+
+
+Create Your Django Environment
+
+
+  For the basic setup I&amp;#8217;m following, very closely, the tutorial for Heroku, so I&amp;#8217;m leaving out some of the explanation &amp;#8211; please refer to the original if you have questions about how things work.  The following steps will create a virtual environment (development sandbox), install needed modules there, and get your Django project and applications created.
+
+
+% mkdir hellodjango &amp;amp;&amp;amp; cd hellodjango
+% virtualenv --no-site-packages vent
+% source venv/bin/activate
+% pip install Django psycopg2 oauth2 simplejson
+% django-admin.py startproject hellodjango
+% cd hellodjango
+% python manage.py startapp linkedin
+
+
+  Now that you&amp;#8217;ve done all these pieces, you have a working django system.
+
+
+
+  File Setup
+
+
+
+  In order to add the LinkedIn integration, you&amp;#8217;ll need to edit the settings and URL files.  I&amp;#8217;ve created a GitHub repository with the code needed for this example, and you can use that as your model &amp;#8211; but I&amp;#8217;ll walk through the changes here so you understand how they work.
+
+
+
+  hellodjango/settings.py
+
+
+Edit the DATABASES section to configure it to use postgres, and your database:
+
+DATABASES = {
+    &#39;default&#39;: {
+        &#39;ENGINE&#39;: &#39;django.db.backends.postgresql_psycopg2&#39;,
+        &#39;NAME&#39;: &#39;linkedin&#39;,
+        &#39;USER&#39;: &#39;postgres&#39;,
+        &#39;PASSWORD&#39;: &#39;xxx&#39;,
+        &#39;HOST&#39;: &#39;&#39;,
+        &#39;PORT&#39;: &#39;5432&#39;,
+    }
+}
+
+
+  You also need to add &amp;#8216;linkedin&amp;#8217; to your INSTALLED_APPS:
+
+
+
+  INSTALLED_APPS = (
+    &#39;django.contrib.auth&#39;,
+    &#39;django.contrib.contenttypes&#39;,
+    &#39;django.contrib.sessions&#39;,
+    &#39;django.contrib.sites&#39;,
+    &#39;django.contrib.messages&#39;,
+    &#39;django.contrib.staticfiles&#39;,
+    &#39;linkedin&#39;
+    # Uncomment the next line to enable the admin:
+    # &#39;django.contrib.admin&#39;,
+    # Uncomment the next line to enable admin documentation:
+    # &#39;django.contrib.admindocs&#39;,
+)
+  
+  
+    And finally, you need to tell the application you want to use LinkedIn for authentication and set up your credentials (this can go anywhere in the settings.py file)
+  
+  
+  AUTH_PROFILE_MODULE= &#39;linkedin.UserProfile&#39;
+LINKEDIN_TOKEN=&#39;xxx&#39;
+LINKEDIN_SECRET=&#39;xxx&#39;
+LOGIN_URL=&#39;/login/&#39;
+  
+  
+    hellodjango/urls.py
+  
+  
+  
+    You also need to update the urls.py file to add the LinkedIn authentication pages.
+  
+  
+  url(r&#39;^login/?$&#39;, &#39;linkedin.views.oauth_login&#39;),
+url(r&#39;^logout/?$&#39;, &#39;linkedin.views.oauth_logout&#39;),
+url(r&#39;^login/authenticated/?$&#39;, &#39;linkedin.views.oauth_authenticated&#39;),
+url(r&#39;^$&#39;,&#39;linkedin.views.home&#39;),
+  
+  
+    hellodjango/linkedin/models.py
+  
+  
+  
+    Using LinkedIn Auth means we&amp;#8217;ll need to store the user&amp;#8217;s token and secret for later requests:
+  
+  
+  from django.db import models
+from django.contrib.auth.models import User
+class UserProfile(models.Model):
+    user = models.ForeignKey(User)
+    oauth_token = models.CharField(max_length=200)
+    oauth_secret = models.CharField(max_length=200)
+  
+  
+    hellodjango/linkedin/views.py
+  
+  
+  
+    I&amp;#8217;m including the code here, although it&amp;#8217;ll be easier to just get it from GitHub.  This code demonstrates the full OAuth login flow, creating a new Django user using the response, and subsequently making a request using the stored information (home).
+  
+  
+  # Python
+import oauth2 as oauth
+import cgi
+import simplejson as json
+import datetime
+import re
+  
+  # Django
+from django.http import HttpResponse
+from django.shortcuts import render_to_response
+from django.http import HttpResponseRedirect
+from django.conf import settings
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+  
+  # Project
+from linkedin.models import UserProfile
+  
+  # from settings.py
+consumer = oauth.Consumer(settings.LINKEDIN_TOKEN, settings.LINKEDIN_SECRET)
+client = oauth.Client(consumer)
+request_token_url = &#39;https://api.linkedin.com/uas/oauth/requestToken&#39;
+access_token_url = &#39;https://api.linkedin.com/uas/oauth/accessToken&#39;
+authenticate_url = &#39;https://www.linkedin.com/uas/oauth/authenticate&#39;
+
+# /login
+def oauth_login(request):
+  
+      # Step 0. Get the current hostname and port for the callback
+    if request.META[&#39;SERVER_PORT&#39;] == 443:
+     current_server = &quot;https://&quot; + request.META[&#39;HTTP_HOST&#39;]
+    else:
+     current_server = &quot;http://&quot; + request.META[&#39;HTTP_HOST&#39;]
+     oauth_callback = current_server + &quot;/login/authenticated&quot;
+  
+      # Step 1. Get a request token from Provider.
+    resp, content = client.request(&quot;%s?oauth_callback=%s&quot; % (request_token_url,oauth_callback), &quot;GET&quot;)
+    if resp[&#39;status&#39;] != &#39;200&#39;:
+        raise Exception(&quot;Invalid response from Provider.&quot;)
+    # Step 2. Store the request token in a session for later use.
+    request.session[&#39;request_token&#39;] = dict(cgi.parse_qsl(content))
+    # Step 3. Redirect the user to the authentication URL.
+    url = &quot;%s?oauth_token=%s&quot; % (authenticate_url,
+        request.session[&#39;request_token&#39;][&#39;oauth_token&#39;])
+    print url
+    return HttpResponseRedirect(url)
+  
+  # / (requires login)
+@login_required
+def home(request):
+  
+      html = &quot;&amp;lt;html&amp;gt;&amp;lt;body&amp;gt;&quot;
+    token = oauth.Token(request.user.get_profile().oauth_token,request.user.get_profile().oauth_secret)
+    client = oauth.Client(consumer,token)
+    headers = {&#39;x-li-format&#39;:&#39;json&#39;}
+    url = &quot;http://api.linkedin.com/v1/people/~:(id,first-name,last-name,headline)&quot;
+    resp, content = client.request(url, &quot;GET&quot;, headers=headers)
+    profile = json.loads(content)
+    html += profile[&#39;firstName&#39;] + &quot; &quot; + profile[&#39;lastName&#39;] + &quot;&amp;lt;br/&amp;gt;&quot; + profile[&#39;headline&#39;]
+    return HttpResponse(html)
+  
+  # /logout (requires login)
+@login_required
+def oauth_logout(request):
+  
+      # Log a user out using Django&#39;s logout function and redirect them
+    # back to the homepage.
+    logout(request)
+    return HttpResponseRedirect(&#39;/&#39;)
+  
+  #/login/authenticated/
+def oauth_authenticated(request):
+    # Step 1. Use the request token in the session to build a new client.
+    token = oauth.Token(request.session[&#39;request_token&#39;][&#39;oauth_token&#39;],
+        request.session[&#39;request_token&#39;][&#39;oauth_token_secret&#39;])
+    if &#39;oauth_verifier&#39; in request.GET:
+        token.set_verifier(request.GET[&#39;oauth_verifier&#39;])
+    client = oauth.Client(consumer, token)
+    # Step 2. Request the authorized access token from Provider.
+    resp, content = client.request(access_token_url, &quot;GET&quot;)
+    if resp[&#39;status&#39;] != &#39;200&#39;:
+        print content
+        raise Exception(&quot;Invalid response from Provider.&quot;)
+    access_token = dict(cgi.parse_qsl(content))
+    headers = {&#39;x-li-format&#39;:&#39;json&#39;}
+    url = &quot;http://api.linkedin.com/v1/people/~:(id,first-name,last-name,industry)&quot;
+    token = oauth.Token(access_token[&#39;oauth_token&#39;],
+        access_token[&#39;oauth_token_secret&#39;])
+    client = oauth.Client(consumer,token)
+    resp, content = client.request(url, &quot;GET&quot;, headers=headers)
+    profile = json.loads(content)    
+  
+      # Step 3. Lookup the user or create them if they don&#39;t exist.
+    firstname = profile[&#39;firstName&#39;]
+    lastname = profile[&#39;lastName&#39;]
+    identifier = profile[&#39;id&#39;]
+    try:
+        user = User.objects.get(username=identifier)
+    except User.DoesNotExist:
+        user = User.objects.create_user(identifier,
+            &#39;%s@linkedin.com&#39; % identifier,
+            access_token[&#39;oauth_token_secret&#39;])                 user.first_name = firstname
+        user.last_name = lastname
+        user.save()
+        # Save our permanent token and secret for later.
+        userprofile = UserProfile()
+        userprofile.user = user
+        userprofile.oauth_token = access_token[&#39;oauth_token&#39;]
+        userprofile.oauth_secret = access_token[&#39;oauth_token_secret&#39;]
+        userprofile.save()
+    # Authenticate the user and log them in using Django&#39;s pre-built
+    # functions for these things.
+    user = authenticate(username=identifier,
+        password=access_token[&#39;oauth_token_secret&#39;])
+  
+      login(request, user)
+    return HttpResponseRedirect(&#39;/&#39;)
+  
+  
+    For any future requests, you&amp;#8217;ll grab the user&amp;#8217;s token and secret from the profile to make the request just like what&amp;#8217;s shown in the &amp;#8220;home&amp;#8221; example above.  I&amp;#8217;ll go into this in more detail in the following posts, on creating scheduled requests and handling POST requests from external systems.
+  
+  
+  
+    Procfile
+  
+  
+  
+    This is needed at the top level (same level as the hellodjango project directory) to tell Heroku how to run your application.
+  
+  
+  web: python hellodjango/manage.py runserver &quot;0.0.0.0:$PORT&quot;
+  
+  
+    .gitignore
+  
+  
+  
+    Ignore the venv directory and compiled python files
+  
+  
+  venv
+*.pyc
+  
+  
+    Test Django Server Locally
+  
+  
+  
+    Ok, now that you&amp;#8217;ve gotten everything all set up (or grabbed it from github), you&amp;#8217;re ready to run the server and make sure it works correctly.
+  
+  
+  % python manage.py syncdb
+% python manage.py runserver
+  
+  
+    This should bring up a server on localhost which does the basic authentication dance and presents the user&amp;#8217;s name and headline (so exciting!)
+  
+  
+  
+    Deploy to Heroku
+  
+  
+  
+    Finally, we can get to the Heroku deployment.  Again, this is taken almost verbatim from the Getting Started With Django document on Heroku, so refer to that for more information on what&amp;#8217;s happening.
+  
+  
+  % git init
+% git add .
+% git commit -m &quot;My LinkedIn Django App&quot;
+% heroku create --stack cedar
+% git push heroku master
+% heroku run python hellodjango/manage.py syncdb 
+% heroku open
+  
+  
+    This should give you the same experience on Heroku that you have on your local system &amp;#8211; the user is sent to LinkedIn to log in, they&amp;#8217;re added to the system and presented a fascinating page with their basic information.
+  
+  
+  
+    I&amp;#8217;ve made this example as simple as possible to make it easy to integrate into your Django Application without unnecessary overhead.  Comments, clarifications or other questions welcome.">
+  	<meta name="google-site-verification" content="Vk0IOJ2jwG_qEoG7fuEXYqv0m2rLa8P778Fi_GrsgEQ">
+	<meta name="msvalidate.01" content="0FB4C028ABCF07C908C54386ABD2D97F" >
+	<link rel="author" href="https://plus.google.com/u/0/118311555303973066167">
+	
+	
+
+
+	<!-- Facebook Open Graph -->
+	<meta property="og:title" content="Using LinkedIn Authentication with Django on Heroku">
+	<meta property="og:description" content="To build the LinkedIn Today SMS Notification System, I needed to find a framework where I could do the following:
+
+
+  Integrate LinkedIn OAuth with a more general user management system
+  Post the system to a public site
+  Handle POST requests from external clients
+
+
+For this set of criteria, I chose to use Django and publish it using Heroku.  This post is similar to the Django Getting Started Guide for Heroku, but it’s designed for this specific use case – Using LinkedIn OAuth as the login system and integrating it with the Django user management system.  The code for this example is available here.
+
+Here are the prerequisites for this tutorial:
+
+
+  Python, virtualenv, pip, and the Heroku toolbelt as described in Getting Started with Python on Heroku/Cedar.
+  An installed version of Postgres to test locally
+  A Postgres user and a database to use for Django (in this case I’m using ‘linkedin’)
+  A LinkedIn API Key.  If you haven’t worked with the LinkedIn API before, you’re encouraged to go through the Quick Start Guide.
+
+
+Create Your Django Environment
+
+
+  For the basic setup I&amp;#8217;m following, very closely, the tutorial for Heroku, so I&amp;#8217;m leaving out some of the explanation &amp;#8211; please refer to the original if you have questions about how things work.  The following steps will create a virtual environment (development sandbox), install needed modules there, and get your Django project and applications created.
+
+
+% mkdir hellodjango &amp;amp;&amp;amp; cd hellodjango
+% virtualenv --no-site-packages vent
+% source venv/bin/activate
+% pip install Django psycopg2 oauth2 simplejson
+% django-admin.py startproject hellodjango
+% cd hellodjango
+% python manage.py startapp linkedin
+
+
+  Now that you&amp;#8217;ve done all these pieces, you have a working django system.
+
+
+
+  File Setup
+
+
+
+  In order to add the LinkedIn integration, you&amp;#8217;ll need to edit the settings and URL files.  I&amp;#8217;ve created a GitHub repository with the code needed for this example, and you can use that as your model &amp;#8211; but I&amp;#8217;ll walk through the changes here so you understand how they work.
+
+
+
+  hellodjango/settings.py
+
+
+Edit the DATABASES section to configure it to use postgres, and your database:
+
+DATABASES = {
+    &#39;default&#39;: {
+        &#39;ENGINE&#39;: &#39;django.db.backends.postgresql_psycopg2&#39;,
+        &#39;NAME&#39;: &#39;linkedin&#39;,
+        &#39;USER&#39;: &#39;postgres&#39;,
+        &#39;PASSWORD&#39;: &#39;xxx&#39;,
+        &#39;HOST&#39;: &#39;&#39;,
+        &#39;PORT&#39;: &#39;5432&#39;,
+    }
+}
+
+
+  You also need to add &amp;#8216;linkedin&amp;#8217; to your INSTALLED_APPS:
+
+
+
+  INSTALLED_APPS = (
+    &#39;django.contrib.auth&#39;,
+    &#39;django.contrib.contenttypes&#39;,
+    &#39;django.contrib.sessions&#39;,
+    &#39;django.contrib.sites&#39;,
+    &#39;django.contrib.messages&#39;,
+    &#39;django.contrib.staticfiles&#39;,
+    &#39;linkedin&#39;
+    # Uncomment the next line to enable the admin:
+    # &#39;django.contrib.admin&#39;,
+    # Uncomment the next line to enable admin documentation:
+    # &#39;django.contrib.admindocs&#39;,
+)
+  
+  
+    And finally, you need to tell the application you want to use LinkedIn for authentication and set up your credentials (this can go anywhere in the settings.py file)
+  
+  
+  AUTH_PROFILE_MODULE= &#39;linkedin.UserProfile&#39;
+LINKEDIN_TOKEN=&#39;xxx&#39;
+LINKEDIN_SECRET=&#39;xxx&#39;
+LOGIN_URL=&#39;/login/&#39;
+  
+  
+    hellodjango/urls.py
+  
+  
+  
+    You also need to update the urls.py file to add the LinkedIn authentication pages.
+  
+  
+  url(r&#39;^login/?$&#39;, &#39;linkedin.views.oauth_login&#39;),
+url(r&#39;^logout/?$&#39;, &#39;linkedin.views.oauth_logout&#39;),
+url(r&#39;^login/authenticated/?$&#39;, &#39;linkedin.views.oauth_authenticated&#39;),
+url(r&#39;^$&#39;,&#39;linkedin.views.home&#39;),
+  
+  
+    hellodjango/linkedin/models.py
+  
+  
+  
+    Using LinkedIn Auth means we&amp;#8217;ll need to store the user&amp;#8217;s token and secret for later requests:
+  
+  
+  from django.db import models
+from django.contrib.auth.models import User
+class UserProfile(models.Model):
+    user = models.ForeignKey(User)
+    oauth_token = models.CharField(max_length=200)
+    oauth_secret = models.CharField(max_length=200)
+  
+  
+    hellodjango/linkedin/views.py
+  
+  
+  
+    I&amp;#8217;m including the code here, although it&amp;#8217;ll be easier to just get it from GitHub.  This code demonstrates the full OAuth login flow, creating a new Django user using the response, and subsequently making a request using the stored information (home).
+  
+  
+  # Python
+import oauth2 as oauth
+import cgi
+import simplejson as json
+import datetime
+import re
+  
+  # Django
+from django.http import HttpResponse
+from django.shortcuts import render_to_response
+from django.http import HttpResponseRedirect
+from django.conf import settings
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+  
+  # Project
+from linkedin.models import UserProfile
+  
+  # from settings.py
+consumer = oauth.Consumer(settings.LINKEDIN_TOKEN, settings.LINKEDIN_SECRET)
+client = oauth.Client(consumer)
+request_token_url = &#39;https://api.linkedin.com/uas/oauth/requestToken&#39;
+access_token_url = &#39;https://api.linkedin.com/uas/oauth/accessToken&#39;
+authenticate_url = &#39;https://www.linkedin.com/uas/oauth/authenticate&#39;
+
+# /login
+def oauth_login(request):
+  
+      # Step 0. Get the current hostname and port for the callback
+    if request.META[&#39;SERVER_PORT&#39;] == 443:
+     current_server = &quot;https://&quot; + request.META[&#39;HTTP_HOST&#39;]
+    else:
+     current_server = &quot;http://&quot; + request.META[&#39;HTTP_HOST&#39;]
+     oauth_callback = current_server + &quot;/login/authenticated&quot;
+  
+      # Step 1. Get a request token from Provider.
+    resp, content = client.request(&quot;%s?oauth_callback=%s&quot; % (request_token_url,oauth_callback), &quot;GET&quot;)
+    if resp[&#39;status&#39;] != &#39;200&#39;:
+        raise Exception(&quot;Invalid response from Provider.&quot;)
+    # Step 2. Store the request token in a session for later use.
+    request.session[&#39;request_token&#39;] = dict(cgi.parse_qsl(content))
+    # Step 3. Redirect the user to the authentication URL.
+    url = &quot;%s?oauth_token=%s&quot; % (authenticate_url,
+        request.session[&#39;request_token&#39;][&#39;oauth_token&#39;])
+    print url
+    return HttpResponseRedirect(url)
+  
+  # / (requires login)
+@login_required
+def home(request):
+  
+      html = &quot;&amp;lt;html&amp;gt;&amp;lt;body&amp;gt;&quot;
+    token = oauth.Token(request.user.get_profile().oauth_token,request.user.get_profile().oauth_secret)
+    client = oauth.Client(consumer,token)
+    headers = {&#39;x-li-format&#39;:&#39;json&#39;}
+    url = &quot;http://api.linkedin.com/v1/people/~:(id,first-name,last-name,headline)&quot;
+    resp, content = client.request(url, &quot;GET&quot;, headers=headers)
+    profile = json.loads(content)
+    html += profile[&#39;firstName&#39;] + &quot; &quot; + profile[&#39;lastName&#39;] + &quot;&amp;lt;br/&amp;gt;&quot; + profile[&#39;headline&#39;]
+    return HttpResponse(html)
+  
+  # /logout (requires login)
+@login_required
+def oauth_logout(request):
+  
+      # Log a user out using Django&#39;s logout function and redirect them
+    # back to the homepage.
+    logout(request)
+    return HttpResponseRedirect(&#39;/&#39;)
+  
+  #/login/authenticated/
+def oauth_authenticated(request):
+    # Step 1. Use the request token in the session to build a new client.
+    token = oauth.Token(request.session[&#39;request_token&#39;][&#39;oauth_token&#39;],
+        request.session[&#39;request_token&#39;][&#39;oauth_token_secret&#39;])
+    if &#39;oauth_verifier&#39; in request.GET:
+        token.set_verifier(request.GET[&#39;oauth_verifier&#39;])
+    client = oauth.Client(consumer, token)
+    # Step 2. Request the authorized access token from Provider.
+    resp, content = client.request(access_token_url, &quot;GET&quot;)
+    if resp[&#39;status&#39;] != &#39;200&#39;:
+        print content
+        raise Exception(&quot;Invalid response from Provider.&quot;)
+    access_token = dict(cgi.parse_qsl(content))
+    headers = {&#39;x-li-format&#39;:&#39;json&#39;}
+    url = &quot;http://api.linkedin.com/v1/people/~:(id,first-name,last-name,industry)&quot;
+    token = oauth.Token(access_token[&#39;oauth_token&#39;],
+        access_token[&#39;oauth_token_secret&#39;])
+    client = oauth.Client(consumer,token)
+    resp, content = client.request(url, &quot;GET&quot;, headers=headers)
+    profile = json.loads(content)    
+  
+      # Step 3. Lookup the user or create them if they don&#39;t exist.
+    firstname = profile[&#39;firstName&#39;]
+    lastname = profile[&#39;lastName&#39;]
+    identifier = profile[&#39;id&#39;]
+    try:
+        user = User.objects.get(username=identifier)
+    except User.DoesNotExist:
+        user = User.objects.create_user(identifier,
+            &#39;%s@linkedin.com&#39; % identifier,
+            access_token[&#39;oauth_token_secret&#39;])                 user.first_name = firstname
+        user.last_name = lastname
+        user.save()
+        # Save our permanent token and secret for later.
+        userprofile = UserProfile()
+        userprofile.user = user
+        userprofile.oauth_token = access_token[&#39;oauth_token&#39;]
+        userprofile.oauth_secret = access_token[&#39;oauth_token_secret&#39;]
+        userprofile.save()
+    # Authenticate the user and log them in using Django&#39;s pre-built
+    # functions for these things.
+    user = authenticate(username=identifier,
+        password=access_token[&#39;oauth_token_secret&#39;])
+  
+      login(request, user)
+    return HttpResponseRedirect(&#39;/&#39;)
+  
+  
+    For any future requests, you&amp;#8217;ll grab the user&amp;#8217;s token and secret from the profile to make the request just like what&amp;#8217;s shown in the &amp;#8220;home&amp;#8221; example above.  I&amp;#8217;ll go into this in more detail in the following posts, on creating scheduled requests and handling POST requests from external systems.
+  
+  
+  
+    Procfile
+  
+  
+  
+    This is needed at the top level (same level as the hellodjango project directory) to tell Heroku how to run your application.
+  
+  
+  web: python hellodjango/manage.py runserver &quot;0.0.0.0:$PORT&quot;
+  
+  
+    .gitignore
+  
+  
+  
+    Ignore the venv directory and compiled python files
+  
+  
+  venv
+*.pyc
+  
+  
+    Test Django Server Locally
+  
+  
+  
+    Ok, now that you&amp;#8217;ve gotten everything all set up (or grabbed it from github), you&amp;#8217;re ready to run the server and make sure it works correctly.
+  
+  
+  % python manage.py syncdb
+% python manage.py runserver
+  
+  
+    This should bring up a server on localhost which does the basic authentication dance and presents the user&amp;#8217;s name and headline (so exciting!)
+  
+  
+  
+    Deploy to Heroku
+  
+  
+  
+    Finally, we can get to the Heroku deployment.  Again, this is taken almost verbatim from the Getting Started With Django document on Heroku, so refer to that for more information on what&amp;#8217;s happening.
+  
+  
+  % git init
+% git add .
+% git commit -m &quot;My LinkedIn Django App&quot;
+% heroku create --stack cedar
+% git push heroku master
+% heroku run python hellodjango/manage.py syncdb 
+% heroku open
+  
+  
+    This should give you the same experience on Heroku that you have on your local system &amp;#8211; the user is sent to LinkedIn to log in, they&amp;#8217;re added to the system and presented a fascinating page with their basic information.
+  
+  
+  
+    I&amp;#8217;ve made this example as simple as possible to make it easy to integrate into your Django Application without unnecessary overhead.  Comments, clarifications or other questions welcome.">
+	<meta property="og:url" content="https://www.princesspolymath.com/using-linkedin-authentication-with-django-on-heroku.html">
+	<meta property="og:locale" content="en_EN">
+	<meta property="og:type" content="website">
+	<meta property="og:site_name" content="Princess Polymath">
+	
+	<meta property="article:author" content="https://www.facebook.com/princesspolymath">
+
+
+	
+	<!-- Twitter -->
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:site" content="synedra">
+	<meta name="twitter:creator" content="synedra">
+	<meta name="twitter:title" content="Using LinkedIn Authentication with Django on Heroku">
+	<meta name="twitter:description" content="To build the LinkedIn Today SMS Notification System, I needed to find a framework where I could do the following:
+
+
+  Integrate LinkedIn OAuth with a more general user management system
+  Post the system to a public site
+  Handle POST requests from external clients
+
+
+For this set of criteria, I chose to use Django and publish it using Heroku.  This post is similar to the Django Getting Started Guide for Heroku, but it’s designed for this specific use case – Using LinkedIn OAuth as the login system and integrating it with the Django user management system.  The code for this example is available here.
+
+Here are the prerequisites for this tutorial:
+
+
+  Python, virtualenv, pip, and the Heroku toolbelt as described in Getting Started with Python on Heroku/Cedar.
+  An installed version of Postgres to test locally
+  A Postgres user and a database to use for Django (in this case I’m using ‘linkedin’)
+  A LinkedIn API Key.  If you haven’t worked with the LinkedIn API before, you’re encouraged to go through the Quick Start Guide.
+
+
+Create Your Django Environment
+
+
+  For the basic setup I&amp;#8217;m following, very closely, the tutorial for Heroku, so I&amp;#8217;m leaving out some of the explanation &amp;#8211; please refer to the original if you have questions about how things work.  The following steps will create a virtual environment (development sandbox), install needed modules there, and get your Django project and applications created.
+
+
+% mkdir hellodjango &amp;amp;&amp;amp; cd hellodjango
+% virtualenv --no-site-packages vent
+% source venv/bin/activate
+% pip install Django psycopg2 oauth2 simplejson
+% django-admin.py startproject hellodjango
+% cd hellodjango
+% python manage.py startapp linkedin
+
+
+  Now that you&amp;#8217;ve done all these pieces, you have a working django system.
+
+
+
+  File Setup
+
+
+
+  In order to add the LinkedIn integration, you&amp;#8217;ll need to edit the settings and URL files.  I&amp;#8217;ve created a GitHub repository with the code needed for this example, and you can use that as your model &amp;#8211; but I&amp;#8217;ll walk through the changes here so you understand how they work.
+
+
+
+  hellodjango/settings.py
+
+
+Edit the DATABASES section to configure it to use postgres, and your database:
+
+DATABASES = {
+    &#39;default&#39;: {
+        &#39;ENGINE&#39;: &#39;django.db.backends.postgresql_psycopg2&#39;,
+        &#39;NAME&#39;: &#39;linkedin&#39;,
+        &#39;USER&#39;: &#39;postgres&#39;,
+        &#39;PASSWORD&#39;: &#39;xxx&#39;,
+        &#39;HOST&#39;: &#39;&#39;,
+        &#39;PORT&#39;: &#39;5432&#39;,
+    }
+}
+
+
+  You also need to add &amp;#8216;linkedin&amp;#8217; to your INSTALLED_APPS:
+
+
+
+  INSTALLED_APPS = (
+    &#39;django.contrib.auth&#39;,
+    &#39;django.contrib.contenttypes&#39;,
+    &#39;django.contrib.sessions&#39;,
+    &#39;django.contrib.sites&#39;,
+    &#39;django.contrib.messages&#39;,
+    &#39;django.contrib.staticfiles&#39;,
+    &#39;linkedin&#39;
+    # Uncomment the next line to enable the admin:
+    # &#39;django.contrib.admin&#39;,
+    # Uncomment the next line to enable admin documentation:
+    # &#39;django.contrib.admindocs&#39;,
+)
+  
+  
+    And finally, you need to tell the application you want to use LinkedIn for authentication and set up your credentials (this can go anywhere in the settings.py file)
+  
+  
+  AUTH_PROFILE_MODULE= &#39;linkedin.UserProfile&#39;
+LINKEDIN_TOKEN=&#39;xxx&#39;
+LINKEDIN_SECRET=&#39;xxx&#39;
+LOGIN_URL=&#39;/login/&#39;
+  
+  
+    hellodjango/urls.py
+  
+  
+  
+    You also need to update the urls.py file to add the LinkedIn authentication pages.
+  
+  
+  url(r&#39;^login/?$&#39;, &#39;linkedin.views.oauth_login&#39;),
+url(r&#39;^logout/?$&#39;, &#39;linkedin.views.oauth_logout&#39;),
+url(r&#39;^login/authenticated/?$&#39;, &#39;linkedin.views.oauth_authenticated&#39;),
+url(r&#39;^$&#39;,&#39;linkedin.views.home&#39;),
+  
+  
+    hellodjango/linkedin/models.py
+  
+  
+  
+    Using LinkedIn Auth means we&amp;#8217;ll need to store the user&amp;#8217;s token and secret for later requests:
+  
+  
+  from django.db import models
+from django.contrib.auth.models import User
+class UserProfile(models.Model):
+    user = models.ForeignKey(User)
+    oauth_token = models.CharField(max_length=200)
+    oauth_secret = models.CharField(max_length=200)
+  
+  
+    hellodjango/linkedin/views.py
+  
+  
+  
+    I&amp;#8217;m including the code here, although it&amp;#8217;ll be easier to just get it from GitHub.  This code demonstrates the full OAuth login flow, creating a new Django user using the response, and subsequently making a request using the stored information (home).
+  
+  
+  # Python
+import oauth2 as oauth
+import cgi
+import simplejson as json
+import datetime
+import re
+  
+  # Django
+from django.http import HttpResponse
+from django.shortcuts import render_to_response
+from django.http import HttpResponseRedirect
+from django.conf import settings
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+  
+  # Project
+from linkedin.models import UserProfile
+  
+  # from settings.py
+consumer = oauth.Consumer(settings.LINKEDIN_TOKEN, settings.LINKEDIN_SECRET)
+client = oauth.Client(consumer)
+request_token_url = &#39;https://api.linkedin.com/uas/oauth/requestToken&#39;
+access_token_url = &#39;https://api.linkedin.com/uas/oauth/accessToken&#39;
+authenticate_url = &#39;https://www.linkedin.com/uas/oauth/authenticate&#39;
+
+# /login
+def oauth_login(request):
+  
+      # Step 0. Get the current hostname and port for the callback
+    if request.META[&#39;SERVER_PORT&#39;] == 443:
+     current_server = &quot;https://&quot; + request.META[&#39;HTTP_HOST&#39;]
+    else:
+     current_server = &quot;http://&quot; + request.META[&#39;HTTP_HOST&#39;]
+     oauth_callback = current_server + &quot;/login/authenticated&quot;
+  
+      # Step 1. Get a request token from Provider.
+    resp, content = client.request(&quot;%s?oauth_callback=%s&quot; % (request_token_url,oauth_callback), &quot;GET&quot;)
+    if resp[&#39;status&#39;] != &#39;200&#39;:
+        raise Exception(&quot;Invalid response from Provider.&quot;)
+    # Step 2. Store the request token in a session for later use.
+    request.session[&#39;request_token&#39;] = dict(cgi.parse_qsl(content))
+    # Step 3. Redirect the user to the authentication URL.
+    url = &quot;%s?oauth_token=%s&quot; % (authenticate_url,
+        request.session[&#39;request_token&#39;][&#39;oauth_token&#39;])
+    print url
+    return HttpResponseRedirect(url)
+  
+  # / (requires login)
+@login_required
+def home(request):
+  
+      html = &quot;&amp;lt;html&amp;gt;&amp;lt;body&amp;gt;&quot;
+    token = oauth.Token(request.user.get_profile().oauth_token,request.user.get_profile().oauth_secret)
+    client = oauth.Client(consumer,token)
+    headers = {&#39;x-li-format&#39;:&#39;json&#39;}
+    url = &quot;http://api.linkedin.com/v1/people/~:(id,first-name,last-name,headline)&quot;
+    resp, content = client.request(url, &quot;GET&quot;, headers=headers)
+    profile = json.loads(content)
+    html += profile[&#39;firstName&#39;] + &quot; &quot; + profile[&#39;lastName&#39;] + &quot;&amp;lt;br/&amp;gt;&quot; + profile[&#39;headline&#39;]
+    return HttpResponse(html)
+  
+  # /logout (requires login)
+@login_required
+def oauth_logout(request):
+  
+      # Log a user out using Django&#39;s logout function and redirect them
+    # back to the homepage.
+    logout(request)
+    return HttpResponseRedirect(&#39;/&#39;)
+  
+  #/login/authenticated/
+def oauth_authenticated(request):
+    # Step 1. Use the request token in the session to build a new client.
+    token = oauth.Token(request.session[&#39;request_token&#39;][&#39;oauth_token&#39;],
+        request.session[&#39;request_token&#39;][&#39;oauth_token_secret&#39;])
+    if &#39;oauth_verifier&#39; in request.GET:
+        token.set_verifier(request.GET[&#39;oauth_verifier&#39;])
+    client = oauth.Client(consumer, token)
+    # Step 2. Request the authorized access token from Provider.
+    resp, content = client.request(access_token_url, &quot;GET&quot;)
+    if resp[&#39;status&#39;] != &#39;200&#39;:
+        print content
+        raise Exception(&quot;Invalid response from Provider.&quot;)
+    access_token = dict(cgi.parse_qsl(content))
+    headers = {&#39;x-li-format&#39;:&#39;json&#39;}
+    url = &quot;http://api.linkedin.com/v1/people/~:(id,first-name,last-name,industry)&quot;
+    token = oauth.Token(access_token[&#39;oauth_token&#39;],
+        access_token[&#39;oauth_token_secret&#39;])
+    client = oauth.Client(consumer,token)
+    resp, content = client.request(url, &quot;GET&quot;, headers=headers)
+    profile = json.loads(content)    
+  
+      # Step 3. Lookup the user or create them if they don&#39;t exist.
+    firstname = profile[&#39;firstName&#39;]
+    lastname = profile[&#39;lastName&#39;]
+    identifier = profile[&#39;id&#39;]
+    try:
+        user = User.objects.get(username=identifier)
+    except User.DoesNotExist:
+        user = User.objects.create_user(identifier,
+            &#39;%s@linkedin.com&#39; % identifier,
+            access_token[&#39;oauth_token_secret&#39;])                 user.first_name = firstname
+        user.last_name = lastname
+        user.save()
+        # Save our permanent token and secret for later.
+        userprofile = UserProfile()
+        userprofile.user = user
+        userprofile.oauth_token = access_token[&#39;oauth_token&#39;]
+        userprofile.oauth_secret = access_token[&#39;oauth_token_secret&#39;]
+        userprofile.save()
+    # Authenticate the user and log them in using Django&#39;s pre-built
+    # functions for these things.
+    user = authenticate(username=identifier,
+        password=access_token[&#39;oauth_token_secret&#39;])
+  
+      login(request, user)
+    return HttpResponseRedirect(&#39;/&#39;)
+  
+  
+    For any future requests, you&amp;#8217;ll grab the user&amp;#8217;s token and secret from the profile to make the request just like what&amp;#8217;s shown in the &amp;#8220;home&amp;#8221; example above.  I&amp;#8217;ll go into this in more detail in the following posts, on creating scheduled requests and handling POST requests from external systems.
+  
+  
+  
+    Procfile
+  
+  
+  
+    This is needed at the top level (same level as the hellodjango project directory) to tell Heroku how to run your application.
+  
+  
+  web: python hellodjango/manage.py runserver &quot;0.0.0.0:$PORT&quot;
+  
+  
+    .gitignore
+  
+  
+  
+    Ignore the venv directory and compiled python files
+  
+  
+  venv
+*.pyc
+  
+  
+    Test Django Server Locally
+  
+  
+  
+    Ok, now that you&amp;#8217;ve gotten everything all set up (or grabbed it from github), you&amp;#8217;re ready to run the server and make sure it works correctly.
+  
+  
+  % python manage.py syncdb
+% python manage.py runserver
+  
+  
+    This should bring up a server on localhost which does the basic authentication dance and presents the user&amp;#8217;s name and headline (so exciting!)
+  
+  
+  
+    Deploy to Heroku
+  
+  
+  
+    Finally, we can get to the Heroku deployment.  Again, this is taken almost verbatim from the Getting Started With Django document on Heroku, so refer to that for more information on what&amp;#8217;s happening.
+  
+  
+  % git init
+% git add .
+% git commit -m &quot;My LinkedIn Django App&quot;
+% heroku create --stack cedar
+% git push heroku master
+% heroku run python hellodjango/manage.py syncdb 
+% heroku open
+  
+  
+    This should give you the same experience on Heroku that you have on your local system &amp;#8211; the user is sent to LinkedIn to log in, they&amp;#8217;re added to the system and presented a fascinating page with their basic information.
+  
+  
+  
+    I&amp;#8217;ve made this example as simple as possible to make it easy to integrate into your Django Application without unnecessary overhead.  Comments, clarifications or other questions welcome.">
+	
+	
+
+	<link type="text/plain" rel="author" href="https://www.princesspolymath.com/humans.txt">
+
+	
+
+	
+
+	<link rel="icon" sizes="32x32" href="https://www.princesspolymath.com/assets/img/favicon-32x32.png">
+
+	<link rel="icon" sizes="192x192" href="https://www.princesspolymath.com/assets/img/touch-icon-192x192.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="180x180" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-180x180-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="152x152" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-152x152-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-144x144-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="120x120" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-120x120-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-114x114-precomposed.png">
+
+	
+	<link rel="apple-touch-icon-precomposed" sizes="76x76" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-76x76-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-72x72-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-precomposed.png">	
+
+	<meta name="msapplication-TileImage" content="https://www.princesspolymath.com/assets/img/msapplication_tileimage.png">
+
+	<meta name="msapplication-TileColor" content="#fabb00">
+
+
+	
+
+</head>
+<body id="top-of-page" class="">
+	
+	<div id="navigation" class="sticky">
+  <nav class="top-bar" role="navigation" data-topbar>
+    <ul class="title-area">
+      <li class="name">
+      <h1 class="show-for-small-only"><a href="https://www.princesspolymath.com" class="icon-tree"> Princess Polymath</a></h1>
+    </li>
+       <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+      <li class="toggle-topbar menu-icon"><a href="#"><span>Navigation</span></a></li>
+    </ul>
+    <section class="top-bar-section">
+
+      <ul class="right">
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+            
+            
+              <li class="divider"></li>
+              <li><a href="https://www.princesspolymath.com/search/">Search</a></li>
+
+            
+            
+          
+        
+
+              
+
+          
+          
+            
+            
+              <li class="divider"></li>
+              <li><a href="https://www.princesspolymath.com/contact/">Contact</a></li>
+
+            
+            
+          
+        
+        
+      </ul>
+
+      <ul class="left">
+        
+
+              
+
+          
+          
+
+            
+            
+	    
+		<li><a href="https://www.princesspolymath.com/">Home</a></li>
+              <li class="divider"></li>
+		
+            
+            
+          
+        
+
+              
+
+          
+          
+
+            
+            
+	    
+		<li><a href="https://www.princesspolymath.com/resume">Resume</a></li>
+              <li class="divider"></li>
+		
+            
+            
+          
+        
+
+              
+
+          
+          
+
+            
+            
+	    
+		<li><a href="http://github.com/synedra" target="_blank">CODE</a></li>
+              <li class="divider"></li>
+		
+            
+            
+          
+        
+
+              
+
+          
+          
+
+            
+            
+	    
+		<li><a href="http://irresistibleapis.com" target="_blank">Irresistible APIs Book</a></li>
+              <li class="divider"></li>
+		
+            
+            
+          
+        
+
+              
+
+          
+          
+
+            
+            
+	    
+		<li><a href="https://www.princesspolymath.com/schedule">Schedule</a></li>
+              <li class="divider"></li>
+		
+            
+            
+          
+        
+
+              
+
+          
+          
+
+            
+            
+	    
+		<li><a href="https://www.princesspolymath.com/presentations">Presentations</a></li>
+              <li class="divider"></li>
+		
+            
+            
+          
+        
+
+              
+
+          
+          
+
+            
+            
+	    
+		<li><a href="https://www.princesspolymath.com/reviews">Reviews</a></li>
+              <li class="divider"></li>
+		
+            
+            
+          
+        
+
+              
+
+          
+          
+
+            
+            
+
+              <li class="has-dropdown">
+                <a href="https://www.princesspolymath.com/blog/">Blog</a>
+
+                  <ul class="dropdown">
+                    
+
+                      
+
+                      <li><a href="https://www.princesspolymath.com/blog/archive/">Blog Archive</a></li>
+                    
+                  </ul>
+
+              </li>
+              <li class="divider"></li>
+            
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+        
+      </ul>
+    </section>
+  </nav>
+</div><!-- /#navigation -->
+
+	
+	
+	
+
+<div id="masthead-no-image-header">
+	<div class="row">
+		<div class="small-12 columns">
+			<a id="logo" href="https://www.princesspolymath.com" title="Princess Polymath – I know lots of things...">
+				<img src="https://www.princesspolymath.com/assets/img/logo-words.png" alt="Princess Polymath – I know lots of things...">
+			</a>
+		</div><!-- /.small-12.columns -->
+	</div><!-- /.row -->
+</div><!-- /#masthead -->
+
+
+
+
+
+
+
+
+
+	
+
+	<div class="row t30">
+	<div class="medium-8 columns medium-push-4">
+		<article itemscope itemtype="http://schema.org/Article">
+			<header>
+				
+
+				<div itemprop="name">
+					
+					<h1>Using LinkedIn Authentication with Django on Heroku</h1>
+				</div>
+			</header>
+
+
+			
+
+			<div itemprop="articleSection">
+			<p>To build the LinkedIn Today SMS Notification System, I needed to find a framework where I could do the following:</p>
+
+<ul>
+  <li>Integrate LinkedIn OAuth with a more general user management system</li>
+  <li>Post the system to a public site</li>
+  <li>Handle POST requests from external clients</li>
+</ul>
+
+<p>For this set of criteria, I chose to use Django and publish it using Heroku.  This post is similar to the Django <a href="http://devcenter.heroku.com/articles/django">Getting Started Guide for Heroku</a>, but it’s designed for this specific use case – Using LinkedIn OAuth as the login system and integrating it with the Django user management system.  The code for this example is available <a href="https://github.com/synedra/django-linkedin-simple">here</a>.</p>
+
+<p>Here are the prerequisites for this tutorial:</p>
+
+<ul>
+  <li>Python, virtualenv, pip, and the Heroku toolbelt as described in <a href="http://devcenter.heroku.com/articles/python">Getting Started with Python on Heroku/Cedar</a>.</li>
+  <li>An installed version of <a href="http://www.postgresql.org/">Postgres</a> to test locally</li>
+  <li>A Postgres user and a database to use for Django (in this case I’m using ‘linkedin’)</li>
+  <li>A LinkedIn <a href="https://www.linkedin.com/secure/developer">API Key</a>.  If you haven’t worked with the LinkedIn API before, you’re encouraged to go through the <a href="https://developer.linkedin.com/documents/quick-start-guide">Quick Start Guide</a>.</li>
+</ul>
+
+<h2 id="create-your-django-environment">Create Your Django Environment</h2>
+
+<div>
+  For the basic setup I&#8217;m following, very closely, the <a href="http://devcenter.heroku.com/articles/django">tutorial for Heroku</a>, so I&#8217;m leaving out some of the explanation &#8211; please refer to the original if you have questions about how things work.  The following steps will create a virtual environment (development sandbox), install needed modules there, and get your Django project and applications created.
+</div>
+
+<pre lang="term">% mkdir hellodjango &amp;&amp; cd hellodjango
+% virtualenv --no-site-packages vent
+% source venv/bin/activate
+% pip install Django psycopg2 oauth2 simplejson
+% django-admin.py startproject hellodjango
+% cd hellodjango
+% python manage.py startapp linkedin</pre>
+
+<p lang="term">
+  Now that you&#8217;ve done all these pieces, you have a working django system.
+</p>
+
+<h2 lang="term">
+  File Setup
+</h2>
+
+<p lang="term">
+  In order to add the LinkedIn integration, you&#8217;ll need to edit the settings and URL files.  I&#8217;ve created a <a href="https://github.com/synedra/django-linkedin-simple">GitHub repository</a> with the code needed for this example, and you can use that as your model &#8211; but I&#8217;ll walk through the changes here so you understand how they work.
+</p>
+
+<h3 lang="term">
+  hellodjango/settings.py
+</h3>
+
+<p>Edit the DATABASES section to configure it to use postgres, and your database:</p>
+
+<pre>DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'linkedin',
+        'USER': 'postgres',
+        'PASSWORD': 'xxx',
+        'HOST': '',
+        'PORT': '5432',
+    }
+}</pre>
+
+<div>
+  You also need to add &#8216;linkedin&#8217; to your INSTALLED_APPS:
+</div>
+
+<div>
+  <pre>INSTALLED_APPS = (
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.sites',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'linkedin'
+    # Uncomment the next line to enable the admin:
+    # 'django.contrib.admin',
+    # Uncomment the next line to enable admin documentation:
+    # 'django.contrib.admindocs',
+)</pre>
+  
+  <p>
+    And finally, you need to tell the application you want to use LinkedIn for authentication and set up your credentials (this can go anywhere in the settings.py file)
+  </p>
+  
+  <pre>AUTH_PROFILE_MODULE= 'linkedin.UserProfile'
+LINKEDIN_TOKEN='xxx'
+LINKEDIN_SECRET='xxx'
+LOGIN_URL='/login/'</pre>
+  
+  <h3>
+    hellodjango/urls.py
+  </h3>
+  
+  <p>
+    You also need to update the urls.py file to add the LinkedIn authentication pages.
+  </p>
+  
+  <pre id="LC18">url(r'^login/?$', 'linkedin.views.oauth_login'),
+url(r'^logout/?$', 'linkedin.views.oauth_logout'),
+url(r'^login/authenticated/?$', 'linkedin.views.oauth_authenticated'),
+url(r'^$','linkedin.views.home'),</pre>
+  
+  <h3 id="LC18">
+    hellodjango/linkedin/models.py
+  </h3>
+  
+  <p>
+    Using LinkedIn Auth means we&#8217;ll need to store the user&#8217;s token and secret for later requests:
+  </p>
+  
+  <pre id="LC1">from django.db import models
+from django.contrib.auth.models import User
+class UserProfile(models.Model):
+    user = models.ForeignKey(User)
+    oauth_token = models.CharField(max_length=200)
+    oauth_secret = models.CharField(max_length=200)</pre>
+  
+  <h3 id="LC18">
+    hellodjango/linkedin/views.py
+  </h3>
+  
+  <p>
+    I&#8217;m including the code here, although it&#8217;ll be easier to just get it from GitHub.  This code demonstrates the full OAuth login flow, creating a new Django user using the response, and subsequently making a request using the stored information (home).
+  </p>
+  
+  <pre id="LC1"># Python
+import oauth2 as oauth
+import cgi
+import simplejson as json
+import datetime
+import re</pre>
+  
+  <pre id="LC8"># Django
+from django.http import HttpResponse
+from django.shortcuts import render_to_response
+from django.http import HttpResponseRedirect
+from django.conf import settings
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required</pre>
+  
+  <pre id="LC17"># Project
+from linkedin.models import UserProfile</pre>
+  
+  <pre id="LC20"># from settings.py
+consumer = oauth.Consumer(settings.LINKEDIN_TOKEN, settings.LINKEDIN_SECRET)
+client = oauth.Client(consumer)
+request_token_url = 'https://api.linkedin.com/uas/oauth/requestToken'
+access_token_url = 'https://api.linkedin.com/uas/oauth/accessToken'
+authenticate_url = 'https://www.linkedin.com/uas/oauth/authenticate'
+
+# /login
+def oauth_login(request):</pre>
+  
+  <pre id="LC20">    # Step 0. Get the current hostname and port for the callback
+    if request.META['SERVER_PORT'] == 443:
+     current_server = "https://" + request.META['HTTP_HOST']
+    else:
+     current_server = "http://" + request.META['HTTP_HOST']
+     oauth_callback = current_server + "/login/authenticated"</pre>
+  
+  <pre id="LC35">    # Step 1. Get a request token from Provider.
+    resp, content = client.request("%s?oauth_callback=%s" % (request_token_url,oauth_callback), "GET")
+    if resp['status'] != '200':
+        raise Exception("Invalid response from Provider.")
+    # Step 2. Store the request token in a session for later use.
+    request.session['request_token'] = dict(cgi.parse_qsl(content))
+    # Step 3. Redirect the user to the authentication URL.
+    url = "%s?oauth_token=%s" % (authenticate_url,
+        request.session['request_token']['oauth_token'])
+    print url
+    return HttpResponseRedirect(url)</pre>
+  
+  <pre># / (requires login)
+@login_required
+def home(request):</pre>
+  
+  <pre>    html = "&lt;html&gt;&lt;body&gt;"
+    token = oauth.Token(request.user.get_profile().oauth_token,request.user.get_profile().oauth_secret)
+    client = oauth.Client(consumer,token)
+    headers = {'x-li-format':'json'}
+    url = "http://api.linkedin.com/v1/people/~:(id,first-name,last-name,headline)"
+    resp, content = client.request(url, "GET", headers=headers)
+    profile = json.loads(content)
+    html += profile['firstName'] + " " + profile['lastName'] + "&lt;br/&gt;" + profile['headline']
+    return HttpResponse(html)</pre>
+  
+  <pre id="LC49"># /logout (requires login)
+@login_required
+def oauth_logout(request):</pre>
+  
+  <pre id="LC56">    # Log a user out using Django's logout function and redirect them
+    # back to the homepage.
+    logout(request)
+    return HttpResponseRedirect('/')</pre>
+  
+  <pre id="LC63">#/login/authenticated/
+def oauth_authenticated(request):
+    # Step 1. Use the request token in the session to build a new client.
+    token = oauth.Token(request.session['request_token']['oauth_token'],
+        request.session['request_token']['oauth_token_secret'])
+    if 'oauth_verifier' in request.GET:
+        token.set_verifier(request.GET['oauth_verifier'])
+    client = oauth.Client(consumer, token)
+    # Step 2. Request the authorized access token from Provider.
+    resp, content = client.request(access_token_url, "GET")
+    if resp['status'] != '200':
+        print content
+        raise Exception("Invalid response from Provider.")
+    access_token = dict(cgi.parse_qsl(content))
+    headers = {'x-li-format':'json'}
+    url = "http://api.linkedin.com/v1/people/~:(id,first-name,last-name,industry)"
+    token = oauth.Token(access_token['oauth_token'],
+        access_token['oauth_token_secret'])
+    client = oauth.Client(consumer,token)
+    resp, content = client.request(url, "GET", headers=headers)
+    profile = json.loads(content)<span class="Apple-style-span" style="font-family: Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif; font-size: 13px; line-height: 19px; white-space: normal;">    </span></pre>
+  
+  <pre id="LC86">    # Step 3. Lookup the user or create them if they don't exist.
+    firstname = profile['firstName']
+    lastname = profile['lastName']
+    identifier = profile['id']
+    try:
+        user = User.objects.get(username=identifier)
+    except User.DoesNotExist:
+        user = User.objects.create_user(identifier,
+            '%s@linkedin.com' % identifier,
+            access_token['oauth_token_secret'])<span class="Apple-style-span" style="font-family: Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif; font-size: 13px; line-height: 19px; white-space: normal;">         </span>        user.first_name = firstname
+        user.last_name = lastname
+        user.save()
+        # Save our permanent token and secret for later.
+        userprofile = UserProfile()
+        userprofile.user = user
+        userprofile.oauth_token = access_token['oauth_token']
+        userprofile.oauth_secret = access_token['oauth_token_secret']
+        userprofile.save()
+    # Authenticate the user and log them in using Django's pre-built
+    # functions for these things.
+    user = authenticate(username=identifier,
+        password=access_token['oauth_token_secret'])</pre>
+  
+  <pre id="LC111">    login(request, user)
+    return HttpResponseRedirect('/')</pre>
+  
+  <p id="LC111">
+    For any future requests, you&#8217;ll grab the user&#8217;s token and secret from the profile to make the request just like what&#8217;s shown in the &#8220;home&#8221; example above.  I&#8217;ll go into this in more detail in the following posts, on creating scheduled requests and handling POST requests from external systems.
+  </p>
+  
+  <h3 lang="term">
+    Procfile
+  </h3>
+  
+  <p>
+    This is needed at the top level (same level as the hellodjango project directory) to tell Heroku how to run your application.
+  </p>
+  
+  <pre>web: python hellodjango/manage.py runserver "0.0.0.0:$PORT"</pre>
+  
+  <h3 lang="term">
+    .gitignore
+  </h3>
+  
+  <p>
+    Ignore the venv directory and compiled python files
+  </p>
+  
+  <pre>venv
+*.pyc</pre>
+  
+  <h2>
+    Test Django Server Locally
+  </h2>
+  
+  <p>
+    Ok, now that you&#8217;ve gotten everything all set up (or grabbed it from github), you&#8217;re ready to run the server and make sure it works correctly.
+  </p>
+  
+  <pre>% python manage.py syncdb
+% python manage.py runserver</pre>
+  
+  <p>
+    This should bring up a server on localhost which does the basic authentication dance and presents the user&#8217;s name and headline (so exciting!)
+  </p>
+  
+  <h2>
+    Deploy to Heroku
+  </h2>
+  
+  <p>
+    Finally, we can get to the Heroku deployment.  Again, this is taken almost verbatim from the <a href="http://devcenter.heroku.com/articles/django">Getting Started With Django</a> document on Heroku, so refer to that for more information on what&#8217;s happening.
+  </p>
+  
+  <pre>% git init
+% git add .
+% git commit -m "My LinkedIn Django App"
+% heroku create --stack cedar
+% git push heroku master
+% heroku run python hellodjango/manage.py syncdb 
+% heroku open</pre>
+  
+  <p>
+    This should give you the same experience on Heroku that you have on your local system &#8211; the user is sent to LinkedIn to log in, they&#8217;re added to the system and presented a fascinating page with their basic information.
+  </p>
+  
+  <p>
+    I&#8217;ve made this example as simple as possible to make it easy to integrate into your Django Application without unnecessary overhead.  Comments, clarifications or other questions welcome.
+  </p>
+</div>
+
+			</div>
+
+			
+						<div id="page-meta" class="t30">
+				<p>
+					<!-- Look the author details up from the site config. -->
+					
+					<!-- Output author details if some exist. -->
+					
+
+				
+				<time class="icon-calendar pr20" datetime="2011-12-20" itemprop="datePublished"> 2011-12-20</time>
+				
+
+				<span class="icon-archive pr20"> GEEK STUFF · HEROKU · LINKEDIN · PYTHON · WEB APIS</span>
+				<br />
+				<span class="pr20"><span class="icon-price-tag pr10"> django</span> <span class="icon-price-tag pr10"> heroku</span> <span class="icon-price-tag pr10"> linkedin</span> <span class="icon-price-tag pr10"> python</span> </span>
+			</p>
+
+			<div id="post-nav" class="row">
+				
+				<div class="small-5 columns"><a class="button small radius prev" href="https://www.princesspolymath.com/documenting-your-api-with-iodocs-on-heroku.html">&laquo; Documenting your API with IODocs on Heroku</a></div><!-- /.small-4.columns -->
+				
+				<div class="small-2 columns text-center"><a class="radius button small" href="https://www.princesspolymath.com/blog/archive/" title="Blog Archive">Archive</a></div><!-- /.small-4.columns -->
+				
+				<div class="small-5 columns text-right"><a class="button small radius next" href="https://www.princesspolymath.com/sending-sms-notifications-using-twilio-django-and-the-heroku-scheduler.html">Sending SMS Notifications using Twilio, Django and the Heroku Scheduler &raquo;</a></div><!-- /.small-4.columns -->
+				
+			</div>
+			</div><!--  /.page-meta -->
+			
+
+			
+						
+				<h3 id="comments" class="t60">Dialogue &amp; Discussion</h3>
+			    <div id="disqus_thread"></div>
+			    <script type="text/javascript">
+			        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+			        var disqus_shortname = 'princesspolymath'; 
+			        var disqus_identifier = '/using-linkedin-authentication-with-django-on-heroku.html';
+
+			        /* * * DON'T EDIT BELOW THIS LINE * * */
+			        (function() {
+			            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+			            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+			            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+			        })();
+			    </script>
+			    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+			
+
+
+
+			
+		</article>
+	</div><!-- /.medium-8.columns -->
+
+
+	
+	<div class="medium-4 columns medium-pull-8">
+		<aside>
+<div itemscope itemtype="http://schema.org/Person">
+
+  <div class="author__avatar">
+    	<img src="http://princesspolymath.com/assets/img/headshot.jpg" alt="Kirsten Hunter">
+  </div>
+
+  <div class="author__content">
+    <h3 class="author__name">Kirsten Hunter</h3>
+    <p class="author__bio">I know lots of things...</p>
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls ">
+        <li><i class="fa fa-fw fa-map-marker" aria-hidden="true"></i> Santa Cruz</li>
+        <li><a href="mailto:synedra@gmail.com"><i class="fa fa-fw fa-envelope-square" aria-hidden="true"></i> Email</a></li>
+        <li><a href="https://twitter.com/@synedra"><i class="fa fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        <li><a href="https://www.linkedin.com/in/http://linkedin.com/in/synedra"><i class="fa fa-fw fa-linkedin-square" aria-hidden="true"></i> LinkedIn</a></li>
+        <li><a href="https://github.com/https://github.com/synedra"><i class="fa fa-fw fa-github" aria-hidden="true"></i> Github</a></li>
+    </ul>
+  </div>
+<a class="twitter-timeline" href="https://twitter.com/search?q=%40synedra" data-widget-id="744007280098574337">Tweets about @synedra</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+<a class="twitter-timeline" href="https://twitter.com/synedra">Tweets by synedra</a>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+</aside>
+
+	</div><!-- /.medium-4.columns -->
+	
+
+
+	
+</div><!-- /.row -->
+
+
+	
+	    <div id="up-to-top" class="row">
+      <div class="small-12 columns" style="text-align: right;">
+        <a class="iconfont" href="#top-of-page">&#xf108;</a>
+      </div><!-- /.small-12.columns -->
+    </div><!-- /.row -->
+
+
+    <footer id="footer-content" class="bg-grau">
+      <div id="footer">
+        <div class="row">
+          <div class="medium-6 large-5 columns">
+            <h5 class="shadow-black">About This Site</h5>
+
+            <p class="shadow-black">
+              Princess Polymath is a website focused on programming, web design, APIs and general amusement.
+              <a href="https://www.princesspolymath.com/info/">More ›</a>
+            </p>
+          </div><!-- /.large-6.columns -->
+
+
+          <div class="small-6 medium-3 large-3 large-offset-1 columns">
+            
+              
+                <h5 class="shadow-black">Services</h5>
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+
+              <ul class="no-bullet shadow-black">
+              
+                
+                  <li >
+                    <a href="https://www.princesspolymath.com"  title=""></a>
+                  </li>
+              
+                
+                  <li >
+                    <a href="https://www.princesspolymath.com/contact/"  title="Contact">Contact</a>
+                  </li>
+              
+                
+                  <li >
+                    <a href="https://www.princesspolymath.com/feed.xml"  title="Subscribe to RSS Feed">RSS</a>
+                  </li>
+              
+                
+                  <li >
+                    <a href="https://www.princesspolymath.com/atom.xml"  title="Subscribe to Atom Feed">Atom</a>
+                  </li>
+              
+                
+                  <li >
+                    <a href="https://www.princesspolymath.com/sitemap.xml"  title="Sitemap for Google Webmaster Tools">sitemap.xml</a>
+                  </li>
+              
+              </ul>
+          </div><!-- /.large-4.columns -->
+
+
+          <div class="small-6 medium-3 large-3 columns">
+            
+              
+                <h5 class="shadow-black">Contact information</h5>
+              
+            
+              
+            
+              
+            
+
+            <ul class="no-bullet shadow-black">
+            
+              
+                <li >
+                  <a href="https://www.princesspolymath.com"  title=""></a>
+                </li>
+            
+              
+                <li class="network-entypo" >
+                  <a href="http://linkedin.com/in/synedra" target="_blank"  title="LinkedIn Contact">LinkedIn</a>
+                </li>
+            
+              
+                <li class="network-entypo" >
+                  <a href="http://twitter.com/synedra" target="_blank"  title="Twitter">Twitter</a>
+                </li>
+            
+            </ul>
+          </div><!-- /.large-3.columns -->
+        </div><!-- /.row -->
+
+      </div><!-- /#footer -->
+
+
+      <div id="subfooter">
+        <nav class="row">
+          <section id="subfooter-left" class="small-12 medium-6 columns credits">
+            <p>Created with &hearts; by <a href="/">synedra</a> with <a href="http://jekyllrb.com/" target="_blank">Jekyll</a> based on <a href="http://phlow.github.io/feeling-responsive/">Feeling Responsive</a>.</p>
+          </section>
+
+          <section id="subfooter-right" class="small-12 medium-6 columns">
+            <ul class="inline-list social-icons">
+            
+              <li><a href="http://github.com/synedra" target="_blank" class="icon-github" title="Riff Raff"></a></li>
+            
+              <li><a href="http://www.youtube.com/PhlowMedia" target="_blank" class="icon-youtube" title="Videos, Video-Anleitungen und Filme von Phlow auf YouTube"></a></li>
+            
+              <li><a href="http://twitter.com/synedra" target="_blank" class="icon-twitter" title="My 140 Character Babblings"></a></li>
+            
+              <li><a href="https://plus.google.com/u/0/+Phlow" target="_blank" class="icon-googleplus" title="YouTube Google+"></a></li>
+            
+            </ul>
+          </section>
+        </nav>
+      </div><!-- /#subfooter -->
+    </footer>
+
+	
+
+	
+
+
+<script src="https://www.princesspolymath.com/assets/js/javascript.min.js"></script>
+
+
+
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-60112281-1', 'auto');
+  ga('set', 'anonymizeIp', true);
+  ga('send', 'pageview');
+
+</script>
+
+
+
+
+
+
+
+
+</body>
+</html>
+

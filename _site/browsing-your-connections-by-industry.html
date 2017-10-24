@@ -1,0 +1,986 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<meta http-equiv="Edge-Cache-Tag" content="princess" />
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Browsing your LinkedIn Connections by Industry</title>
+	<link rel="stylesheet" type="text/css" href="https://www.princesspolymath.com/assets/css/styles_feeling_responsive.css">
+	<script src="https://www.princesspolymath.com/assets/js/modernizr.min.js"></script>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
+	<script>
+		WebFont.load({
+			google: {
+				families: [ 'Lato:400,700,400italic:latin', 'Volkhov::latin' ]
+			}
+		});
+	</script>
+
+	<noscript>
+		<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic%7CVolkhov' rel='stylesheet' type='text/css'>
+	</noscript>
+
+
+	<!-- Search Engine Optimization -->
+	<meta name="description" content="I presented at the Semantic Web Meetup in San Francisco about this topic, slides for that talk can be found here.
+
+A friend of mine, who runs a rather cool website, asked me to help him understand how to create an industry-based query to see which of your connections are in a particular industry.  As this was a slightly trickier-than-usual problem, I put together an example for him to use, and I’ll go over how it works here.
+
+But first, the obligatory working demo:
+
+And the code. Note there are a couple of support files you’ll need to snag as well.
+
+In order to keep this post manageable, I’ll mention that most of the pieces for this are included in my StreamIn’ tutorial. So if you’re interested in understanding how the basic framework works, take a look there. We’re basically going to break out on “Add Share Stream”.
+
+Industries
+
+One of the reasons that this example is somewhat tricky is that the API doesn’t currently have a way to give you a list of industries, and how they’re related, but we do have a web document (which is fairly static) with that information. So I grabbed the HTML from that page, fiddled with it in my editor, and created a JSON document with a hash of industries (and the groups they map to) and groups (and the industries they contain). You can see that file here. Loading that file as a javascript script gives the page access to hashes of this information.
+
+Autocomplete
+
+Hey, since we’ve made this handy hash, it’s a cinch to provide a jQuery autocomplete for the industries.
+
+var data = Object.keys(industry_names);
+	$(&quot;input#Industry&quot;).autocomplete({
+	   source: data,
+	   select: function() { getConnections() }
+	});
+
+Titles is not really a bounded set of this type, so I’ll just let the user input that freestyle.
+
+Getting the connections
+
+The logic I wanted to use was… find all my 1st or 2nd degree connections in the industry who match the title. If there are fewer than 25 of those, do another search for all of the industries in the industry group. You can see how that stacks in the code, so I’ll just talk through the actual call for the first search.
+
+$(&quot;#connections&quot;).html(&quot;&quot;);
+	var industrynum = industry_names[$(&quot;#Industry&quot;).val()][&quot;code&quot;]
+	var title = $(&quot;#Title&quot;).val();
+	path = &quot;/people-search:(people:(id,first-name,last-name,public-profile-url,
+                  three-current-positions:(title,company:(name,industry)),distance,picture-url))?
+                  sort=distance&amp;amp;facet=industry,&quot; + industrynum + &quot;&amp;amp;title=&quot; + title + &quot;&amp;amp;current-
+                  title=true&amp;amp;facet=network,F,S&amp;amp;count=25&quot;
+
+So, clear the div we’re gong to use. Grab the code from the industry hash based on what’s in the Industry user input field. Pull the title from the Title input field.
+
+In this case we’re using the People Search resource with some field selectors to request specific profile fields for the users who are returned. That’s this part:
+
+people-search:(people:(
+                     id,first-name,last-name,public-profile-url,
+                     three-current-positions:(title,company:(name,industry)),
+                     distance,picture-url))
+
+Why three-current-positions? Because I can’t just ask for one current position, and this list will be smaller and faster than all the positions.
+
+We also need some very specific filters on our search, so we’re using facets (also covered on the People Search page) to get us only the members in our network who have the right title and industry. Let’s go over those things individually:
+
+
+  sort=distance : distance from me, i.e. degree (first or second)
+  facet=industry,xx : I want only users who are working in this industry (like Entertainment or Internet)
+  title=yyy : This is a fuzzy string match. Doesn’t have to match exactly.
+  current_title=true : Don’t tell me about their past positions. I want people doing this right now
+  facet=network,F,S : First and Second degree connections only.
+  count=25 : I don’t have all day and I’m only going to show 25 total results in any case.
+
+
+All right, now that that’s settled, let’s make the call. The Raw API call we’re making reaches directly through to the back end REST API.
+
+IN.API.Raw(path)
+	  .result(function(result) {
+	    var count = result.people.values.length;
+	    var html = $(&quot;#connections&quot;).html();
+	  	for (var index in result.people.values) {
+	  		var person = result.people.values[index]
+	  		html += &quot;&amp;lt;div class=\&quot;connectionitem\&quot;&amp;gt;&quot;;
+	  		if (person[&quot;pictureUrl&quot;]) {
+		  		html += &quot;&amp;lt;img src= \&quot;&quot; + person[&quot;pictureUrl&quot;] +
+                                              &quot;\&quot;  width=40 align=right/&amp;gt;&quot;;
+			}
+			var distance = (person[&quot;distance&quot;] === 1 ? &#39;1st&#39; : &#39;2nd&#39;)
+	  		html += &quot;&amp;lt;a href=\&quot;&quot; + person[&quot;publicProfileUrl&quot;] + &quot;\&quot;&amp;gt;&amp;lt;h3&amp;gt;&quot; +
+                                      person[&quot;firstName&quot;] + &quot; &quot; + person[&quot;lastName&quot;] +
+                                      &quot; (&quot; + distance + &quot;)&amp;lt;/h3&amp;gt;&amp;lt;/a&amp;gt;&quot;;
+	  		html += person[&quot;threeCurrentPositions&quot;][&quot;values&quot;][0][&quot;title&quot;] +
+                                    &quot;, &quot; + person[&quot;threeCurrentPositions&quot;][&quot;values&quot;][0][&quot;company&quot;][&quot;name&quot;] +
+                                   &quot; (&quot; + person[&quot;threeCurrentPositions&quot;][&quot;values&quot;][0][&quot;company&quot;][&quot;industry&quot;] +
+                                   &quot;) &amp;lt;/div&amp;gt;&quot;;
+	  	}
+	  	$(&quot;#connections&quot;).html(html)
+	  });
+
+Just as in the other tutorials, the JSAPI method (in this case IN.API.Raw()) is called with chained methods indicating how it should be executed. In this case, we just want to perform a GET on the resource, and process the results, so .results is the only thing we’re setting.
+
+Just like in the StreamIn’ tutorial, the results are iterated over person by person and a collection of connectionitems is gathered together, made pretty, and plopped in the “connections” div.">
+  	<meta name="google-site-verification" content="Vk0IOJ2jwG_qEoG7fuEXYqv0m2rLa8P778Fi_GrsgEQ">
+	<meta name="msvalidate.01" content="0FB4C028ABCF07C908C54386ABD2D97F" >
+	<link rel="author" href="https://plus.google.com/u/0/118311555303973066167">
+	
+	
+
+
+	<!-- Facebook Open Graph -->
+	<meta property="og:title" content="Browsing your LinkedIn Connections by Industry">
+	<meta property="og:description" content="I presented at the Semantic Web Meetup in San Francisco about this topic, slides for that talk can be found here.
+
+A friend of mine, who runs a rather cool website, asked me to help him understand how to create an industry-based query to see which of your connections are in a particular industry.  As this was a slightly trickier-than-usual problem, I put together an example for him to use, and I’ll go over how it works here.
+
+But first, the obligatory working demo:
+
+And the code. Note there are a couple of support files you’ll need to snag as well.
+
+In order to keep this post manageable, I’ll mention that most of the pieces for this are included in my StreamIn’ tutorial. So if you’re interested in understanding how the basic framework works, take a look there. We’re basically going to break out on “Add Share Stream”.
+
+Industries
+
+One of the reasons that this example is somewhat tricky is that the API doesn’t currently have a way to give you a list of industries, and how they’re related, but we do have a web document (which is fairly static) with that information. So I grabbed the HTML from that page, fiddled with it in my editor, and created a JSON document with a hash of industries (and the groups they map to) and groups (and the industries they contain). You can see that file here. Loading that file as a javascript script gives the page access to hashes of this information.
+
+Autocomplete
+
+Hey, since we’ve made this handy hash, it’s a cinch to provide a jQuery autocomplete for the industries.
+
+var data = Object.keys(industry_names);
+	$(&quot;input#Industry&quot;).autocomplete({
+	   source: data,
+	   select: function() { getConnections() }
+	});
+
+Titles is not really a bounded set of this type, so I’ll just let the user input that freestyle.
+
+Getting the connections
+
+The logic I wanted to use was… find all my 1st or 2nd degree connections in the industry who match the title. If there are fewer than 25 of those, do another search for all of the industries in the industry group. You can see how that stacks in the code, so I’ll just talk through the actual call for the first search.
+
+$(&quot;#connections&quot;).html(&quot;&quot;);
+	var industrynum = industry_names[$(&quot;#Industry&quot;).val()][&quot;code&quot;]
+	var title = $(&quot;#Title&quot;).val();
+	path = &quot;/people-search:(people:(id,first-name,last-name,public-profile-url,
+                  three-current-positions:(title,company:(name,industry)),distance,picture-url))?
+                  sort=distance&amp;amp;facet=industry,&quot; + industrynum + &quot;&amp;amp;title=&quot; + title + &quot;&amp;amp;current-
+                  title=true&amp;amp;facet=network,F,S&amp;amp;count=25&quot;
+
+So, clear the div we’re gong to use. Grab the code from the industry hash based on what’s in the Industry user input field. Pull the title from the Title input field.
+
+In this case we’re using the People Search resource with some field selectors to request specific profile fields for the users who are returned. That’s this part:
+
+people-search:(people:(
+                     id,first-name,last-name,public-profile-url,
+                     three-current-positions:(title,company:(name,industry)),
+                     distance,picture-url))
+
+Why three-current-positions? Because I can’t just ask for one current position, and this list will be smaller and faster than all the positions.
+
+We also need some very specific filters on our search, so we’re using facets (also covered on the People Search page) to get us only the members in our network who have the right title and industry. Let’s go over those things individually:
+
+
+  sort=distance : distance from me, i.e. degree (first or second)
+  facet=industry,xx : I want only users who are working in this industry (like Entertainment or Internet)
+  title=yyy : This is a fuzzy string match. Doesn’t have to match exactly.
+  current_title=true : Don’t tell me about their past positions. I want people doing this right now
+  facet=network,F,S : First and Second degree connections only.
+  count=25 : I don’t have all day and I’m only going to show 25 total results in any case.
+
+
+All right, now that that’s settled, let’s make the call. The Raw API call we’re making reaches directly through to the back end REST API.
+
+IN.API.Raw(path)
+	  .result(function(result) {
+	    var count = result.people.values.length;
+	    var html = $(&quot;#connections&quot;).html();
+	  	for (var index in result.people.values) {
+	  		var person = result.people.values[index]
+	  		html += &quot;&amp;lt;div class=\&quot;connectionitem\&quot;&amp;gt;&quot;;
+	  		if (person[&quot;pictureUrl&quot;]) {
+		  		html += &quot;&amp;lt;img src= \&quot;&quot; + person[&quot;pictureUrl&quot;] +
+                                              &quot;\&quot;  width=40 align=right/&amp;gt;&quot;;
+			}
+			var distance = (person[&quot;distance&quot;] === 1 ? &#39;1st&#39; : &#39;2nd&#39;)
+	  		html += &quot;&amp;lt;a href=\&quot;&quot; + person[&quot;publicProfileUrl&quot;] + &quot;\&quot;&amp;gt;&amp;lt;h3&amp;gt;&quot; +
+                                      person[&quot;firstName&quot;] + &quot; &quot; + person[&quot;lastName&quot;] +
+                                      &quot; (&quot; + distance + &quot;)&amp;lt;/h3&amp;gt;&amp;lt;/a&amp;gt;&quot;;
+	  		html += person[&quot;threeCurrentPositions&quot;][&quot;values&quot;][0][&quot;title&quot;] +
+                                    &quot;, &quot; + person[&quot;threeCurrentPositions&quot;][&quot;values&quot;][0][&quot;company&quot;][&quot;name&quot;] +
+                                   &quot; (&quot; + person[&quot;threeCurrentPositions&quot;][&quot;values&quot;][0][&quot;company&quot;][&quot;industry&quot;] +
+                                   &quot;) &amp;lt;/div&amp;gt;&quot;;
+	  	}
+	  	$(&quot;#connections&quot;).html(html)
+	  });
+
+Just as in the other tutorials, the JSAPI method (in this case IN.API.Raw()) is called with chained methods indicating how it should be executed. In this case, we just want to perform a GET on the resource, and process the results, so .results is the only thing we’re setting.
+
+Just like in the StreamIn’ tutorial, the results are iterated over person by person and a collection of connectionitems is gathered together, made pretty, and plopped in the “connections” div.">
+	<meta property="og:url" content="https://www.princesspolymath.com/browsing-your-connections-by-industry.html">
+	<meta property="og:locale" content="en_EN">
+	<meta property="og:type" content="website">
+	<meta property="og:site_name" content="Princess Polymath">
+	
+	<meta property="article:author" content="https://www.facebook.com/princesspolymath">
+
+
+	
+	<!-- Twitter -->
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:site" content="synedra">
+	<meta name="twitter:creator" content="synedra">
+	<meta name="twitter:title" content="Browsing your LinkedIn Connections by Industry">
+	<meta name="twitter:description" content="I presented at the Semantic Web Meetup in San Francisco about this topic, slides for that talk can be found here.
+
+A friend of mine, who runs a rather cool website, asked me to help him understand how to create an industry-based query to see which of your connections are in a particular industry.  As this was a slightly trickier-than-usual problem, I put together an example for him to use, and I’ll go over how it works here.
+
+But first, the obligatory working demo:
+
+And the code. Note there are a couple of support files you’ll need to snag as well.
+
+In order to keep this post manageable, I’ll mention that most of the pieces for this are included in my StreamIn’ tutorial. So if you’re interested in understanding how the basic framework works, take a look there. We’re basically going to break out on “Add Share Stream”.
+
+Industries
+
+One of the reasons that this example is somewhat tricky is that the API doesn’t currently have a way to give you a list of industries, and how they’re related, but we do have a web document (which is fairly static) with that information. So I grabbed the HTML from that page, fiddled with it in my editor, and created a JSON document with a hash of industries (and the groups they map to) and groups (and the industries they contain). You can see that file here. Loading that file as a javascript script gives the page access to hashes of this information.
+
+Autocomplete
+
+Hey, since we’ve made this handy hash, it’s a cinch to provide a jQuery autocomplete for the industries.
+
+var data = Object.keys(industry_names);
+	$(&quot;input#Industry&quot;).autocomplete({
+	   source: data,
+	   select: function() { getConnections() }
+	});
+
+Titles is not really a bounded set of this type, so I’ll just let the user input that freestyle.
+
+Getting the connections
+
+The logic I wanted to use was… find all my 1st or 2nd degree connections in the industry who match the title. If there are fewer than 25 of those, do another search for all of the industries in the industry group. You can see how that stacks in the code, so I’ll just talk through the actual call for the first search.
+
+$(&quot;#connections&quot;).html(&quot;&quot;);
+	var industrynum = industry_names[$(&quot;#Industry&quot;).val()][&quot;code&quot;]
+	var title = $(&quot;#Title&quot;).val();
+	path = &quot;/people-search:(people:(id,first-name,last-name,public-profile-url,
+                  three-current-positions:(title,company:(name,industry)),distance,picture-url))?
+                  sort=distance&amp;amp;facet=industry,&quot; + industrynum + &quot;&amp;amp;title=&quot; + title + &quot;&amp;amp;current-
+                  title=true&amp;amp;facet=network,F,S&amp;amp;count=25&quot;
+
+So, clear the div we’re gong to use. Grab the code from the industry hash based on what’s in the Industry user input field. Pull the title from the Title input field.
+
+In this case we’re using the People Search resource with some field selectors to request specific profile fields for the users who are returned. That’s this part:
+
+people-search:(people:(
+                     id,first-name,last-name,public-profile-url,
+                     three-current-positions:(title,company:(name,industry)),
+                     distance,picture-url))
+
+Why three-current-positions? Because I can’t just ask for one current position, and this list will be smaller and faster than all the positions.
+
+We also need some very specific filters on our search, so we’re using facets (also covered on the People Search page) to get us only the members in our network who have the right title and industry. Let’s go over those things individually:
+
+
+  sort=distance : distance from me, i.e. degree (first or second)
+  facet=industry,xx : I want only users who are working in this industry (like Entertainment or Internet)
+  title=yyy : This is a fuzzy string match. Doesn’t have to match exactly.
+  current_title=true : Don’t tell me about their past positions. I want people doing this right now
+  facet=network,F,S : First and Second degree connections only.
+  count=25 : I don’t have all day and I’m only going to show 25 total results in any case.
+
+
+All right, now that that’s settled, let’s make the call. The Raw API call we’re making reaches directly through to the back end REST API.
+
+IN.API.Raw(path)
+	  .result(function(result) {
+	    var count = result.people.values.length;
+	    var html = $(&quot;#connections&quot;).html();
+	  	for (var index in result.people.values) {
+	  		var person = result.people.values[index]
+	  		html += &quot;&amp;lt;div class=\&quot;connectionitem\&quot;&amp;gt;&quot;;
+	  		if (person[&quot;pictureUrl&quot;]) {
+		  		html += &quot;&amp;lt;img src= \&quot;&quot; + person[&quot;pictureUrl&quot;] +
+                                              &quot;\&quot;  width=40 align=right/&amp;gt;&quot;;
+			}
+			var distance = (person[&quot;distance&quot;] === 1 ? &#39;1st&#39; : &#39;2nd&#39;)
+	  		html += &quot;&amp;lt;a href=\&quot;&quot; + person[&quot;publicProfileUrl&quot;] + &quot;\&quot;&amp;gt;&amp;lt;h3&amp;gt;&quot; +
+                                      person[&quot;firstName&quot;] + &quot; &quot; + person[&quot;lastName&quot;] +
+                                      &quot; (&quot; + distance + &quot;)&amp;lt;/h3&amp;gt;&amp;lt;/a&amp;gt;&quot;;
+	  		html += person[&quot;threeCurrentPositions&quot;][&quot;values&quot;][0][&quot;title&quot;] +
+                                    &quot;, &quot; + person[&quot;threeCurrentPositions&quot;][&quot;values&quot;][0][&quot;company&quot;][&quot;name&quot;] +
+                                   &quot; (&quot; + person[&quot;threeCurrentPositions&quot;][&quot;values&quot;][0][&quot;company&quot;][&quot;industry&quot;] +
+                                   &quot;) &amp;lt;/div&amp;gt;&quot;;
+	  	}
+	  	$(&quot;#connections&quot;).html(html)
+	  });
+
+Just as in the other tutorials, the JSAPI method (in this case IN.API.Raw()) is called with chained methods indicating how it should be executed. In this case, we just want to perform a GET on the resource, and process the results, so .results is the only thing we’re setting.
+
+Just like in the StreamIn’ tutorial, the results are iterated over person by person and a collection of connectionitems is gathered together, made pretty, and plopped in the “connections” div.">
+	
+	
+
+	<link type="text/plain" rel="author" href="https://www.princesspolymath.com/humans.txt">
+
+	
+
+	
+
+	<link rel="icon" sizes="32x32" href="https://www.princesspolymath.com/assets/img/favicon-32x32.png">
+
+	<link rel="icon" sizes="192x192" href="https://www.princesspolymath.com/assets/img/touch-icon-192x192.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="180x180" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-180x180-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="152x152" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-152x152-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-144x144-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="120x120" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-120x120-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-114x114-precomposed.png">
+
+	
+	<link rel="apple-touch-icon-precomposed" sizes="76x76" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-76x76-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-72x72-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-precomposed.png">	
+
+	<meta name="msapplication-TileImage" content="https://www.princesspolymath.com/assets/img/msapplication_tileimage.png">
+
+	<meta name="msapplication-TileColor" content="#fabb00">
+
+
+	
+
+</head>
+<body id="top-of-page" class="">
+	
+	<div id="navigation" class="sticky">
+  <nav class="top-bar" role="navigation" data-topbar>
+    <ul class="title-area">
+      <li class="name">
+      <h1 class="show-for-small-only"><a href="https://www.princesspolymath.com" class="icon-tree"> Princess Polymath</a></h1>
+    </li>
+       <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+      <li class="toggle-topbar menu-icon"><a href="#"><span>Navigation</span></a></li>
+    </ul>
+    <section class="top-bar-section">
+
+      <ul class="right">
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+            
+            
+              <li class="divider"></li>
+              <li><a href="https://www.princesspolymath.com/search/">Search</a></li>
+
+            
+            
+          
+        
+
+              
+
+          
+          
+            
+            
+              <li class="divider"></li>
+              <li><a href="https://www.princesspolymath.com/contact/">Contact</a></li>
+
+            
+            
+          
+        
+        
+      </ul>
+
+      <ul class="left">
+        
+
+              
+
+          
+          
+
+            
+            
+	    
+		<li><a href="https://www.princesspolymath.com/">Home</a></li>
+              <li class="divider"></li>
+		
+            
+            
+          
+        
+
+              
+
+          
+          
+
+            
+            
+	    
+		<li><a href="https://www.princesspolymath.com/resume">Resume</a></li>
+              <li class="divider"></li>
+		
+            
+            
+          
+        
+
+              
+
+          
+          
+
+            
+            
+	    
+		<li><a href="http://github.com/synedra" target="_blank">CODE</a></li>
+              <li class="divider"></li>
+		
+            
+            
+          
+        
+
+              
+
+          
+          
+
+            
+            
+	    
+		<li><a href="http://irresistibleapis.com" target="_blank">Irresistible APIs Book</a></li>
+              <li class="divider"></li>
+		
+            
+            
+          
+        
+
+              
+
+          
+          
+
+            
+            
+	    
+		<li><a href="https://www.princesspolymath.com/schedule">Schedule</a></li>
+              <li class="divider"></li>
+		
+            
+            
+          
+        
+
+              
+
+          
+          
+
+            
+            
+	    
+		<li><a href="https://www.princesspolymath.com/presentations">Presentations</a></li>
+              <li class="divider"></li>
+		
+            
+            
+          
+        
+
+              
+
+          
+          
+
+            
+            
+	    
+		<li><a href="https://www.princesspolymath.com/reviews">Reviews</a></li>
+              <li class="divider"></li>
+		
+            
+            
+          
+        
+
+              
+
+          
+          
+
+            
+            
+
+              <li class="has-dropdown">
+                <a href="https://www.princesspolymath.com/blog/">Blog</a>
+
+                  <ul class="dropdown">
+                    
+
+                      
+
+                      <li><a href="https://www.princesspolymath.com/blog/archive/">Blog Archive</a></li>
+                    
+                  </ul>
+
+              </li>
+              <li class="divider"></li>
+            
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+        
+      </ul>
+    </section>
+  </nav>
+</div><!-- /#navigation -->
+
+	
+	
+	
+
+<div id="masthead-no-image-header">
+	<div class="row">
+		<div class="small-12 columns">
+			<a id="logo" href="https://www.princesspolymath.com" title="Princess Polymath – I know lots of things...">
+				<img src="https://www.princesspolymath.com/assets/img/logo-words.png" alt="Princess Polymath – I know lots of things...">
+			</a>
+		</div><!-- /.small-12.columns -->
+	</div><!-- /.row -->
+</div><!-- /#masthead -->
+
+
+
+
+
+
+
+
+
+	
+
+	<div class="row t30">
+	<div class="medium-8 columns medium-push-4">
+		<article itemscope itemtype="http://schema.org/Article">
+			<header>
+				
+
+				<div itemprop="name">
+					
+					<h1>Browsing your LinkedIn Connections by Industry</h1>
+				</div>
+			</header>
+
+
+			
+
+			<div itemprop="articleSection">
+			<p>I presented at the <a href="http://www.meetup.com/The-San-Francisco-Semantic-Web-Meetup/events/16940644/">Semantic Web Meetup</a> in San Francisco about this topic, slides for that talk can be found <a href="/assets/img/2011/06/semantic-Presentation.pdf">here</a>.</p>
+
+<p>A friend of mine, who runs a <a href="http://www.dailyendeavor.com">rather cool website</a>, asked me to help him understand how to create an industry-based query to see which of your connections are in a particular industry.  As this was a slightly trickier-than-usual problem, I put together an example for him to use, and I’ll go over how it works here.</p>
+
+<p>But first, the obligatory working demo:</p>
+
+<p>And the <a href="http://www.princesspolymath.com/dailyendeav/industry.html">code</a>. Note there are a couple of support files you’ll need to snag as well.</p>
+
+<p>In order to keep this post manageable, I’ll mention that most of the pieces for this are included in my <a href="http://www.princesspolymath.com/princess_polymath/?p=347">StreamIn’</a> tutorial. So if you’re interested in understanding how the basic framework works, take a look there. We’re basically going to break out on “Add Share Stream”.</p>
+
+<h3 id="industries">Industries</h3>
+
+<p>One of the reasons that this example is somewhat tricky is that the API doesn’t currently have a way to give you a list of industries, and how they’re related, but we do have a <a href="http://developer.linkedin.com/docs/DOC-1011">web document</a> (which is fairly static) with that information. So I grabbed the HTML from that page, fiddled with it in my editor, and created a JSON document with a hash of industries (and the groups they map to) and groups (and the industries they contain). You can see that file <a href="http://www.princesspolymath.com/dailyendeav/industries.js">here</a>. Loading that file as a javascript script gives the page access to hashes of this information.</p>
+
+<h3 id="autocomplete">Autocomplete</h3>
+
+<p>Hey, since we’ve made this handy hash, it’s a cinch to provide a jQuery autocomplete for the industries.</p>
+
+<pre>var data = Object.keys(industry_names);
+	$("input#Industry").autocomplete({
+	   source: data,
+	   select: function() { getConnections() }
+	});</pre>
+
+<p>Titles is not really a bounded set of this type, so I’ll just let the user input that freestyle.</p>
+
+<h3 id="getting-the-connections">Getting the connections</h3>
+
+<p>The logic I wanted to use was… find all my 1st or 2nd degree connections in the industry who match the title. If there are fewer than 25 of those, do another search for all of the industries in the industry group. You can see how that stacks in the code, so I’ll just talk through the actual call for the first search.</p>
+
+<pre>$("#connections").html("");
+	var industrynum = industry_names[$("#Industry").val()]["code"]
+	var title = $("#Title").val();
+	path = "/people-search:(people:(id,first-name,last-name,public-profile-url,
+                  three-current-positions:(title,company:(name,industry)),distance,picture-url))?
+                  sort=distance&amp;facet=industry," + industrynum + "&amp;title=" + title + "&amp;current-
+                  title=true&amp;facet=network,F,S&amp;count=25"</pre>
+
+<p>So, clear the div we’re gong to use. Grab the code from the industry hash based on what’s in the Industry user input field. Pull the title from the Title input field.</p>
+
+<p>In this case we’re using the <a href="http://developer.linkedin.com/docs/DOC-1191">People Search resource</a> with some <a href="http://developer.linkedin.com/docs/DOC-1014">field selectors</a> to request specific <a href="http://developer.linkedin.com/docs/DOC-1061">profile fields</a> for the users who are returned. That’s this part:</p>
+
+<pre>people-search:(people:(
+                     id,first-name,last-name,public-profile-url,
+                     three-current-positions:(title,company:(name,industry)),
+                     distance,picture-url))</pre>
+
+<p>Why three-current-positions? Because I can’t just ask for one current position, and this list will be smaller and faster than all the positions.</p>
+
+<p>We also need some very specific filters on our search, so we’re using facets (also covered on the <a href="http://developer.linkedin.com/docs/DOC-1191">People Search</a> page) to get us only the members in our network who have the right title and industry. Let’s go over those things individually:</p>
+
+<ul>
+  <li>sort=distance : distance from me, i.e. degree (first or second)</li>
+  <li>facet=industry,xx : I want only users who are working in this industry (like Entertainment or Internet)</li>
+  <li>title=yyy : This is a fuzzy string match. Doesn’t have to match exactly.</li>
+  <li>current_title=true : Don’t tell me about their past positions. I want people doing this right now</li>
+  <li>facet=network,F,S : First and Second degree connections only.</li>
+  <li>count=25 : I don’t have all day and I’m only going to show 25 total results in any case.</li>
+</ul>
+
+<p>All right, now that that’s settled, let’s make the call. The Raw API call we’re making reaches directly through to the back end REST API.</p>
+
+<pre>IN.API.Raw(path)
+	  .result(function(result) {
+	    var count = result.people.values.length;
+	    var html = $("#connections").html();
+	  	for (var index in result.people.values) {
+	  		var person = result.people.values[index]
+	  		html += "&lt;div class=\"connectionitem\"&gt;";
+	  		if (person["pictureUrl"]) {
+		  		html += "&lt;img src= \"" + person["pictureUrl"] +
+                                              "\"  width=40 align=right/&gt;";
+			}
+			var distance = (person["distance"] === 1 ? '1st' : '2nd')
+	  		html += "&lt;a href=\"" + person["publicProfileUrl"] + "\"&gt;&lt;h3&gt;" +
+                                      person["firstName"] + " " + person["lastName"] +
+                                      " (" + distance + ")&lt;/h3&gt;&lt;/a&gt;";
+	  		html += person["threeCurrentPositions"]["values"][0]["title"] +
+                                    ", " + person["threeCurrentPositions"]["values"][0]["company"]["name"] +
+                                   " (" + person["threeCurrentPositions"]["values"][0]["company"]["industry"] +
+                                   ") &lt;/div&gt;";
+	  	}
+	  	$("#connections").html(html)
+	  });</pre>
+
+<p>Just as in the other tutorials, the JSAPI method (in this case IN.API.Raw()) is called with chained methods indicating how it should be executed. In this case, we just want to perform a GET on the resource, and process the results, so .results is the only thing we’re setting.</p>
+
+<p>Just like in the StreamIn’ tutorial, the results are iterated over person by person and a collection of connectionitems is gathered together, made pretty, and plopped in the “connections” div.</p>
+
+			</div>
+
+			
+						<div id="page-meta" class="t30">
+				<p>
+					<!-- Look the author details up from the site config. -->
+					
+					<!-- Output author details if some exist. -->
+					
+
+				
+				<time class="icon-calendar pr20" datetime="2011-03-09" itemprop="datePublished"> 2011-03-09</time>
+				
+
+				<span class="icon-archive pr20"> GEEK STUFF · JSAPI · LINKEDIN · UNCATEGORIZED · WEB APIS</span>
+				<br />
+				<span class="pr20"><span class="icon-price-tag pr10"> api</span> <span class="icon-price-tag pr10"> javascript</span> <span class="icon-price-tag pr10"> linkedin</span> </span>
+			</p>
+
+			<div id="post-nav" class="row">
+				
+				<div class="small-5 columns"><a class="button small radius prev" href="https://www.princesspolymath.com/adding-html5-local-storage-to-your-web-app.html">&laquo; Adding HTML5 Local Storage to Your Web App</a></div><!-- /.small-4.columns -->
+				
+				<div class="small-2 columns text-center"><a class="radius button small" href="https://www.princesspolymath.com/blog/archive/" title="Blog Archive">Archive</a></div><!-- /.small-4.columns -->
+				
+				<div class="small-5 columns text-right"><a class="button small radius next" href="https://www.princesspolymath.com/silicon-valley-ios-developer-meetup.html">Silicon Valley iOS Developer Meetup &raquo;</a></div><!-- /.small-4.columns -->
+				
+			</div>
+			</div><!--  /.page-meta -->
+			
+
+			
+						
+				<h3 id="comments" class="t60">Dialogue &amp; Discussion</h3>
+			    <div id="disqus_thread"></div>
+			    <script type="text/javascript">
+			        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+			        var disqus_shortname = 'princesspolymath'; 
+			        var disqus_identifier = '/browsing-your-connections-by-industry.html';
+
+			        /* * * DON'T EDIT BELOW THIS LINE * * */
+			        (function() {
+			            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+			            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+			            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+			        })();
+			    </script>
+			    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+			
+
+
+
+			
+		</article>
+	</div><!-- /.medium-8.columns -->
+
+
+	
+	<div class="medium-4 columns medium-pull-8">
+		<aside>
+<div itemscope itemtype="http://schema.org/Person">
+
+  <div class="author__avatar">
+    	<img src="http://princesspolymath.com/assets/img/headshot.jpg" alt="Kirsten Hunter">
+  </div>
+
+  <div class="author__content">
+    <h3 class="author__name">Kirsten Hunter</h3>
+    <p class="author__bio">I know lots of things...</p>
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls ">
+        <li><i class="fa fa-fw fa-map-marker" aria-hidden="true"></i> Santa Cruz</li>
+        <li><a href="mailto:synedra@gmail.com"><i class="fa fa-fw fa-envelope-square" aria-hidden="true"></i> Email</a></li>
+        <li><a href="https://twitter.com/@synedra"><i class="fa fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        <li><a href="https://www.linkedin.com/in/http://linkedin.com/in/synedra"><i class="fa fa-fw fa-linkedin-square" aria-hidden="true"></i> LinkedIn</a></li>
+        <li><a href="https://github.com/https://github.com/synedra"><i class="fa fa-fw fa-github" aria-hidden="true"></i> Github</a></li>
+    </ul>
+  </div>
+<a class="twitter-timeline" href="https://twitter.com/search?q=%40synedra" data-widget-id="744007280098574337">Tweets about @synedra</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+<a class="twitter-timeline" href="https://twitter.com/synedra">Tweets by synedra</a>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+</aside>
+
+	</div><!-- /.medium-4.columns -->
+	
+
+
+	
+</div><!-- /.row -->
+
+
+	
+	    <div id="up-to-top" class="row">
+      <div class="small-12 columns" style="text-align: right;">
+        <a class="iconfont" href="#top-of-page">&#xf108;</a>
+      </div><!-- /.small-12.columns -->
+    </div><!-- /.row -->
+
+
+    <footer id="footer-content" class="bg-grau">
+      <div id="footer">
+        <div class="row">
+          <div class="medium-6 large-5 columns">
+            <h5 class="shadow-black">About This Site</h5>
+
+            <p class="shadow-black">
+              Princess Polymath is a website focused on programming, web design, APIs and general amusement.
+              <a href="https://www.princesspolymath.com/info/">More ›</a>
+            </p>
+          </div><!-- /.large-6.columns -->
+
+
+          <div class="small-6 medium-3 large-3 large-offset-1 columns">
+            
+              
+                <h5 class="shadow-black">Services</h5>
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+
+              <ul class="no-bullet shadow-black">
+              
+                
+                  <li >
+                    <a href="https://www.princesspolymath.com"  title=""></a>
+                  </li>
+              
+                
+                  <li >
+                    <a href="https://www.princesspolymath.com/contact/"  title="Contact">Contact</a>
+                  </li>
+              
+                
+                  <li >
+                    <a href="https://www.princesspolymath.com/feed.xml"  title="Subscribe to RSS Feed">RSS</a>
+                  </li>
+              
+                
+                  <li >
+                    <a href="https://www.princesspolymath.com/atom.xml"  title="Subscribe to Atom Feed">Atom</a>
+                  </li>
+              
+                
+                  <li >
+                    <a href="https://www.princesspolymath.com/sitemap.xml"  title="Sitemap for Google Webmaster Tools">sitemap.xml</a>
+                  </li>
+              
+              </ul>
+          </div><!-- /.large-4.columns -->
+
+
+          <div class="small-6 medium-3 large-3 columns">
+            
+              
+                <h5 class="shadow-black">Contact information</h5>
+              
+            
+              
+            
+              
+            
+
+            <ul class="no-bullet shadow-black">
+            
+              
+                <li >
+                  <a href="https://www.princesspolymath.com"  title=""></a>
+                </li>
+            
+              
+                <li class="network-entypo" >
+                  <a href="http://linkedin.com/in/synedra" target="_blank"  title="LinkedIn Contact">LinkedIn</a>
+                </li>
+            
+              
+                <li class="network-entypo" >
+                  <a href="http://twitter.com/synedra" target="_blank"  title="Twitter">Twitter</a>
+                </li>
+            
+            </ul>
+          </div><!-- /.large-3.columns -->
+        </div><!-- /.row -->
+
+      </div><!-- /#footer -->
+
+
+      <div id="subfooter">
+        <nav class="row">
+          <section id="subfooter-left" class="small-12 medium-6 columns credits">
+            <p>Created with &hearts; by <a href="/">synedra</a> with <a href="http://jekyllrb.com/" target="_blank">Jekyll</a> based on <a href="http://phlow.github.io/feeling-responsive/">Feeling Responsive</a>.</p>
+          </section>
+
+          <section id="subfooter-right" class="small-12 medium-6 columns">
+            <ul class="inline-list social-icons">
+            
+              <li><a href="http://github.com/synedra" target="_blank" class="icon-github" title="Riff Raff"></a></li>
+            
+              <li><a href="http://www.youtube.com/PhlowMedia" target="_blank" class="icon-youtube" title="Videos, Video-Anleitungen und Filme von Phlow auf YouTube"></a></li>
+            
+              <li><a href="http://twitter.com/synedra" target="_blank" class="icon-twitter" title="My 140 Character Babblings"></a></li>
+            
+              <li><a href="https://plus.google.com/u/0/+Phlow" target="_blank" class="icon-googleplus" title="YouTube Google+"></a></li>
+            
+            </ul>
+          </section>
+        </nav>
+      </div><!-- /#subfooter -->
+    </footer>
+
+	
+
+	
+
+
+<script src="https://www.princesspolymath.com/assets/js/javascript.min.js"></script>
+
+
+
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-60112281-1', 'auto');
+  ga('set', 'anonymizeIp', true);
+  ga('send', 'pageview');
+
+</script>
+
+
+
+
+
+
+
+
+</body>
+</html>
+

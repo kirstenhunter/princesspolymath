@@ -1,0 +1,1390 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<meta http-equiv="Edge-Cache-Tag" content="princess" />
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Handling SMS Responses from Twilio using Django on Heroku</title>
+	<link rel="stylesheet" type="text/css" href="https://www.princesspolymath.com/assets/css/styles_feeling_responsive.css">
+	<script src="https://www.princesspolymath.com/assets/js/modernizr.min.js"></script>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
+	<script>
+		WebFont.load({
+			google: {
+				families: [ 'Lato:400,700,400italic:latin', 'Volkhov::latin' ]
+			}
+		});
+	</script>
+
+	<noscript>
+		<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic%7CVolkhov' rel='stylesheet' type='text/css'>
+	</noscript>
+
+
+	<!-- Search Engine Optimization -->
+	<meta name="description" content="The final piece in the application I’m working on requires that I process SMS replies from Twilio.  To do this, I need a public-facing server that can handle a POST request from another server so it can do the right thing on my end.  This tutorial will walk through how to do that with a Django server on Heroku.  You can grab the twilio_sms application from within my The final piece in the application I’m working on requires that I process SMS replies from Twilio.  To do this, I need a public-facing server that can handle a POST request from another server so it can do the right thing on my end.  This tutorial will walk through how to do that with a Django server on Heroku.  You can grab the twilio_sms application from within my for this application, or you can build it based on the walkthrough here.
+
+URL Setup
+
+Add a mapping for /reply/ to the urls.py in your top level Django project.
+
+urls.py
+
+url(r&#39;^reply&#39;, &#39;twilio_sms.views.sms_reply&#39;),
+
+You’ll need to tell Twilio where to send SMS replies on the dashboard.  For instance, my Heroku instance runs at http://falling-summer-4605.herokuapp.com so my SMS Response URL is set to http://falling-summer-4605.herokuapp.com/reply.
+
+Creating twilio_sms
+
+In order for that URL mapping to do the right thing it needs to point to the right application.  If you aren’t using the code samples from GitHub, you can create a new application with:
+
+django-admin.py startapp twilio_sms
+
+Now we need to build the views.py file to handle the responses.
+
+The setup is similar to the linkedin application we made previously.
+
+# Python
+import oauth2 as oauth
+import simplejson as json
+import re
+from xml.dom.minidom import getDOMImplementation,parse,parseString
+
+# Django
+from django.http import HttpResponse
+from django.shortcuts import render_to_response
+from django.http import HttpResponseRedirect
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User
+
+# Project
+from linkedin.models import UserProfile,SentArticle
+
+# from settings.py
+consumer = oauth.Consumer(settings.LINKEDIN_TOKEN, settings.LINKEDIN_SECRET)
+client = oauth.Client(consumer)
+
+We’ll create a convenience method to build SMS responses in the format expected by the Twilio server (so that the user gets a reasonable SMS response)
+
+def createSmsResponse(responsestring):
+	impl = getDOMImplementation()
+	responsedoc = impl.createDocument(None,&quot;Response&quot;,None)
+	top_element = responsedoc.documentElement
+	sms_element = responsedoc.createElement(&quot;Sms&quot;)
+	top_element.appendChild(sms_element)
+	text_node = responsedoc.createTextNode(responsestring)
+	sms_element.appendChild(text_node)
+	html = responsedoc.toxml(encoding=&quot;utf-8&quot;)
+	return html
+
+Because the POST will be coming from an external server without a session cookie, we need to use the @csrf_exempt decorator to tell Django to allow these POSTs without authentication.  For security, you might check the incoming IP to make sure it’s coming from Twilio, or make sure that the other information matches what you expect.  For this demo, we’ll allow it to proceed assuming it’s the right thing.
+
+Grab the parameters, get the user’s phone number, and determine which of our users matches that phone number, then grab their credentials and create the LinkedIn client to make requests.
+
+@csrf_exempt
+def sms_reply(request):
+    if request.method == &#39;POST&#39;:
+        params = request.POST
+        phone = re.sub(&#39;\+1&#39;,&#39;&#39;,params[&#39;From&#39;])
+        smsuser = User.objects.get(userprofile__phone_number=phone)
+        responsetext = &quot;This is my reply text&quot;
+        token = oauth.Token(smsuser.get_profile().oauth_token, smsuser.get_profile().oauth_secret)
+        client = oauth.Client(consumer,token)
+
+Figure out what the user wants us to do (save, search, cancel, help, level)
+
+commandmatch = re.compile(r&#39;(\w+)\b&#39;,re.I)
+        matches = commandmatch.match(params[&#39;Body&#39;])
+        command = matches.group(0).lower()
+
+“Cancel” tells the system the user doesn’t want notifications anymore.  For now, we’re going to keep their user and profile around, so that we don’t send them all the same articles again in the future. But sendArticles.py won’t send them anything if the level is set to zero.
+
+# Cancel notifications by setting score to zero
+        # Command is &#39;cancel&#39;
+        if command == &#39;cancel&#39;:
+        	profile = smsuser.get_profile()
+        	profile.min_score = 0
+        	profile.save()
+        	return HttpResponse(createSmsResponse(&quot;Today SMS Service Cancelled&quot;))
+
+“Level &amp;#8221; tells the system the user wants to change their notification level.  Higher means fewer messages, as this is used as the &amp;#8220;score&amp;#8221; check against articles based on relevance.  See the [previous post on Twilio notifications](http://www.princesspolymath.com/princess_polymath/?p=521) to see how this is implemented.  Notice that in this and the following methods we&amp;#8217;re doing generic error catching &amp;#8211; there&amp;#8217;s a few reasons why it might fail, but the important thing is to tell the user their action didn&amp;#8217;t succeed and give them a hint as to why that might be.
+
+# Change level for notifications by setting score to requested level
+        # Command is &#39;level \d&#39;
+        if command == &#39;level&#39;:
+        	levelmatch = re.compile(r&#39;level (\d)(.*)&#39;,re.I)
+        	matches = levelmatch.search(params[&#39;Body&#39;])
+
+        	try:
+	        	level = int(matches.group(1))
+	        except:
+	        	e = sys.exc_info()[1]
+	        	print &quot;ERROR: %s&quot; % (str(e))
+	        	return HttpResponse(createSmsResponse(&quot;Please use a valid level (1-9).&quot;))
+
+        	profile = smsuser.get_profile()
+        	profile.min_score = level
+        	profile.save()
+        	return HttpResponse(createSmsResponse(&quot;Today SMS minimum score changed to %d&quot; % int(level)))
+
+“Save &amp;lt;article number&amp;gt;” saves an article to the user’s LinkedIn saved articles.  Remember that in the setup we grabbed the credentials for the user who sent the SMS based on their phone number, so this (and share) are done against the LinkedIn API on their behalf.  In this new (preview only) API JSON doesn’t seem to be working well, so I’m building and using XML.
+
+# Save an article
+        # Command is &#39;save &amp;lt;articlenum&amp;gt;&#39;
+        if command == &#39;save&#39;:
+        	savematch = re.compile(r&#39;save (\d+)(.*)&#39;,re.I)
+        	matches = savematch.search(params[&#39;Body&#39;])
+        	try:
+	        	article = matches.group(1)
+        		sentarticle = SentArticle.objects.get(user=smsuser, id=article)
+	        except:
+	        	e = sys.exc_info()[1]
+	        	print &quot;ERROR: %s&quot; % (str(e))
+	        	return HttpResponse(createSmsResponse(&quot;Please use a valid article number with save.&quot;))
+
+        	responsetext = &quot;Saved article: %s&quot; % (sentarticle.article_title)
+        	saveurl = &quot;http://api.linkedin.com/v1/people/~/articles&quot;
+
+        	# Oddly JSON doesn&#39;t seem to work with the article save API
+        	# Using XML instead
+        	impl = getDOMImplementation()
+        	xmlsavedoc = impl.createDocument(None,&quot;article&quot;,None)
+        	top_element = xmlsavedoc.documentElement
+        	article_content_element = xmlsavedoc.createElement(&quot;article-content&quot;)
+        	top_element.appendChild(article_content_element)
+        	id_element = xmlsavedoc.createElement(&quot;id&quot;)
+        	article_content_element.appendChild(id_element)
+        	text_node = xmlsavedoc.createTextNode(sentarticle.article_number)
+        	id_element.appendChild(text_node)
+        	body = xmlsavedoc.toxml(encoding=&quot;utf-8&quot;)
+
+        	resp, content = client.request(saveurl, &quot;POST&quot;,body=body,headers={&quot;Content-Type&quot;:&quot;text/xml&quot;})
+        	if (resp.status == 200):
+        		return HttpResponse(createSmsResponse(responsetext))
+        	else:
+        		return HttpResponse(createSmsResponse(&quot;Unable to save post: %s&quot; % content))
+
+“Share &amp;lt;article number&amp;gt; &amp;#8221; shares an article to the user&amp;#8217;s network with a comment.  The comment shouldn&amp;#8217;t really be optional, but typing on T-9 keyboards is a pain, so I wanted to give a default share message.  I&amp;#8217;m not sure I love it as an answer though&amp;#8230;
+
+# Share an article
+        # Command is &#39;share &amp;lt;articlenum&amp;gt; &amp;lt;comment&amp;gt;&#39;
+        # If no comment is included, a generic one is sent
+        if command == &#39;share&#39;:
+        	sharematch = re.compile(r&#39;Share (\d+) (.*)&#39;)
+        	matches = sharematch.search(params[&#39;Body&#39;])
+        	try:
+        		article = matches.group(1)
+	        	sentarticle = SentArticle.objects.get(user=smsuser, id=article)
+        		comment = matches.group(2)
+	        except:
+	        	if sentarticle and not comment:
+	        		comment = &quot;Sharing an article from the LinkedIn SMS System&quot;
+	        	else:
+	        		e = sys.exc_info()[1]
+	        		print &quot;ERROR: %s&quot; % (str(e))
+	        		return HttpResponse(createSmsResponse(&quot;Please use a valid article number with share and include a comment.&quot;))
+
+        	responsetext = &quot;Shared article: %s&quot; % (sentarticle.article_title)
+        	shareurl = &quot;http://api.linkedin.com/v1/people/~/shares&quot;
+        	body = {&quot;comment&quot;:comment,
+        		&quot;content&quot;:{
+        			&quot;article-id&quot;:sentarticle.article_number
+       	 		},
+        	&quot;visibility&quot;:{&quot;code&quot;:&quot;anyone&quot;}
+        	}
+
+        	resp, content = client.request(shareurl, &quot;POST&quot;,body=json.dumps(body),headers={&quot;Content-Type&quot;:&quot;application/json&quot;})
+        	if (resp.status == 201):
+        		return HttpResponse(createSmsResponse(responsetext))
+        	else:
+        		return HttpResponse(createSmsResponse(&quot;Unable to share post: %s&quot; % content))
+
+If we’ve fallen through to here, the user may have asked for ‘help’ – but whatever they did we didn’t understand it so we should give them the help text in any case.
+
+# If command is help, or anything we didn&#39;t recognize, send help back
+        helpstring = &quot;Commands: &#39;cancel&#39; to cancel Today SMS; &#39;level #number#&#39; to change minimum score;&quot;
+        helpstring += &quot;&#39;save #article#&#39; to save; &#39;share #article# #comment#&#39; to share&quot;
+        return HttpResponse(createSmsResponse(help string))
+
+… and, if the request wasn’t a POST, send a 405 response back to the system (it won’t be Twilio, it might have been someone else).  This URL is only for processing these SMS messages.
+
+# If it&#39;s not a post, return an error
+    return HttpResponseNotAllowed(&#39;POST&#39;)">
+  	<meta name="google-site-verification" content="Vk0IOJ2jwG_qEoG7fuEXYqv0m2rLa8P778Fi_GrsgEQ">
+	<meta name="msvalidate.01" content="0FB4C028ABCF07C908C54386ABD2D97F" >
+	<link rel="author" href="https://plus.google.com/u/0/118311555303973066167">
+	
+	
+
+
+	<!-- Facebook Open Graph -->
+	<meta property="og:title" content="Handling SMS Responses from Twilio using Django on Heroku">
+	<meta property="og:description" content="The final piece in the application I’m working on requires that I process SMS replies from Twilio.  To do this, I need a public-facing server that can handle a POST request from another server so it can do the right thing on my end.  This tutorial will walk through how to do that with a Django server on Heroku.  You can grab the twilio_sms application from within my The final piece in the application I’m working on requires that I process SMS replies from Twilio.  To do this, I need a public-facing server that can handle a POST request from another server so it can do the right thing on my end.  This tutorial will walk through how to do that with a Django server on Heroku.  You can grab the twilio_sms application from within my for this application, or you can build it based on the walkthrough here.
+
+URL Setup
+
+Add a mapping for /reply/ to the urls.py in your top level Django project.
+
+urls.py
+
+url(r&#39;^reply&#39;, &#39;twilio_sms.views.sms_reply&#39;),
+
+You’ll need to tell Twilio where to send SMS replies on the dashboard.  For instance, my Heroku instance runs at http://falling-summer-4605.herokuapp.com so my SMS Response URL is set to http://falling-summer-4605.herokuapp.com/reply.
+
+Creating twilio_sms
+
+In order for that URL mapping to do the right thing it needs to point to the right application.  If you aren’t using the code samples from GitHub, you can create a new application with:
+
+django-admin.py startapp twilio_sms
+
+Now we need to build the views.py file to handle the responses.
+
+The setup is similar to the linkedin application we made previously.
+
+# Python
+import oauth2 as oauth
+import simplejson as json
+import re
+from xml.dom.minidom import getDOMImplementation,parse,parseString
+
+# Django
+from django.http import HttpResponse
+from django.shortcuts import render_to_response
+from django.http import HttpResponseRedirect
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User
+
+# Project
+from linkedin.models import UserProfile,SentArticle
+
+# from settings.py
+consumer = oauth.Consumer(settings.LINKEDIN_TOKEN, settings.LINKEDIN_SECRET)
+client = oauth.Client(consumer)
+
+We’ll create a convenience method to build SMS responses in the format expected by the Twilio server (so that the user gets a reasonable SMS response)
+
+def createSmsResponse(responsestring):
+	impl = getDOMImplementation()
+	responsedoc = impl.createDocument(None,&quot;Response&quot;,None)
+	top_element = responsedoc.documentElement
+	sms_element = responsedoc.createElement(&quot;Sms&quot;)
+	top_element.appendChild(sms_element)
+	text_node = responsedoc.createTextNode(responsestring)
+	sms_element.appendChild(text_node)
+	html = responsedoc.toxml(encoding=&quot;utf-8&quot;)
+	return html
+
+Because the POST will be coming from an external server without a session cookie, we need to use the @csrf_exempt decorator to tell Django to allow these POSTs without authentication.  For security, you might check the incoming IP to make sure it’s coming from Twilio, or make sure that the other information matches what you expect.  For this demo, we’ll allow it to proceed assuming it’s the right thing.
+
+Grab the parameters, get the user’s phone number, and determine which of our users matches that phone number, then grab their credentials and create the LinkedIn client to make requests.
+
+@csrf_exempt
+def sms_reply(request):
+    if request.method == &#39;POST&#39;:
+        params = request.POST
+        phone = re.sub(&#39;\+1&#39;,&#39;&#39;,params[&#39;From&#39;])
+        smsuser = User.objects.get(userprofile__phone_number=phone)
+        responsetext = &quot;This is my reply text&quot;
+        token = oauth.Token(smsuser.get_profile().oauth_token, smsuser.get_profile().oauth_secret)
+        client = oauth.Client(consumer,token)
+
+Figure out what the user wants us to do (save, search, cancel, help, level)
+
+commandmatch = re.compile(r&#39;(\w+)\b&#39;,re.I)
+        matches = commandmatch.match(params[&#39;Body&#39;])
+        command = matches.group(0).lower()
+
+“Cancel” tells the system the user doesn’t want notifications anymore.  For now, we’re going to keep their user and profile around, so that we don’t send them all the same articles again in the future. But sendArticles.py won’t send them anything if the level is set to zero.
+
+# Cancel notifications by setting score to zero
+        # Command is &#39;cancel&#39;
+        if command == &#39;cancel&#39;:
+        	profile = smsuser.get_profile()
+        	profile.min_score = 0
+        	profile.save()
+        	return HttpResponse(createSmsResponse(&quot;Today SMS Service Cancelled&quot;))
+
+“Level &amp;#8221; tells the system the user wants to change their notification level.  Higher means fewer messages, as this is used as the &amp;#8220;score&amp;#8221; check against articles based on relevance.  See the [previous post on Twilio notifications](http://www.princesspolymath.com/princess_polymath/?p=521) to see how this is implemented.  Notice that in this and the following methods we&amp;#8217;re doing generic error catching &amp;#8211; there&amp;#8217;s a few reasons why it might fail, but the important thing is to tell the user their action didn&amp;#8217;t succeed and give them a hint as to why that might be.
+
+# Change level for notifications by setting score to requested level
+        # Command is &#39;level \d&#39;
+        if command == &#39;level&#39;:
+        	levelmatch = re.compile(r&#39;level (\d)(.*)&#39;,re.I)
+        	matches = levelmatch.search(params[&#39;Body&#39;])
+
+        	try:
+	        	level = int(matches.group(1))
+	        except:
+	        	e = sys.exc_info()[1]
+	        	print &quot;ERROR: %s&quot; % (str(e))
+	        	return HttpResponse(createSmsResponse(&quot;Please use a valid level (1-9).&quot;))
+
+        	profile = smsuser.get_profile()
+        	profile.min_score = level
+        	profile.save()
+        	return HttpResponse(createSmsResponse(&quot;Today SMS minimum score changed to %d&quot; % int(level)))
+
+“Save &amp;lt;article number&amp;gt;” saves an article to the user’s LinkedIn saved articles.  Remember that in the setup we grabbed the credentials for the user who sent the SMS based on their phone number, so this (and share) are done against the LinkedIn API on their behalf.  In this new (preview only) API JSON doesn’t seem to be working well, so I’m building and using XML.
+
+# Save an article
+        # Command is &#39;save &amp;lt;articlenum&amp;gt;&#39;
+        if command == &#39;save&#39;:
+        	savematch = re.compile(r&#39;save (\d+)(.*)&#39;,re.I)
+        	matches = savematch.search(params[&#39;Body&#39;])
+        	try:
+	        	article = matches.group(1)
+        		sentarticle = SentArticle.objects.get(user=smsuser, id=article)
+	        except:
+	        	e = sys.exc_info()[1]
+	        	print &quot;ERROR: %s&quot; % (str(e))
+	        	return HttpResponse(createSmsResponse(&quot;Please use a valid article number with save.&quot;))
+
+        	responsetext = &quot;Saved article: %s&quot; % (sentarticle.article_title)
+        	saveurl = &quot;http://api.linkedin.com/v1/people/~/articles&quot;
+
+        	# Oddly JSON doesn&#39;t seem to work with the article save API
+        	# Using XML instead
+        	impl = getDOMImplementation()
+        	xmlsavedoc = impl.createDocument(None,&quot;article&quot;,None)
+        	top_element = xmlsavedoc.documentElement
+        	article_content_element = xmlsavedoc.createElement(&quot;article-content&quot;)
+        	top_element.appendChild(article_content_element)
+        	id_element = xmlsavedoc.createElement(&quot;id&quot;)
+        	article_content_element.appendChild(id_element)
+        	text_node = xmlsavedoc.createTextNode(sentarticle.article_number)
+        	id_element.appendChild(text_node)
+        	body = xmlsavedoc.toxml(encoding=&quot;utf-8&quot;)
+
+        	resp, content = client.request(saveurl, &quot;POST&quot;,body=body,headers={&quot;Content-Type&quot;:&quot;text/xml&quot;})
+        	if (resp.status == 200):
+        		return HttpResponse(createSmsResponse(responsetext))
+        	else:
+        		return HttpResponse(createSmsResponse(&quot;Unable to save post: %s&quot; % content))
+
+“Share &amp;lt;article number&amp;gt; &amp;#8221; shares an article to the user&amp;#8217;s network with a comment.  The comment shouldn&amp;#8217;t really be optional, but typing on T-9 keyboards is a pain, so I wanted to give a default share message.  I&amp;#8217;m not sure I love it as an answer though&amp;#8230;
+
+# Share an article
+        # Command is &#39;share &amp;lt;articlenum&amp;gt; &amp;lt;comment&amp;gt;&#39;
+        # If no comment is included, a generic one is sent
+        if command == &#39;share&#39;:
+        	sharematch = re.compile(r&#39;Share (\d+) (.*)&#39;)
+        	matches = sharematch.search(params[&#39;Body&#39;])
+        	try:
+        		article = matches.group(1)
+	        	sentarticle = SentArticle.objects.get(user=smsuser, id=article)
+        		comment = matches.group(2)
+	        except:
+	        	if sentarticle and not comment:
+	        		comment = &quot;Sharing an article from the LinkedIn SMS System&quot;
+	        	else:
+	        		e = sys.exc_info()[1]
+	        		print &quot;ERROR: %s&quot; % (str(e))
+	        		return HttpResponse(createSmsResponse(&quot;Please use a valid article number with share and include a comment.&quot;))
+
+        	responsetext = &quot;Shared article: %s&quot; % (sentarticle.article_title)
+        	shareurl = &quot;http://api.linkedin.com/v1/people/~/shares&quot;
+        	body = {&quot;comment&quot;:comment,
+        		&quot;content&quot;:{
+        			&quot;article-id&quot;:sentarticle.article_number
+       	 		},
+        	&quot;visibility&quot;:{&quot;code&quot;:&quot;anyone&quot;}
+        	}
+
+        	resp, content = client.request(shareurl, &quot;POST&quot;,body=json.dumps(body),headers={&quot;Content-Type&quot;:&quot;application/json&quot;})
+        	if (resp.status == 201):
+        		return HttpResponse(createSmsResponse(responsetext))
+        	else:
+        		return HttpResponse(createSmsResponse(&quot;Unable to share post: %s&quot; % content))
+
+If we’ve fallen through to here, the user may have asked for ‘help’ – but whatever they did we didn’t understand it so we should give them the help text in any case.
+
+# If command is help, or anything we didn&#39;t recognize, send help back
+        helpstring = &quot;Commands: &#39;cancel&#39; to cancel Today SMS; &#39;level #number#&#39; to change minimum score;&quot;
+        helpstring += &quot;&#39;save #article#&#39; to save; &#39;share #article# #comment#&#39; to share&quot;
+        return HttpResponse(createSmsResponse(help string))
+
+… and, if the request wasn’t a POST, send a 405 response back to the system (it won’t be Twilio, it might have been someone else).  This URL is only for processing these SMS messages.
+
+# If it&#39;s not a post, return an error
+    return HttpResponseNotAllowed(&#39;POST&#39;)">
+	<meta property="og:url" content="https://www.princesspolymath.com/handling-sms-responses-from-twilio-using-django-on-heroku.html">
+	<meta property="og:locale" content="en_EN">
+	<meta property="og:type" content="website">
+	<meta property="og:site_name" content="Princess Polymath">
+	
+	<meta property="article:author" content="https://www.facebook.com/princesspolymath">
+
+
+	
+	<!-- Twitter -->
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:site" content="synedra">
+	<meta name="twitter:creator" content="synedra">
+	<meta name="twitter:title" content="Handling SMS Responses from Twilio using Django on Heroku">
+	<meta name="twitter:description" content="The final piece in the application I’m working on requires that I process SMS replies from Twilio.  To do this, I need a public-facing server that can handle a POST request from another server so it can do the right thing on my end.  This tutorial will walk through how to do that with a Django server on Heroku.  You can grab the twilio_sms application from within my The final piece in the application I’m working on requires that I process SMS replies from Twilio.  To do this, I need a public-facing server that can handle a POST request from another server so it can do the right thing on my end.  This tutorial will walk through how to do that with a Django server on Heroku.  You can grab the twilio_sms application from within my for this application, or you can build it based on the walkthrough here.
+
+URL Setup
+
+Add a mapping for /reply/ to the urls.py in your top level Django project.
+
+urls.py
+
+url(r&#39;^reply&#39;, &#39;twilio_sms.views.sms_reply&#39;),
+
+You’ll need to tell Twilio where to send SMS replies on the dashboard.  For instance, my Heroku instance runs at http://falling-summer-4605.herokuapp.com so my SMS Response URL is set to http://falling-summer-4605.herokuapp.com/reply.
+
+Creating twilio_sms
+
+In order for that URL mapping to do the right thing it needs to point to the right application.  If you aren’t using the code samples from GitHub, you can create a new application with:
+
+django-admin.py startapp twilio_sms
+
+Now we need to build the views.py file to handle the responses.
+
+The setup is similar to the linkedin application we made previously.
+
+# Python
+import oauth2 as oauth
+import simplejson as json
+import re
+from xml.dom.minidom import getDOMImplementation,parse,parseString
+
+# Django
+from django.http import HttpResponse
+from django.shortcuts import render_to_response
+from django.http import HttpResponseRedirect
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User
+
+# Project
+from linkedin.models import UserProfile,SentArticle
+
+# from settings.py
+consumer = oauth.Consumer(settings.LINKEDIN_TOKEN, settings.LINKEDIN_SECRET)
+client = oauth.Client(consumer)
+
+We’ll create a convenience method to build SMS responses in the format expected by the Twilio server (so that the user gets a reasonable SMS response)
+
+def createSmsResponse(responsestring):
+	impl = getDOMImplementation()
+	responsedoc = impl.createDocument(None,&quot;Response&quot;,None)
+	top_element = responsedoc.documentElement
+	sms_element = responsedoc.createElement(&quot;Sms&quot;)
+	top_element.appendChild(sms_element)
+	text_node = responsedoc.createTextNode(responsestring)
+	sms_element.appendChild(text_node)
+	html = responsedoc.toxml(encoding=&quot;utf-8&quot;)
+	return html
+
+Because the POST will be coming from an external server without a session cookie, we need to use the @csrf_exempt decorator to tell Django to allow these POSTs without authentication.  For security, you might check the incoming IP to make sure it’s coming from Twilio, or make sure that the other information matches what you expect.  For this demo, we’ll allow it to proceed assuming it’s the right thing.
+
+Grab the parameters, get the user’s phone number, and determine which of our users matches that phone number, then grab their credentials and create the LinkedIn client to make requests.
+
+@csrf_exempt
+def sms_reply(request):
+    if request.method == &#39;POST&#39;:
+        params = request.POST
+        phone = re.sub(&#39;\+1&#39;,&#39;&#39;,params[&#39;From&#39;])
+        smsuser = User.objects.get(userprofile__phone_number=phone)
+        responsetext = &quot;This is my reply text&quot;
+        token = oauth.Token(smsuser.get_profile().oauth_token, smsuser.get_profile().oauth_secret)
+        client = oauth.Client(consumer,token)
+
+Figure out what the user wants us to do (save, search, cancel, help, level)
+
+commandmatch = re.compile(r&#39;(\w+)\b&#39;,re.I)
+        matches = commandmatch.match(params[&#39;Body&#39;])
+        command = matches.group(0).lower()
+
+“Cancel” tells the system the user doesn’t want notifications anymore.  For now, we’re going to keep their user and profile around, so that we don’t send them all the same articles again in the future. But sendArticles.py won’t send them anything if the level is set to zero.
+
+# Cancel notifications by setting score to zero
+        # Command is &#39;cancel&#39;
+        if command == &#39;cancel&#39;:
+        	profile = smsuser.get_profile()
+        	profile.min_score = 0
+        	profile.save()
+        	return HttpResponse(createSmsResponse(&quot;Today SMS Service Cancelled&quot;))
+
+“Level &amp;#8221; tells the system the user wants to change their notification level.  Higher means fewer messages, as this is used as the &amp;#8220;score&amp;#8221; check against articles based on relevance.  See the [previous post on Twilio notifications](http://www.princesspolymath.com/princess_polymath/?p=521) to see how this is implemented.  Notice that in this and the following methods we&amp;#8217;re doing generic error catching &amp;#8211; there&amp;#8217;s a few reasons why it might fail, but the important thing is to tell the user their action didn&amp;#8217;t succeed and give them a hint as to why that might be.
+
+# Change level for notifications by setting score to requested level
+        # Command is &#39;level \d&#39;
+        if command == &#39;level&#39;:
+        	levelmatch = re.compile(r&#39;level (\d)(.*)&#39;,re.I)
+        	matches = levelmatch.search(params[&#39;Body&#39;])
+
+        	try:
+	        	level = int(matches.group(1))
+	        except:
+	        	e = sys.exc_info()[1]
+	        	print &quot;ERROR: %s&quot; % (str(e))
+	        	return HttpResponse(createSmsResponse(&quot;Please use a valid level (1-9).&quot;))
+
+        	profile = smsuser.get_profile()
+        	profile.min_score = level
+        	profile.save()
+        	return HttpResponse(createSmsResponse(&quot;Today SMS minimum score changed to %d&quot; % int(level)))
+
+“Save &amp;lt;article number&amp;gt;” saves an article to the user’s LinkedIn saved articles.  Remember that in the setup we grabbed the credentials for the user who sent the SMS based on their phone number, so this (and share) are done against the LinkedIn API on their behalf.  In this new (preview only) API JSON doesn’t seem to be working well, so I’m building and using XML.
+
+# Save an article
+        # Command is &#39;save &amp;lt;articlenum&amp;gt;&#39;
+        if command == &#39;save&#39;:
+        	savematch = re.compile(r&#39;save (\d+)(.*)&#39;,re.I)
+        	matches = savematch.search(params[&#39;Body&#39;])
+        	try:
+	        	article = matches.group(1)
+        		sentarticle = SentArticle.objects.get(user=smsuser, id=article)
+	        except:
+	        	e = sys.exc_info()[1]
+	        	print &quot;ERROR: %s&quot; % (str(e))
+	        	return HttpResponse(createSmsResponse(&quot;Please use a valid article number with save.&quot;))
+
+        	responsetext = &quot;Saved article: %s&quot; % (sentarticle.article_title)
+        	saveurl = &quot;http://api.linkedin.com/v1/people/~/articles&quot;
+
+        	# Oddly JSON doesn&#39;t seem to work with the article save API
+        	# Using XML instead
+        	impl = getDOMImplementation()
+        	xmlsavedoc = impl.createDocument(None,&quot;article&quot;,None)
+        	top_element = xmlsavedoc.documentElement
+        	article_content_element = xmlsavedoc.createElement(&quot;article-content&quot;)
+        	top_element.appendChild(article_content_element)
+        	id_element = xmlsavedoc.createElement(&quot;id&quot;)
+        	article_content_element.appendChild(id_element)
+        	text_node = xmlsavedoc.createTextNode(sentarticle.article_number)
+        	id_element.appendChild(text_node)
+        	body = xmlsavedoc.toxml(encoding=&quot;utf-8&quot;)
+
+        	resp, content = client.request(saveurl, &quot;POST&quot;,body=body,headers={&quot;Content-Type&quot;:&quot;text/xml&quot;})
+        	if (resp.status == 200):
+        		return HttpResponse(createSmsResponse(responsetext))
+        	else:
+        		return HttpResponse(createSmsResponse(&quot;Unable to save post: %s&quot; % content))
+
+“Share &amp;lt;article number&amp;gt; &amp;#8221; shares an article to the user&amp;#8217;s network with a comment.  The comment shouldn&amp;#8217;t really be optional, but typing on T-9 keyboards is a pain, so I wanted to give a default share message.  I&amp;#8217;m not sure I love it as an answer though&amp;#8230;
+
+# Share an article
+        # Command is &#39;share &amp;lt;articlenum&amp;gt; &amp;lt;comment&amp;gt;&#39;
+        # If no comment is included, a generic one is sent
+        if command == &#39;share&#39;:
+        	sharematch = re.compile(r&#39;Share (\d+) (.*)&#39;)
+        	matches = sharematch.search(params[&#39;Body&#39;])
+        	try:
+        		article = matches.group(1)
+	        	sentarticle = SentArticle.objects.get(user=smsuser, id=article)
+        		comment = matches.group(2)
+	        except:
+	        	if sentarticle and not comment:
+	        		comment = &quot;Sharing an article from the LinkedIn SMS System&quot;
+	        	else:
+	        		e = sys.exc_info()[1]
+	        		print &quot;ERROR: %s&quot; % (str(e))
+	        		return HttpResponse(createSmsResponse(&quot;Please use a valid article number with share and include a comment.&quot;))
+
+        	responsetext = &quot;Shared article: %s&quot; % (sentarticle.article_title)
+        	shareurl = &quot;http://api.linkedin.com/v1/people/~/shares&quot;
+        	body = {&quot;comment&quot;:comment,
+        		&quot;content&quot;:{
+        			&quot;article-id&quot;:sentarticle.article_number
+       	 		},
+        	&quot;visibility&quot;:{&quot;code&quot;:&quot;anyone&quot;}
+        	}
+
+        	resp, content = client.request(shareurl, &quot;POST&quot;,body=json.dumps(body),headers={&quot;Content-Type&quot;:&quot;application/json&quot;})
+        	if (resp.status == 201):
+        		return HttpResponse(createSmsResponse(responsetext))
+        	else:
+        		return HttpResponse(createSmsResponse(&quot;Unable to share post: %s&quot; % content))
+
+If we’ve fallen through to here, the user may have asked for ‘help’ – but whatever they did we didn’t understand it so we should give them the help text in any case.
+
+# If command is help, or anything we didn&#39;t recognize, send help back
+        helpstring = &quot;Commands: &#39;cancel&#39; to cancel Today SMS; &#39;level #number#&#39; to change minimum score;&quot;
+        helpstring += &quot;&#39;save #article#&#39; to save; &#39;share #article# #comment#&#39; to share&quot;
+        return HttpResponse(createSmsResponse(help string))
+
+… and, if the request wasn’t a POST, send a 405 response back to the system (it won’t be Twilio, it might have been someone else).  This URL is only for processing these SMS messages.
+
+# If it&#39;s not a post, return an error
+    return HttpResponseNotAllowed(&#39;POST&#39;)">
+	
+	
+
+	<link type="text/plain" rel="author" href="https://www.princesspolymath.com/humans.txt">
+
+	
+
+	
+
+	<link rel="icon" sizes="32x32" href="https://www.princesspolymath.com/assets/img/favicon-32x32.png">
+
+	<link rel="icon" sizes="192x192" href="https://www.princesspolymath.com/assets/img/touch-icon-192x192.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="180x180" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-180x180-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="152x152" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-152x152-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-144x144-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="120x120" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-120x120-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-114x114-precomposed.png">
+
+	
+	<link rel="apple-touch-icon-precomposed" sizes="76x76" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-76x76-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-72x72-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-precomposed.png">	
+
+	<meta name="msapplication-TileImage" content="https://www.princesspolymath.com/assets/img/msapplication_tileimage.png">
+
+	<meta name="msapplication-TileColor" content="#fabb00">
+
+
+	
+
+</head>
+<body id="top-of-page" class="">
+	
+	<div id="navigation" class="sticky">
+  <nav class="top-bar" role="navigation" data-topbar>
+    <ul class="title-area">
+      <li class="name">
+      <h1 class="show-for-small-only"><a href="https://www.princesspolymath.com" class="icon-tree"> Princess Polymath</a></h1>
+    </li>
+       <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+      <li class="toggle-topbar menu-icon"><a href="#"><span>Navigation</span></a></li>
+    </ul>
+    <section class="top-bar-section">
+
+      <ul class="right">
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+            
+            
+              <li class="divider"></li>
+              <li><a href="https://www.princesspolymath.com/search/">Search</a></li>
+
+            
+            
+          
+        
+
+              
+
+          
+          
+            
+            
+              <li class="divider"></li>
+              <li><a href="https://www.princesspolymath.com/contact/">Contact</a></li>
+
+            
+            
+          
+        
+        
+      </ul>
+
+      <ul class="left">
+        
+
+              
+
+          
+          
+
+            
+            
+	    
+		<li><a href="https://www.princesspolymath.com/">Home</a></li>
+              <li class="divider"></li>
+		
+            
+            
+          
+        
+
+              
+
+          
+          
+
+            
+            
+	    
+		<li><a href="https://www.princesspolymath.com/resume">Resume</a></li>
+              <li class="divider"></li>
+		
+            
+            
+          
+        
+
+              
+
+          
+          
+
+            
+            
+	    
+		<li><a href="http://github.com/synedra" target="_blank">CODE</a></li>
+              <li class="divider"></li>
+		
+            
+            
+          
+        
+
+              
+
+          
+          
+
+            
+            
+	    
+		<li><a href="http://irresistibleapis.com" target="_blank">Irresistible APIs Book</a></li>
+              <li class="divider"></li>
+		
+            
+            
+          
+        
+
+              
+
+          
+          
+
+            
+            
+	    
+		<li><a href="https://www.princesspolymath.com/schedule">Schedule</a></li>
+              <li class="divider"></li>
+		
+            
+            
+          
+        
+
+              
+
+          
+          
+
+            
+            
+	    
+		<li><a href="https://www.princesspolymath.com/presentations">Presentations</a></li>
+              <li class="divider"></li>
+		
+            
+            
+          
+        
+
+              
+
+          
+          
+
+            
+            
+	    
+		<li><a href="https://www.princesspolymath.com/reviews">Reviews</a></li>
+              <li class="divider"></li>
+		
+            
+            
+          
+        
+
+              
+
+          
+          
+
+            
+            
+
+              <li class="has-dropdown">
+                <a href="https://www.princesspolymath.com/blog/">Blog</a>
+
+                  <ul class="dropdown">
+                    
+
+                      
+
+                      <li><a href="https://www.princesspolymath.com/blog/archive/">Blog Archive</a></li>
+                    
+                  </ul>
+
+              </li>
+              <li class="divider"></li>
+            
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+        
+      </ul>
+    </section>
+  </nav>
+</div><!-- /#navigation -->
+
+	
+	
+	
+
+<div id="masthead-no-image-header">
+	<div class="row">
+		<div class="small-12 columns">
+			<a id="logo" href="https://www.princesspolymath.com" title="Princess Polymath – I know lots of things...">
+				<img src="https://www.princesspolymath.com/assets/img/logo-words.png" alt="Princess Polymath – I know lots of things...">
+			</a>
+		</div><!-- /.small-12.columns -->
+	</div><!-- /.row -->
+</div><!-- /#masthead -->
+
+
+
+
+
+
+
+
+
+	
+
+	<div class="row t30">
+	<div class="medium-8 columns medium-push-4">
+		<article itemscope itemtype="http://schema.org/Article">
+			<header>
+				
+
+				<div itemprop="name">
+					
+					<h1>Handling SMS Responses from Twilio using Django on Heroku</h1>
+				</div>
+			</header>
+
+
+			
+
+			<div itemprop="articleSection">
+			<p>The final piece in the application I’m working on requires that I process SMS replies from Twilio.  To do this, I need a public-facing server that can handle a POST request from another server so it can do the right thing on my end.  This tutorial will walk through how to do that with a Django server on Heroku.  You can grab the twilio_sms application from within my <a href="https://github.com/synedra/django-linkedin-simple">The final piece in the application I’m working on requires that I process SMS replies from Twilio.  To do this, I need a public-facing server that can handle a POST request from another server so it can do the right thing on my end.  This tutorial will walk through how to do that with a Django server on Heroku.  You can grab the twilio_sms application from within my</a> for this application, or you can build it based on the walkthrough here.</p>
+
+<h2 id="url-setup">URL Setup</h2>
+
+<p>Add a mapping for /reply/ to the urls.py in your top level Django project.</p>
+
+<h4 id="urlspy">urls.py</h4>
+
+<pre>url(r'^reply', 'twilio_sms.views.sms_reply'),</pre>
+
+<p>You’ll need to tell Twilio where to send SMS replies on the <a href="https://www.twilio.com/user/account">dashboard</a>.  For instance, my Heroku instance runs at http://falling-summer-4605.herokuapp.com so my SMS Response URL is set to http://falling-summer-4605.herokuapp.com/reply.</p>
+
+<h2 id="creating-twiliosms">Creating twilio_sms</h2>
+
+<p>In order for that URL mapping to do the right thing it needs to point to the right application.  If you aren’t using the code samples from GitHub, you can create a new application with:</p>
+
+<pre>django-admin.py startapp twilio_sms</pre>
+
+<p>Now we need to build the views.py file to handle the responses.</p>
+
+<p>The setup is similar to the linkedin application we made previously.</p>
+
+<pre># Python
+import oauth2 as oauth
+import simplejson as json
+import re
+from xml.dom.minidom import getDOMImplementation,parse,parseString
+
+# Django
+from django.http import HttpResponse
+from django.shortcuts import render_to_response
+from django.http import HttpResponseRedirect
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User
+
+# Project
+from linkedin.models import UserProfile,SentArticle
+
+# from settings.py
+consumer = oauth.Consumer(settings.LINKEDIN_TOKEN, settings.LINKEDIN_SECRET)
+client = oauth.Client(consumer)</pre>
+
+<p>We’ll create a convenience method to build SMS responses in the format expected by the Twilio server (so that the user gets a reasonable SMS response)</p>
+
+<pre>def createSmsResponse(responsestring):
+	impl = getDOMImplementation()
+	responsedoc = impl.createDocument(None,"Response",None)
+	top_element = responsedoc.documentElement
+	sms_element = responsedoc.createElement("Sms")
+	top_element.appendChild(sms_element)
+	text_node = responsedoc.createTextNode(responsestring)
+	sms_element.appendChild(text_node)
+	html = responsedoc.toxml(encoding="utf-8")
+	return html</pre>
+
+<p>Because the POST will be coming from an external server without a session cookie, we need to use the @csrf_exempt decorator to tell Django to allow these POSTs without authentication.  For security, you might check the incoming IP to make sure it’s coming from Twilio, or make sure that the other information matches what you expect.  For this demo, we’ll allow it to proceed assuming it’s the right thing.</p>
+
+<p>Grab the parameters, get the user’s phone number, and determine which of our users matches that phone number, then grab their credentials and create the LinkedIn client to make requests.</p>
+
+<pre>@csrf_exempt
+def sms_reply(request):
+    if request.method == 'POST':
+        params = request.POST
+        phone = re.sub('\+1','',params['From'])
+        smsuser = User.objects.get(userprofile__phone_number=phone)
+        responsetext = "This is my reply text"
+        token = oauth.Token(smsuser.get_profile().oauth_token, smsuser.get_profile().oauth_secret)
+        client = oauth.Client(consumer,token)</pre>
+
+<p>Figure out what the user wants us to do (save, search, cancel, help, level)</p>
+
+<pre>commandmatch = re.compile(r'(\w+)\b',re.I)
+        matches = commandmatch.match(params['Body'])
+        command = matches.group(0).lower()</pre>
+
+<p>“Cancel” tells the system the user doesn’t want notifications anymore.  For now, we’re going to keep their user and profile around, so that we don’t send them all the same articles again in the future. But sendArticles.py won’t send them anything if the level is set to zero.</p>
+
+<pre># Cancel notifications by setting score to zero
+        # Command is 'cancel'
+        if command == 'cancel':
+        	profile = smsuser.get_profile()
+        	profile.min_score = 0
+        	profile.save()
+        	return HttpResponse(createSmsResponse("Today SMS Service Cancelled"))</pre>
+
+<p>“Level <number>&#8221; tells the system the user wants to change their notification level.  Higher means fewer messages, as this is used as the &#8220;score&#8221; check against articles based on relevance.  See the [previous post on Twilio notifications](http://www.princesspolymath.com/princess_polymath/?p=521) to see how this is implemented.  Notice that in this and the following methods we&#8217;re doing generic error catching &#8211; there&#8217;s a few reasons why it might fail, but the important thing is to tell the user their action didn&#8217;t succeed and give them a hint as to why that might be.</number></p>
+
+<pre># Change level for notifications by setting score to requested level
+        # Command is 'level \d'
+        if command == 'level':
+        	levelmatch = re.compile(r'level (\d)(.*)',re.I)
+        	matches = levelmatch.search(params['Body'])
+
+        	try:
+	        	level = int(matches.group(1))
+	        except:
+	        	e = sys.exc_info()[1]
+	        	print "ERROR: %s" % (str(e))
+	        	return HttpResponse(createSmsResponse("Please use a valid level (1-9)."))
+
+        	profile = smsuser.get_profile()
+        	profile.min_score = level
+        	profile.save()
+        	return HttpResponse(createSmsResponse("Today SMS minimum score changed to %d" % int(level)))</pre>
+
+<p>“Save &lt;article number&gt;” saves an article to the user’s LinkedIn saved articles.  Remember that in the setup we grabbed the credentials for the user who sent the SMS based on their phone number, so this (and share) are done against the LinkedIn API on their behalf.  In this new (preview only) API JSON doesn’t seem to be working well, so I’m building and using XML.</p>
+
+<pre># Save an article
+        # Command is 'save &lt;articlenum&gt;'
+        if command == 'save':
+        	savematch = re.compile(r'save (\d+)(.*)',re.I)
+        	matches = savematch.search(params['Body'])
+        	try:
+	        	article = matches.group(1)
+        		sentarticle = SentArticle.objects.get(user=smsuser, id=article)
+	        except:
+	        	e = sys.exc_info()[1]
+	        	print "ERROR: %s" % (str(e))
+	        	return HttpResponse(createSmsResponse("Please use a valid article number with save."))
+
+        	responsetext = "Saved article: %s" % (sentarticle.article_title)
+        	saveurl = "http://api.linkedin.com/v1/people/~/articles"
+
+        	# Oddly JSON doesn't seem to work with the article save API
+        	# Using XML instead
+        	impl = getDOMImplementation()
+        	xmlsavedoc = impl.createDocument(None,"article",None)
+        	top_element = xmlsavedoc.documentElement
+        	article_content_element = xmlsavedoc.createElement("article-content")
+        	top_element.appendChild(article_content_element)
+        	id_element = xmlsavedoc.createElement("id")
+        	article_content_element.appendChild(id_element)
+        	text_node = xmlsavedoc.createTextNode(sentarticle.article_number)
+        	id_element.appendChild(text_node)
+        	body = xmlsavedoc.toxml(encoding="utf-8")
+
+        	resp, content = client.request(saveurl, "POST",body=body,headers={"Content-Type":"text/xml"})
+        	if (resp.status == 200):
+        		return HttpResponse(createSmsResponse(responsetext))
+        	else:
+        		return HttpResponse(createSmsResponse("Unable to save post: %s" % content))</pre>
+
+<p>“Share &lt;article number&gt; <comment>&#8221; shares an article to the user&#8217;s network with a comment.  The comment shouldn&#8217;t really be optional, but typing on T-9 keyboards is a pain, so I wanted to give a default share message.  I&#8217;m not sure I love it as an answer though&#8230;</comment></p>
+
+<pre># Share an article
+        # Command is 'share &lt;articlenum&gt; &lt;comment&gt;'
+        # If no comment is included, a generic one is sent
+        if command == 'share':
+        	sharematch = re.compile(r'Share (\d+) (.*)')
+        	matches = sharematch.search(params['Body'])
+        	try:
+        		article = matches.group(1)
+	        	sentarticle = SentArticle.objects.get(user=smsuser, id=article)
+        		comment = matches.group(2)
+	        except:
+	        	if sentarticle and not comment:
+	        		comment = "Sharing an article from the LinkedIn SMS System"
+	        	else:
+	        		e = sys.exc_info()[1]
+	        		print "ERROR: %s" % (str(e))
+	        		return HttpResponse(createSmsResponse("Please use a valid article number with share and include a comment."))
+
+        	responsetext = "Shared article: %s" % (sentarticle.article_title)
+        	shareurl = "http://api.linkedin.com/v1/people/~/shares"
+        	body = {"comment":comment,
+        		"content":{
+        			"article-id":sentarticle.article_number
+       	 		},
+        	"visibility":{"code":"anyone"}
+        	}
+
+        	resp, content = client.request(shareurl, "POST",body=json.dumps(body),headers={"Content-Type":"application/json"})
+        	if (resp.status == 201):
+        		return HttpResponse(createSmsResponse(responsetext))
+        	else:
+        		return HttpResponse(createSmsResponse("Unable to share post: %s" % content))</pre>
+
+<p>If we’ve fallen through to here, the user may have asked for ‘help’ – but whatever they did we didn’t understand it so we should give them the help text in any case.</p>
+
+<pre># If command is help, or anything we didn't recognize, send help back
+        helpstring = "Commands: 'cancel' to cancel Today SMS; 'level #number#' to change minimum score;"
+        helpstring += "'save #article#' to save; 'share #article# #comment#' to share"
+        return HttpResponse(createSmsResponse(help string))</pre>
+
+<p>… and, if the request wasn’t a POST, send a 405 response back to the system (it won’t be Twilio, it might have been someone else).  This URL is only for processing these SMS messages.</p>
+
+<pre># If it's not a post, return an error
+    return HttpResponseNotAllowed('POST')</pre>
+
+			</div>
+
+			
+						<div id="page-meta" class="t30">
+				<p>
+					<!-- Look the author details up from the site config. -->
+					
+					<!-- Output author details if some exist. -->
+					
+
+				
+				<time class="icon-calendar pr20" datetime="2011-12-22" itemprop="datePublished"> 2011-12-22</time>
+				
+
+				<span class="icon-archive pr20"> GEEK STUFF · LINKEDIN · WEB APIS</span>
+				<br />
+				<span class="pr20"><span class="icon-price-tag pr10"> django</span> <span class="icon-price-tag pr10"> heroku</span> <span class="icon-price-tag pr10"> linkedin</span> <span class="icon-price-tag pr10"> python</span> <span class="icon-price-tag pr10"> twilio</span> </span>
+			</p>
+
+			<div id="post-nav" class="row">
+				
+				<div class="small-5 columns"><a class="button small radius prev" href="https://www.princesspolymath.com/sending-sms-notifications-using-twilio-django-and-the-heroku-scheduler.html">&laquo; Sending SMS Notifications using Twilio, Django and the Heroku Scheduler</a></div><!-- /.small-4.columns -->
+				
+				<div class="small-2 columns text-center"><a class="radius button small" href="https://www.princesspolymath.com/blog/archive/" title="Blog Archive">Archive</a></div><!-- /.small-4.columns -->
+				
+				<div class="small-5 columns text-right"><a class="button small radius next" href="https://www.princesspolymath.com/linkedin-today-sms-notification-system-using-linkedin-twilio-django-and-heroku.html">LinkedIn Today SMS Notification System using LinkedIn, Twilio, Django and Heroku &raquo;</a></div><!-- /.small-4.columns -->
+				
+			</div>
+			</div><!--  /.page-meta -->
+			
+
+			
+						
+				<h3 id="comments" class="t60">Dialogue &amp; Discussion</h3>
+			    <div id="disqus_thread"></div>
+			    <script type="text/javascript">
+			        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+			        var disqus_shortname = 'princesspolymath'; 
+			        var disqus_identifier = '/handling-sms-responses-from-twilio-using-django-on-heroku.html';
+
+			        /* * * DON'T EDIT BELOW THIS LINE * * */
+			        (function() {
+			            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+			            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+			            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+			        })();
+			    </script>
+			    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+			
+
+
+
+			
+		</article>
+	</div><!-- /.medium-8.columns -->
+
+
+	
+	<div class="medium-4 columns medium-pull-8">
+		<aside>
+<div itemscope itemtype="http://schema.org/Person">
+
+  <div class="author__avatar">
+    	<img src="http://princesspolymath.com/assets/img/headshot.jpg" alt="Kirsten Hunter">
+  </div>
+
+  <div class="author__content">
+    <h3 class="author__name">Kirsten Hunter</h3>
+    <p class="author__bio">I know lots of things...</p>
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls ">
+        <li><i class="fa fa-fw fa-map-marker" aria-hidden="true"></i> Santa Cruz</li>
+        <li><a href="mailto:synedra@gmail.com"><i class="fa fa-fw fa-envelope-square" aria-hidden="true"></i> Email</a></li>
+        <li><a href="https://twitter.com/@synedra"><i class="fa fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        <li><a href="https://www.linkedin.com/in/http://linkedin.com/in/synedra"><i class="fa fa-fw fa-linkedin-square" aria-hidden="true"></i> LinkedIn</a></li>
+        <li><a href="https://github.com/https://github.com/synedra"><i class="fa fa-fw fa-github" aria-hidden="true"></i> Github</a></li>
+    </ul>
+  </div>
+<a class="twitter-timeline" href="https://twitter.com/search?q=%40synedra" data-widget-id="744007280098574337">Tweets about @synedra</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+<a class="twitter-timeline" href="https://twitter.com/synedra">Tweets by synedra</a>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+</aside>
+
+	</div><!-- /.medium-4.columns -->
+	
+
+
+	
+</div><!-- /.row -->
+
+
+	
+	    <div id="up-to-top" class="row">
+      <div class="small-12 columns" style="text-align: right;">
+        <a class="iconfont" href="#top-of-page">&#xf108;</a>
+      </div><!-- /.small-12.columns -->
+    </div><!-- /.row -->
+
+
+    <footer id="footer-content" class="bg-grau">
+      <div id="footer">
+        <div class="row">
+          <div class="medium-6 large-5 columns">
+            <h5 class="shadow-black">About This Site</h5>
+
+            <p class="shadow-black">
+              Princess Polymath is a website focused on programming, web design, APIs and general amusement.
+              <a href="https://www.princesspolymath.com/info/">More ›</a>
+            </p>
+          </div><!-- /.large-6.columns -->
+
+
+          <div class="small-6 medium-3 large-3 large-offset-1 columns">
+            
+              
+                <h5 class="shadow-black">Services</h5>
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+
+              <ul class="no-bullet shadow-black">
+              
+                
+                  <li >
+                    <a href="https://www.princesspolymath.com"  title=""></a>
+                  </li>
+              
+                
+                  <li >
+                    <a href="https://www.princesspolymath.com/contact/"  title="Contact">Contact</a>
+                  </li>
+              
+                
+                  <li >
+                    <a href="https://www.princesspolymath.com/feed.xml"  title="Subscribe to RSS Feed">RSS</a>
+                  </li>
+              
+                
+                  <li >
+                    <a href="https://www.princesspolymath.com/atom.xml"  title="Subscribe to Atom Feed">Atom</a>
+                  </li>
+              
+                
+                  <li >
+                    <a href="https://www.princesspolymath.com/sitemap.xml"  title="Sitemap for Google Webmaster Tools">sitemap.xml</a>
+                  </li>
+              
+              </ul>
+          </div><!-- /.large-4.columns -->
+
+
+          <div class="small-6 medium-3 large-3 columns">
+            
+              
+                <h5 class="shadow-black">Contact information</h5>
+              
+            
+              
+            
+              
+            
+
+            <ul class="no-bullet shadow-black">
+            
+              
+                <li >
+                  <a href="https://www.princesspolymath.com"  title=""></a>
+                </li>
+            
+              
+                <li class="network-entypo" >
+                  <a href="http://linkedin.com/in/synedra" target="_blank"  title="LinkedIn Contact">LinkedIn</a>
+                </li>
+            
+              
+                <li class="network-entypo" >
+                  <a href="http://twitter.com/synedra" target="_blank"  title="Twitter">Twitter</a>
+                </li>
+            
+            </ul>
+          </div><!-- /.large-3.columns -->
+        </div><!-- /.row -->
+
+      </div><!-- /#footer -->
+
+
+      <div id="subfooter">
+        <nav class="row">
+          <section id="subfooter-left" class="small-12 medium-6 columns credits">
+            <p>Created with &hearts; by <a href="/">synedra</a> with <a href="http://jekyllrb.com/" target="_blank">Jekyll</a> based on <a href="http://phlow.github.io/feeling-responsive/">Feeling Responsive</a>.</p>
+          </section>
+
+          <section id="subfooter-right" class="small-12 medium-6 columns">
+            <ul class="inline-list social-icons">
+            
+              <li><a href="http://github.com/synedra" target="_blank" class="icon-github" title="Riff Raff"></a></li>
+            
+              <li><a href="http://www.youtube.com/PhlowMedia" target="_blank" class="icon-youtube" title="Videos, Video-Anleitungen und Filme von Phlow auf YouTube"></a></li>
+            
+              <li><a href="http://twitter.com/synedra" target="_blank" class="icon-twitter" title="My 140 Character Babblings"></a></li>
+            
+              <li><a href="https://plus.google.com/u/0/+Phlow" target="_blank" class="icon-googleplus" title="YouTube Google+"></a></li>
+            
+            </ul>
+          </section>
+        </nav>
+      </div><!-- /#subfooter -->
+    </footer>
+
+	
+
+	
+
+
+<script src="https://www.princesspolymath.com/assets/js/javascript.min.js"></script>
+
+
+
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-60112281-1', 'auto');
+  ga('set', 'anonymizeIp', true);
+  ga('send', 'pageview');
+
+</script>
+
+
+
+
+
+
+
+
+</body>
+</html>
+

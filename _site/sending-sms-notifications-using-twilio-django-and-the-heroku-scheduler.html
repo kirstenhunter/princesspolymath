@@ -1,0 +1,1282 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<meta http-equiv="Edge-Cache-Tag" content="princess" />
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Sending SMS Notifications using Twilio, Django and the Heroku Scheduler</title>
+	<link rel="stylesheet" type="text/css" href="https://www.princesspolymath.com/assets/css/styles_feeling_responsive.css">
+	<script src="https://www.princesspolymath.com/assets/js/modernizr.min.js"></script>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
+	<script>
+		WebFont.load({
+			google: {
+				families: [ 'Lato:400,700,400italic:latin', 'Volkhov::latin' ]
+			}
+		});
+	</script>
+
+	<noscript>
+		<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic%7CVolkhov' rel='stylesheet' type='text/css'>
+	</noscript>
+
+
+	<!-- Search Engine Optimization -->
+	<meta name="description" content="For my Twilio SMS Demo App this month, I wanted to send notifications to LinkedIn members based on hot items for them in LinkedIn Today.  This is a tutorial on creating a python script to access user information in the Django database, pull information from a Web Service (in this case the LinkedIn Today API) and send an SMS to the user.  A couple of caveats are in order here to make sure that people don’t accidentally run afoul of the LinkedIn API Terms of Use when implementing something of this sort.
+
+
+  The LinkedIn Today API is only available internally at this point, and should only be used as an example of what’s possible
+  I have stored the user’s phone number in the database – when storing LinkedIn information you always need to notify the user that you’re doing that, explicitly.
+
+
+
+  All that having been said, you need the following to get this working:
+
+
+
+  
+    
+      A working Django system on Heroku.  If you set up my example LinkedIn Django application from this post, you&amp;#8217;ll be able to extend that here.
+    
+    
+      A Twilio account &amp;#8211; ideally with a purchased number, but you could get this system to work with the sandbox system.  You get $30 in Twilio credit to start out with, which is plenty to set up a demo of this sort.
+    
+    
+      A Google API key (this is optional, but it&amp;#8217;ll get you more shortened links)
+    
+  
+
+
+Install the Twilio Library
+
+
+  Assuming that you&amp;#8217;re using the LinkedIn Django application from my previous post and are in the root level of that structure, you need to add the Twilio library to your installation:
+
+
+% pip install twilio
+% pip freeze &amp;gt; requirements.txt
+
+Adding the Phone Number
+
+Remember, if you’re going to store any information at all about a LinkedIn member, you need to explicitly tell them so.  That having been said, you can add the following to your LinkedIn application to get the phone number and store it.  I’m not going to provide the completed code to do this since you need to implement some user notification if you’re using this in a production system.
+
+linkedin/models.py
+
+class UserProfile(models.Model):
+    user = models.ForeignKey(User)
+    oauth_token = models.CharField(max_length=200)
+    oauth_secret = models.CharField(max_length=200)
+    phone_number = models.CharField(max_length=10)
+
+linkedin/views.py
+
+Modify the LinkedIn profile URL:
+
+url = &quot;http://api.linkedin.com/v1/people/~:(id,first-name,last-name,industry,phone-numbers)&quot;
+
+Add this logic before saving the user profile:
+
+if &quot;phoneNumbers&quot; in profile:
+        	for phone_number in profile[&#39;phoneNumbers&#39;][&#39;values&#39;]:
+        		userprofile.phone_number = re.sub(r&quot;\D&quot;,&quot;&quot;,phone_number[&#39;phoneNumber&#39;])
+        		if phone_number[&#39;phoneType&#39;] == &#39;mobile&#39;:
+        			continue
+
+If you’ve already created your DB you’ll need to wipe it out and recreate it with these new models in order for this to work.  You can most easily do this by just starting a new project for this version – while you can drop the database locally and recreate it with syncdb, for heroku you’ll need to create a new cedar project so a new database will be created.
+
+Creating the Job
+
+Now we’ll walk through the code.  This file wants to live at your LinkedIn project level (so in the example, in the hellodjango directory).  It’s also available in the GitHub repository for django-linkedin-simple.
+
+First, do some basic setup:
+
+from django.core.management import setup_environ
+import settings
+setup_environ(settings)
+
+from twilio.rest import TwilioRestClient
+import oauth2 as oauth
+import time
+import simplejson
+import datetime
+import httplib2
+import psycopg2
+
+account = &quot;TWILIO_ACCT_NUMBER&quot;
+token = &quot;TWILIO_TOKEN&quot;
+twilioclient = TwilioRestClient(account, token)
+
+consumer = oauth.Consumer(
+        key=&quot;LINKEDIN_CONSUMER_KEY&quot;,
+        secret=&quot;LINKEDIN_CONSUMER_SECRET&quot;)
+url = &quot;http://api.linkedin.com/v1/people/~/topics:(description,id,topic-stories:(topic-articles:(relevance-data,article-content:(id,title,resolved-url))))&quot;
+
+Grab the user profiles (this includes the user tokens and secrets)
+
+users = User.objects.all()
+
+Iterate over the users, grabbing their token, secret, django userid and phone number, then grab the LinkedIn Today feed for that user.
+
+for djangouser in users:
+	if djangouser.username == &quot;admin&quot;:
+		continue
+	profile = UserProfile.objects.get(user=djangouser)
+	token = oauth.Token(
+        	key=profile.oauth_token,
+        	secret=profile.oauth_secret)
+	phone = profile.phone_number
+	userid = profile.user_id
+	user_articles = SentArticle.objects.filter(user=djangouser)
+
+	# Now make the LinkedIn today call and get the articles in question
+	client = oauth.Client(consumer, token)
+
+	resp, content = client.request(url, headers={&quot;x-li-format&quot;:&#39;json&#39;})
+	results = simplejson.loads(content)
+
+We only want to send alerts for articles which have a high “score”, indicating that they are currently hot topics for this user.  Look through the articles to find those “hot topics”:
+
+for topic in results[&#39;values&#39;]:
+           for story in topic[&#39;topicStories&#39;][&#39;values&#39;]:
+                for article in story[&#39;topicArticles&#39;][&#39;values&#39;]:
+                        score = article[&#39;relevanceData&#39;][&#39;score&#39;]
+                        if score &amp;gt; 6:
+
+Now, SMS messages are expensive for us (the application owner) and potentially for the user, so we only want to tell the user if they haven’t already heard about this article.
+
+checkarticle = user_articles.filter(article_number__exact=article[&#39;articleContent&#39;][&#39;id&#39;])
+
+If there aren’t any matching articles for this user, go ahead and send them a message, then log it in the database so we don’t tell them again later:
+
+if len(checkarticle) == 0:
+    # This is where we get the shortened URL from google because LinkedIn doesn&#39;t provide one
+    http = httplib2.Http()
+    body = {&quot;longUrl&quot;: article[&#39;articleContent&#39;][&#39;resolvedUrl&#39;]}
+    resp,content = http.request(&quot;https://www.googleapis.com/urlshortener/v1/url?key=YOUR_GOOGLE_API_KEY&quot;,&quot;POST&quot;,body=simplejson.dumps(body),headers={&quot;Content-Type&quot;:&quot;application/json&quot;})
+    googleresponse = simplejson.loads(content)
+    sentarticle = SentArticle(article_number=article[&#39;articleContent&#39;][&#39;id&#39;],user=djangouser,timestamp=datetime.datetime.today())
+    sentarticle.save()
+    bodytext = article[&#39;articleContent&#39;][&#39;title&#39;] + &quot; &quot; + googleresponse[&#39;id&#39;]
+    bodytext += &quot; (&#39;save %s&#39;)&quot; % sentarticle.id
+    message = twilioclient.sms.messages.create(to=&quot;+1&quot; + phone, from_=&quot;+YOUR_TWILIO_NUMBER&quot;, body=bodytext)
+
+Great, we’ve got an application that’ll send messages for the users in the Django system when something hot is there to talk about.
+
+Pushing to Heroku
+
+Now we need the job to work on Heroku, and get scheduled.  If you went through my previous post using the existing GitHub example, the file is already up at Heroku, otherwise you’ll need to push the file to your Heroku instance:
+
+% git add hellodjango/sendArticles.py
+% git push heroku master
+
+Whether it was already there or you just put it there, you should check to make sure that it runs correctly.  Make sure you’ve logged into the system using your LinkedIn ID and stored your phone number there.
+
+% heroku run python hellodjango/sendArticles.py
+
+Did it work?  Great!
+
+Schedule it in Heroku
+
+The Heroku Scheduler is a free add-on, but remember that since it uses machine time it can start racking up the charges if you don’t keep an eye on it.  You can add it using the command line, or you can add it under “Resources” for your application on the Heroku site.  Once you’ve added it you can manage it using the scheduler dashboard.
+
+Pick whatever frequency you like, and put “python hellodjango/sendArticles.py” in the field, and you’re done.
+
+Don’t forget to stop the scheduler when you’re no longer testing so you don’t get a surprise bill from Heroku later.
+
+The next post will cover handling POST requests from Twilio in response to SMS replies from your users.">
+  	<meta name="google-site-verification" content="Vk0IOJ2jwG_qEoG7fuEXYqv0m2rLa8P778Fi_GrsgEQ">
+	<meta name="msvalidate.01" content="0FB4C028ABCF07C908C54386ABD2D97F" >
+	<link rel="author" href="https://plus.google.com/u/0/118311555303973066167">
+	
+	
+
+
+	<!-- Facebook Open Graph -->
+	<meta property="og:title" content="Sending SMS Notifications using Twilio, Django and the Heroku Scheduler">
+	<meta property="og:description" content="For my Twilio SMS Demo App this month, I wanted to send notifications to LinkedIn members based on hot items for them in LinkedIn Today.  This is a tutorial on creating a python script to access user information in the Django database, pull information from a Web Service (in this case the LinkedIn Today API) and send an SMS to the user.  A couple of caveats are in order here to make sure that people don’t accidentally run afoul of the LinkedIn API Terms of Use when implementing something of this sort.
+
+
+  The LinkedIn Today API is only available internally at this point, and should only be used as an example of what’s possible
+  I have stored the user’s phone number in the database – when storing LinkedIn information you always need to notify the user that you’re doing that, explicitly.
+
+
+
+  All that having been said, you need the following to get this working:
+
+
+
+  
+    
+      A working Django system on Heroku.  If you set up my example LinkedIn Django application from this post, you&amp;#8217;ll be able to extend that here.
+    
+    
+      A Twilio account &amp;#8211; ideally with a purchased number, but you could get this system to work with the sandbox system.  You get $30 in Twilio credit to start out with, which is plenty to set up a demo of this sort.
+    
+    
+      A Google API key (this is optional, but it&amp;#8217;ll get you more shortened links)
+    
+  
+
+
+Install the Twilio Library
+
+
+  Assuming that you&amp;#8217;re using the LinkedIn Django application from my previous post and are in the root level of that structure, you need to add the Twilio library to your installation:
+
+
+% pip install twilio
+% pip freeze &amp;gt; requirements.txt
+
+Adding the Phone Number
+
+Remember, if you’re going to store any information at all about a LinkedIn member, you need to explicitly tell them so.  That having been said, you can add the following to your LinkedIn application to get the phone number and store it.  I’m not going to provide the completed code to do this since you need to implement some user notification if you’re using this in a production system.
+
+linkedin/models.py
+
+class UserProfile(models.Model):
+    user = models.ForeignKey(User)
+    oauth_token = models.CharField(max_length=200)
+    oauth_secret = models.CharField(max_length=200)
+    phone_number = models.CharField(max_length=10)
+
+linkedin/views.py
+
+Modify the LinkedIn profile URL:
+
+url = &quot;http://api.linkedin.com/v1/people/~:(id,first-name,last-name,industry,phone-numbers)&quot;
+
+Add this logic before saving the user profile:
+
+if &quot;phoneNumbers&quot; in profile:
+        	for phone_number in profile[&#39;phoneNumbers&#39;][&#39;values&#39;]:
+        		userprofile.phone_number = re.sub(r&quot;\D&quot;,&quot;&quot;,phone_number[&#39;phoneNumber&#39;])
+        		if phone_number[&#39;phoneType&#39;] == &#39;mobile&#39;:
+        			continue
+
+If you’ve already created your DB you’ll need to wipe it out and recreate it with these new models in order for this to work.  You can most easily do this by just starting a new project for this version – while you can drop the database locally and recreate it with syncdb, for heroku you’ll need to create a new cedar project so a new database will be created.
+
+Creating the Job
+
+Now we’ll walk through the code.  This file wants to live at your LinkedIn project level (so in the example, in the hellodjango directory).  It’s also available in the GitHub repository for django-linkedin-simple.
+
+First, do some basic setup:
+
+from django.core.management import setup_environ
+import settings
+setup_environ(settings)
+
+from twilio.rest import TwilioRestClient
+import oauth2 as oauth
+import time
+import simplejson
+import datetime
+import httplib2
+import psycopg2
+
+account = &quot;TWILIO_ACCT_NUMBER&quot;
+token = &quot;TWILIO_TOKEN&quot;
+twilioclient = TwilioRestClient(account, token)
+
+consumer = oauth.Consumer(
+        key=&quot;LINKEDIN_CONSUMER_KEY&quot;,
+        secret=&quot;LINKEDIN_CONSUMER_SECRET&quot;)
+url = &quot;http://api.linkedin.com/v1/people/~/topics:(description,id,topic-stories:(topic-articles:(relevance-data,article-content:(id,title,resolved-url))))&quot;
+
+Grab the user profiles (this includes the user tokens and secrets)
+
+users = User.objects.all()
+
+Iterate over the users, grabbing their token, secret, django userid and phone number, then grab the LinkedIn Today feed for that user.
+
+for djangouser in users:
+	if djangouser.username == &quot;admin&quot;:
+		continue
+	profile = UserProfile.objects.get(user=djangouser)
+	token = oauth.Token(
+        	key=profile.oauth_token,
+        	secret=profile.oauth_secret)
+	phone = profile.phone_number
+	userid = profile.user_id
+	user_articles = SentArticle.objects.filter(user=djangouser)
+
+	# Now make the LinkedIn today call and get the articles in question
+	client = oauth.Client(consumer, token)
+
+	resp, content = client.request(url, headers={&quot;x-li-format&quot;:&#39;json&#39;})
+	results = simplejson.loads(content)
+
+We only want to send alerts for articles which have a high “score”, indicating that they are currently hot topics for this user.  Look through the articles to find those “hot topics”:
+
+for topic in results[&#39;values&#39;]:
+           for story in topic[&#39;topicStories&#39;][&#39;values&#39;]:
+                for article in story[&#39;topicArticles&#39;][&#39;values&#39;]:
+                        score = article[&#39;relevanceData&#39;][&#39;score&#39;]
+                        if score &amp;gt; 6:
+
+Now, SMS messages are expensive for us (the application owner) and potentially for the user, so we only want to tell the user if they haven’t already heard about this article.
+
+checkarticle = user_articles.filter(article_number__exact=article[&#39;articleContent&#39;][&#39;id&#39;])
+
+If there aren’t any matching articles for this user, go ahead and send them a message, then log it in the database so we don’t tell them again later:
+
+if len(checkarticle) == 0:
+    # This is where we get the shortened URL from google because LinkedIn doesn&#39;t provide one
+    http = httplib2.Http()
+    body = {&quot;longUrl&quot;: article[&#39;articleContent&#39;][&#39;resolvedUrl&#39;]}
+    resp,content = http.request(&quot;https://www.googleapis.com/urlshortener/v1/url?key=YOUR_GOOGLE_API_KEY&quot;,&quot;POST&quot;,body=simplejson.dumps(body),headers={&quot;Content-Type&quot;:&quot;application/json&quot;})
+    googleresponse = simplejson.loads(content)
+    sentarticle = SentArticle(article_number=article[&#39;articleContent&#39;][&#39;id&#39;],user=djangouser,timestamp=datetime.datetime.today())
+    sentarticle.save()
+    bodytext = article[&#39;articleContent&#39;][&#39;title&#39;] + &quot; &quot; + googleresponse[&#39;id&#39;]
+    bodytext += &quot; (&#39;save %s&#39;)&quot; % sentarticle.id
+    message = twilioclient.sms.messages.create(to=&quot;+1&quot; + phone, from_=&quot;+YOUR_TWILIO_NUMBER&quot;, body=bodytext)
+
+Great, we’ve got an application that’ll send messages for the users in the Django system when something hot is there to talk about.
+
+Pushing to Heroku
+
+Now we need the job to work on Heroku, and get scheduled.  If you went through my previous post using the existing GitHub example, the file is already up at Heroku, otherwise you’ll need to push the file to your Heroku instance:
+
+% git add hellodjango/sendArticles.py
+% git push heroku master
+
+Whether it was already there or you just put it there, you should check to make sure that it runs correctly.  Make sure you’ve logged into the system using your LinkedIn ID and stored your phone number there.
+
+% heroku run python hellodjango/sendArticles.py
+
+Did it work?  Great!
+
+Schedule it in Heroku
+
+The Heroku Scheduler is a free add-on, but remember that since it uses machine time it can start racking up the charges if you don’t keep an eye on it.  You can add it using the command line, or you can add it under “Resources” for your application on the Heroku site.  Once you’ve added it you can manage it using the scheduler dashboard.
+
+Pick whatever frequency you like, and put “python hellodjango/sendArticles.py” in the field, and you’re done.
+
+Don’t forget to stop the scheduler when you’re no longer testing so you don’t get a surprise bill from Heroku later.
+
+The next post will cover handling POST requests from Twilio in response to SMS replies from your users.">
+	<meta property="og:url" content="https://www.princesspolymath.com/sending-sms-notifications-using-twilio-django-and-the-heroku-scheduler.html">
+	<meta property="og:locale" content="en_EN">
+	<meta property="og:type" content="website">
+	<meta property="og:site_name" content="Princess Polymath">
+	
+	<meta property="article:author" content="https://www.facebook.com/princesspolymath">
+
+
+	
+	<!-- Twitter -->
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:site" content="synedra">
+	<meta name="twitter:creator" content="synedra">
+	<meta name="twitter:title" content="Sending SMS Notifications using Twilio, Django and the Heroku Scheduler">
+	<meta name="twitter:description" content="For my Twilio SMS Demo App this month, I wanted to send notifications to LinkedIn members based on hot items for them in LinkedIn Today.  This is a tutorial on creating a python script to access user information in the Django database, pull information from a Web Service (in this case the LinkedIn Today API) and send an SMS to the user.  A couple of caveats are in order here to make sure that people don’t accidentally run afoul of the LinkedIn API Terms of Use when implementing something of this sort.
+
+
+  The LinkedIn Today API is only available internally at this point, and should only be used as an example of what’s possible
+  I have stored the user’s phone number in the database – when storing LinkedIn information you always need to notify the user that you’re doing that, explicitly.
+
+
+
+  All that having been said, you need the following to get this working:
+
+
+
+  
+    
+      A working Django system on Heroku.  If you set up my example LinkedIn Django application from this post, you&amp;#8217;ll be able to extend that here.
+    
+    
+      A Twilio account &amp;#8211; ideally with a purchased number, but you could get this system to work with the sandbox system.  You get $30 in Twilio credit to start out with, which is plenty to set up a demo of this sort.
+    
+    
+      A Google API key (this is optional, but it&amp;#8217;ll get you more shortened links)
+    
+  
+
+
+Install the Twilio Library
+
+
+  Assuming that you&amp;#8217;re using the LinkedIn Django application from my previous post and are in the root level of that structure, you need to add the Twilio library to your installation:
+
+
+% pip install twilio
+% pip freeze &amp;gt; requirements.txt
+
+Adding the Phone Number
+
+Remember, if you’re going to store any information at all about a LinkedIn member, you need to explicitly tell them so.  That having been said, you can add the following to your LinkedIn application to get the phone number and store it.  I’m not going to provide the completed code to do this since you need to implement some user notification if you’re using this in a production system.
+
+linkedin/models.py
+
+class UserProfile(models.Model):
+    user = models.ForeignKey(User)
+    oauth_token = models.CharField(max_length=200)
+    oauth_secret = models.CharField(max_length=200)
+    phone_number = models.CharField(max_length=10)
+
+linkedin/views.py
+
+Modify the LinkedIn profile URL:
+
+url = &quot;http://api.linkedin.com/v1/people/~:(id,first-name,last-name,industry,phone-numbers)&quot;
+
+Add this logic before saving the user profile:
+
+if &quot;phoneNumbers&quot; in profile:
+        	for phone_number in profile[&#39;phoneNumbers&#39;][&#39;values&#39;]:
+        		userprofile.phone_number = re.sub(r&quot;\D&quot;,&quot;&quot;,phone_number[&#39;phoneNumber&#39;])
+        		if phone_number[&#39;phoneType&#39;] == &#39;mobile&#39;:
+        			continue
+
+If you’ve already created your DB you’ll need to wipe it out and recreate it with these new models in order for this to work.  You can most easily do this by just starting a new project for this version – while you can drop the database locally and recreate it with syncdb, for heroku you’ll need to create a new cedar project so a new database will be created.
+
+Creating the Job
+
+Now we’ll walk through the code.  This file wants to live at your LinkedIn project level (so in the example, in the hellodjango directory).  It’s also available in the GitHub repository for django-linkedin-simple.
+
+First, do some basic setup:
+
+from django.core.management import setup_environ
+import settings
+setup_environ(settings)
+
+from twilio.rest import TwilioRestClient
+import oauth2 as oauth
+import time
+import simplejson
+import datetime
+import httplib2
+import psycopg2
+
+account = &quot;TWILIO_ACCT_NUMBER&quot;
+token = &quot;TWILIO_TOKEN&quot;
+twilioclient = TwilioRestClient(account, token)
+
+consumer = oauth.Consumer(
+        key=&quot;LINKEDIN_CONSUMER_KEY&quot;,
+        secret=&quot;LINKEDIN_CONSUMER_SECRET&quot;)
+url = &quot;http://api.linkedin.com/v1/people/~/topics:(description,id,topic-stories:(topic-articles:(relevance-data,article-content:(id,title,resolved-url))))&quot;
+
+Grab the user profiles (this includes the user tokens and secrets)
+
+users = User.objects.all()
+
+Iterate over the users, grabbing their token, secret, django userid and phone number, then grab the LinkedIn Today feed for that user.
+
+for djangouser in users:
+	if djangouser.username == &quot;admin&quot;:
+		continue
+	profile = UserProfile.objects.get(user=djangouser)
+	token = oauth.Token(
+        	key=profile.oauth_token,
+        	secret=profile.oauth_secret)
+	phone = profile.phone_number
+	userid = profile.user_id
+	user_articles = SentArticle.objects.filter(user=djangouser)
+
+	# Now make the LinkedIn today call and get the articles in question
+	client = oauth.Client(consumer, token)
+
+	resp, content = client.request(url, headers={&quot;x-li-format&quot;:&#39;json&#39;})
+	results = simplejson.loads(content)
+
+We only want to send alerts for articles which have a high “score”, indicating that they are currently hot topics for this user.  Look through the articles to find those “hot topics”:
+
+for topic in results[&#39;values&#39;]:
+           for story in topic[&#39;topicStories&#39;][&#39;values&#39;]:
+                for article in story[&#39;topicArticles&#39;][&#39;values&#39;]:
+                        score = article[&#39;relevanceData&#39;][&#39;score&#39;]
+                        if score &amp;gt; 6:
+
+Now, SMS messages are expensive for us (the application owner) and potentially for the user, so we only want to tell the user if they haven’t already heard about this article.
+
+checkarticle = user_articles.filter(article_number__exact=article[&#39;articleContent&#39;][&#39;id&#39;])
+
+If there aren’t any matching articles for this user, go ahead and send them a message, then log it in the database so we don’t tell them again later:
+
+if len(checkarticle) == 0:
+    # This is where we get the shortened URL from google because LinkedIn doesn&#39;t provide one
+    http = httplib2.Http()
+    body = {&quot;longUrl&quot;: article[&#39;articleContent&#39;][&#39;resolvedUrl&#39;]}
+    resp,content = http.request(&quot;https://www.googleapis.com/urlshortener/v1/url?key=YOUR_GOOGLE_API_KEY&quot;,&quot;POST&quot;,body=simplejson.dumps(body),headers={&quot;Content-Type&quot;:&quot;application/json&quot;})
+    googleresponse = simplejson.loads(content)
+    sentarticle = SentArticle(article_number=article[&#39;articleContent&#39;][&#39;id&#39;],user=djangouser,timestamp=datetime.datetime.today())
+    sentarticle.save()
+    bodytext = article[&#39;articleContent&#39;][&#39;title&#39;] + &quot; &quot; + googleresponse[&#39;id&#39;]
+    bodytext += &quot; (&#39;save %s&#39;)&quot; % sentarticle.id
+    message = twilioclient.sms.messages.create(to=&quot;+1&quot; + phone, from_=&quot;+YOUR_TWILIO_NUMBER&quot;, body=bodytext)
+
+Great, we’ve got an application that’ll send messages for the users in the Django system when something hot is there to talk about.
+
+Pushing to Heroku
+
+Now we need the job to work on Heroku, and get scheduled.  If you went through my previous post using the existing GitHub example, the file is already up at Heroku, otherwise you’ll need to push the file to your Heroku instance:
+
+% git add hellodjango/sendArticles.py
+% git push heroku master
+
+Whether it was already there or you just put it there, you should check to make sure that it runs correctly.  Make sure you’ve logged into the system using your LinkedIn ID and stored your phone number there.
+
+% heroku run python hellodjango/sendArticles.py
+
+Did it work?  Great!
+
+Schedule it in Heroku
+
+The Heroku Scheduler is a free add-on, but remember that since it uses machine time it can start racking up the charges if you don’t keep an eye on it.  You can add it using the command line, or you can add it under “Resources” for your application on the Heroku site.  Once you’ve added it you can manage it using the scheduler dashboard.
+
+Pick whatever frequency you like, and put “python hellodjango/sendArticles.py” in the field, and you’re done.
+
+Don’t forget to stop the scheduler when you’re no longer testing so you don’t get a surprise bill from Heroku later.
+
+The next post will cover handling POST requests from Twilio in response to SMS replies from your users.">
+	
+	
+
+	<link type="text/plain" rel="author" href="https://www.princesspolymath.com/humans.txt">
+
+	
+
+	
+
+	<link rel="icon" sizes="32x32" href="https://www.princesspolymath.com/assets/img/favicon-32x32.png">
+
+	<link rel="icon" sizes="192x192" href="https://www.princesspolymath.com/assets/img/touch-icon-192x192.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="180x180" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-180x180-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="152x152" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-152x152-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-144x144-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="120x120" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-120x120-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-114x114-precomposed.png">
+
+	
+	<link rel="apple-touch-icon-precomposed" sizes="76x76" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-76x76-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-72x72-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-precomposed.png">	
+
+	<meta name="msapplication-TileImage" content="https://www.princesspolymath.com/assets/img/msapplication_tileimage.png">
+
+	<meta name="msapplication-TileColor" content="#fabb00">
+
+
+	
+
+</head>
+<body id="top-of-page" class="">
+	
+	<div id="navigation" class="sticky">
+  <nav class="top-bar" role="navigation" data-topbar>
+    <ul class="title-area">
+      <li class="name">
+      <h1 class="show-for-small-only"><a href="https://www.princesspolymath.com" class="icon-tree"> Princess Polymath</a></h1>
+    </li>
+       <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+      <li class="toggle-topbar menu-icon"><a href="#"><span>Navigation</span></a></li>
+    </ul>
+    <section class="top-bar-section">
+
+      <ul class="right">
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+            
+            
+              <li class="divider"></li>
+              <li><a href="https://www.princesspolymath.com/search/">Search</a></li>
+
+            
+            
+          
+        
+
+              
+
+          
+          
+            
+            
+              <li class="divider"></li>
+              <li><a href="https://www.princesspolymath.com/contact/">Contact</a></li>
+
+            
+            
+          
+        
+        
+      </ul>
+
+      <ul class="left">
+        
+
+              
+
+          
+          
+
+            
+            
+	    
+		<li><a href="https://www.princesspolymath.com/">Home</a></li>
+              <li class="divider"></li>
+		
+            
+            
+          
+        
+
+              
+
+          
+          
+
+            
+            
+	    
+		<li><a href="https://www.princesspolymath.com/resume">Resume</a></li>
+              <li class="divider"></li>
+		
+            
+            
+          
+        
+
+              
+
+          
+          
+
+            
+            
+	    
+		<li><a href="http://github.com/synedra" target="_blank">CODE</a></li>
+              <li class="divider"></li>
+		
+            
+            
+          
+        
+
+              
+
+          
+          
+
+            
+            
+	    
+		<li><a href="http://irresistibleapis.com" target="_blank">Irresistible APIs Book</a></li>
+              <li class="divider"></li>
+		
+            
+            
+          
+        
+
+              
+
+          
+          
+
+            
+            
+	    
+		<li><a href="https://www.princesspolymath.com/schedule">Schedule</a></li>
+              <li class="divider"></li>
+		
+            
+            
+          
+        
+
+              
+
+          
+          
+
+            
+            
+	    
+		<li><a href="https://www.princesspolymath.com/presentations">Presentations</a></li>
+              <li class="divider"></li>
+		
+            
+            
+          
+        
+
+              
+
+          
+          
+
+            
+            
+	    
+		<li><a href="https://www.princesspolymath.com/reviews">Reviews</a></li>
+              <li class="divider"></li>
+		
+            
+            
+          
+        
+
+              
+
+          
+          
+
+            
+            
+
+              <li class="has-dropdown">
+                <a href="https://www.princesspolymath.com/blog/">Blog</a>
+
+                  <ul class="dropdown">
+                    
+
+                      
+
+                      <li><a href="https://www.princesspolymath.com/blog/archive/">Blog Archive</a></li>
+                    
+                  </ul>
+
+              </li>
+              <li class="divider"></li>
+            
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+        
+      </ul>
+    </section>
+  </nav>
+</div><!-- /#navigation -->
+
+	
+	
+	
+
+<div id="masthead-no-image-header">
+	<div class="row">
+		<div class="small-12 columns">
+			<a id="logo" href="https://www.princesspolymath.com" title="Princess Polymath – I know lots of things...">
+				<img src="https://www.princesspolymath.com/assets/img/logo-words.png" alt="Princess Polymath – I know lots of things...">
+			</a>
+		</div><!-- /.small-12.columns -->
+	</div><!-- /.row -->
+</div><!-- /#masthead -->
+
+
+
+
+
+
+
+
+
+	
+
+	<div class="row t30">
+	<div class="medium-8 columns medium-push-4">
+		<article itemscope itemtype="http://schema.org/Article">
+			<header>
+				
+
+				<div itemprop="name">
+					
+					<h1>Sending SMS Notifications using Twilio, Django and the Heroku Scheduler</h1>
+				</div>
+			</header>
+
+
+			
+
+			<div itemprop="articleSection">
+			<p>For my <a href="http://www.princesspolymath.com/princess_polymath/?p=509">Twilio SMS Demo App</a> this month, I wanted to send notifications to LinkedIn members based on hot items for them in LinkedIn Today.  This is a tutorial on creating a python script to access user information in the Django database, pull information from a Web Service (in this case the LinkedIn Today API) and send an SMS to the user.  A couple of caveats are in order here to make sure that people don’t accidentally run afoul of the <a href="https://developer.linkedin.com/documents/linkedin-apis-terms-use">LinkedIn API Terms of Use</a> when implementing something of this sort.</p>
+
+<ul>
+  <li>The LinkedIn Today API is only available internally at this point, and should only be used as an example of what’s possible</li>
+  <li>I have stored the user’s phone number in the database – when storing LinkedIn information you always need to notify the user that you’re doing that, explicitly.</li>
+</ul>
+
+<div>
+  All that having been said, you need the following to get this working:
+</div>
+
+<div>
+  <ul>
+    <li>
+      A working Django system on Heroku.  If you set up my example LinkedIn Django application from <a href="http://www.princesspolymath.com/princess_polymath/?p=511">this post</a>, you&#8217;ll be able to extend that here.
+    </li>
+    <li>
+      A<a href="http://www.twilio.com/"> Twilio account</a> &#8211; ideally with a purchased number, but you could get this system to work with the sandbox system.  You get $30 in Twilio credit to start out with, which is plenty to set up a demo of this sort.
+    </li>
+    <li>
+      A Google API key (this is optional, but it&#8217;ll get you more shortened links)
+    </li>
+  </ul>
+</div>
+
+<h2 id="install-the-twilio-library">Install the Twilio Library</h2>
+
+<div>
+  Assuming that you&#8217;re using the LinkedIn Django application from <a href="http://www.princesspolymath.com/princess_polymath/?p=511">my previous post</a> and are in the root level of that structure, you need to add the Twilio library to your installation:
+</div>
+
+<pre>% pip install twilio
+% pip freeze &gt; requirements.txt</pre>
+
+<h2 id="adding-the-phone-number">Adding the Phone Number</h2>
+
+<p>Remember, if you’re going to store any information at all about a LinkedIn member, you need to explicitly tell them so.  That having been said, you can add the following to your LinkedIn application to get the phone number and store it.  I’m not going to provide the completed code to do this since you need to implement some user notification if you’re using this in a production system.</p>
+
+<h3 id="linkedinmodelspy">linkedin/models.py</h3>
+
+<pre>class UserProfile(models.Model):
+    user = models.ForeignKey(User)
+    oauth_token = models.CharField(max_length=200)
+    oauth_secret = models.CharField(max_length=200)
+    phone_number = models.CharField(max_length=10)</pre>
+
+<h3 id="linkedinviewspy">linkedin/views.py</h3>
+
+<p>Modify the LinkedIn profile URL:</p>
+
+<pre>url = "http://api.linkedin.com/v1/people/~:(id,first-name,last-name,industry,phone-numbers)"</pre>
+
+<p>Add this logic before saving the user profile:</p>
+
+<pre>if "phoneNumbers" in profile:
+        	for phone_number in profile['phoneNumbers']['values']:
+        		userprofile.phone_number = re.sub(r"\D","",phone_number['phoneNumber'])
+        		if phone_number['phoneType'] == 'mobile':
+        			continue</pre>
+
+<p>If you’ve already created your DB you’ll need to wipe it out and recreate it with these new models in order for this to work.  You can most easily do this by just starting a new project for this version – while you can drop the database locally and recreate it with syncdb, for heroku you’ll need to create a new cedar project so a new database will be created.</p>
+
+<h2 id="creating-the-job">Creating the Job</h2>
+
+<p>Now we’ll walk through the code.  This file wants to live at your LinkedIn project level (so in the example, in the hellodjango directory).  It’s also available in the GitHub repository for <a href="https://github.com/synedra/django-linkedin-simple">django-linkedin-simple</a>.</p>
+
+<p>First, do some basic setup:</p>
+
+<pre>from django.core.management import setup_environ
+import settings
+setup_environ(settings)</pre>
+
+<pre>from twilio.rest import TwilioRestClient
+import oauth2 as oauth
+import time
+import simplejson
+import datetime
+import httplib2
+import psycopg2
+
+account = "TWILIO_ACCT_NUMBER"
+token = "TWILIO_TOKEN"
+twilioclient = TwilioRestClient(account, token)
+
+consumer = oauth.Consumer(
+        key="LINKEDIN_CONSUMER_KEY",
+        secret="LINKEDIN_CONSUMER_SECRET")
+url = "http://api.linkedin.com/v1/people/~/topics:(description,id,topic-stories:(topic-articles:(relevance-data,article-content:(id,title,resolved-url))))"</pre>
+
+<pre><span class="Apple-style-span" style="font-family: Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif; font-size: 13px; line-height: 19px; white-space: normal;">Grab the user profiles (this includes the user tokens and secrets)</span></pre>
+
+<pre>users = User.objects.all()</pre>
+
+<p>Iterate over the users, grabbing their token, secret, django userid and phone number, then grab the LinkedIn Today feed for that user.</p>
+
+<pre>for djangouser in users:
+	if djangouser.username == "admin":
+		continue
+	profile = UserProfile.objects.get(user=djangouser)
+	token = oauth.Token(
+        	key=profile.oauth_token,
+        	secret=profile.oauth_secret)
+	phone = profile.phone_number
+	userid = profile.user_id
+	user_articles = SentArticle.objects.filter(user=djangouser)
+
+	# Now make the LinkedIn today call and get the articles in question
+	client = oauth.Client(consumer, token)
+
+	resp, content = client.request(url, headers={"x-li-format":'json'})
+	results = simplejson.loads(content)</pre>
+
+<p>We only want to send alerts for articles which have a high “score”, indicating that they are currently hot topics for this user.  Look through the articles to find those “hot topics”:</p>
+
+<pre>for topic in results['values']:
+           for story in topic['topicStories']['values']:
+                for article in story['topicArticles']['values']:
+                        score = article['relevanceData']['score']
+                        if score &gt; 6:</pre>
+
+<p>Now, SMS messages are expensive for us (the application owner) and potentially for the user, so we only want to tell the user if they haven’t already heard about this article.</p>
+
+<pre>checkarticle = user_articles.filter(article_number__exact=article['articleContent']['id'])</pre>
+
+<p>If there aren’t any matching articles for this user, go ahead and send them a message, then log it in the database so we don’t tell them again later:</p>
+
+<pre>if len(checkarticle) == 0:
+    # This is where we get the shortened URL from google because LinkedIn doesn't provide one
+    http = httplib2.Http()
+    body = {"longUrl": article['articleContent']['resolvedUrl']}
+    resp,content = http.request("https://www.googleapis.com/urlshortener/v1/url?key=YOUR_GOOGLE_API_KEY","POST",body=simplejson.dumps(body),headers={"Content-Type":"application/json"})
+    googleresponse = simplejson.loads(content)
+    sentarticle = SentArticle(article_number=article['articleContent']['id'],user=djangouser,timestamp=datetime.datetime.today())
+    sentarticle.save()
+    bodytext = article['articleContent']['title'] + " " + googleresponse['id']
+    bodytext += " ('save %s')" % sentarticle.id
+    message = twilioclient.sms.messages.create(to="+1" + phone, from_="+YOUR_TWILIO_NUMBER", body=bodytext)</pre>
+
+<p>Great, we’ve got an application that’ll send messages for the users in the Django system when something hot is there to talk about.</p>
+
+<h2 id="pushing-to-heroku">Pushing to Heroku</h2>
+
+<p>Now we need the job to work on Heroku, and get scheduled.  If you went through my previous post using the existing <a href="https://github.com/synedra/django-linkedin-simple">GitHub example</a>, the file is already up at Heroku, otherwise you’ll need to push the file to your Heroku instance:</p>
+
+<pre>% git add hellodjango/sendArticles.py
+% git push heroku master</pre>
+
+<p>Whether it was already there or you just put it there, you should check to make sure that it runs correctly.  Make sure you’ve logged into the system using your LinkedIn ID and stored your phone number there.</p>
+
+<pre>% heroku run python hellodjango/sendArticles.py</pre>
+
+<p>Did it work?  Great!</p>
+
+<h2 id="schedule-it-in-heroku">Schedule it in Heroku</h2>
+
+<p>The Heroku Scheduler is a free add-on, but remember that since it uses machine time it can start racking up the charges if you don’t keep an eye on it.  You can add it using the command line, or you can add it under “Resources” for <a href="https://api.heroku.com/myapps">your application</a> on the Heroku site.  Once you’ve added it you can manage it using the <a href="https://heroku-scheduler.herokuapp.com/dashboard">scheduler dashboard</a>.</p>
+
+<p>Pick whatever frequency you like, and put “python hellodjango/sendArticles.py” in the field, and you’re done.</p>
+
+<p>Don’t forget to stop the scheduler when you’re no longer testing so you don’t get a surprise bill from Heroku later.</p>
+
+<p>The next post will cover handling POST requests from Twilio in response to SMS replies from your users.</p>
+
+			</div>
+
+			
+						<div id="page-meta" class="t30">
+				<p>
+					<!-- Look the author details up from the site config. -->
+					
+					<!-- Output author details if some exist. -->
+					
+
+				
+				<time class="icon-calendar pr20" datetime="2011-12-21" itemprop="datePublished"> 2011-12-21</time>
+				
+
+				<span class="icon-archive pr20"> GEEK STUFF · HEROKU · LINKEDIN · PYTHON · WEB APIS</span>
+				<br />
+				<span class="pr20"><span class="icon-price-tag pr10"> django</span> <span class="icon-price-tag pr10"> heroku</span> <span class="icon-price-tag pr10"> linkedin</span> <span class="icon-price-tag pr10"> python</span> <span class="icon-price-tag pr10"> twilio</span> </span>
+			</p>
+
+			<div id="post-nav" class="row">
+				
+				<div class="small-5 columns"><a class="button small radius prev" href="https://www.princesspolymath.com/using-linkedin-authentication-with-django-on-heroku.html">&laquo; Using LinkedIn Authentication with Django on Heroku</a></div><!-- /.small-4.columns -->
+				
+				<div class="small-2 columns text-center"><a class="radius button small" href="https://www.princesspolymath.com/blog/archive/" title="Blog Archive">Archive</a></div><!-- /.small-4.columns -->
+				
+				<div class="small-5 columns text-right"><a class="button small radius next" href="https://www.princesspolymath.com/handling-sms-responses-from-twilio-using-django-on-heroku.html">Handling SMS Responses from Twilio using Django on Heroku &raquo;</a></div><!-- /.small-4.columns -->
+				
+			</div>
+			</div><!--  /.page-meta -->
+			
+
+			
+						
+				<h3 id="comments" class="t60">Dialogue &amp; Discussion</h3>
+			    <div id="disqus_thread"></div>
+			    <script type="text/javascript">
+			        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+			        var disqus_shortname = 'princesspolymath'; 
+			        var disqus_identifier = '/sending-sms-notifications-using-twilio-django-and-the-heroku-scheduler.html';
+
+			        /* * * DON'T EDIT BELOW THIS LINE * * */
+			        (function() {
+			            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+			            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+			            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+			        })();
+			    </script>
+			    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+			
+
+
+
+			
+		</article>
+	</div><!-- /.medium-8.columns -->
+
+
+	
+	<div class="medium-4 columns medium-pull-8">
+		<aside>
+<div itemscope itemtype="http://schema.org/Person">
+
+  <div class="author__avatar">
+    	<img src="http://princesspolymath.com/assets/img/headshot.jpg" alt="Kirsten Hunter">
+  </div>
+
+  <div class="author__content">
+    <h3 class="author__name">Kirsten Hunter</h3>
+    <p class="author__bio">I know lots of things...</p>
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls ">
+        <li><i class="fa fa-fw fa-map-marker" aria-hidden="true"></i> Santa Cruz</li>
+        <li><a href="mailto:synedra@gmail.com"><i class="fa fa-fw fa-envelope-square" aria-hidden="true"></i> Email</a></li>
+        <li><a href="https://twitter.com/@synedra"><i class="fa fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        <li><a href="https://www.linkedin.com/in/http://linkedin.com/in/synedra"><i class="fa fa-fw fa-linkedin-square" aria-hidden="true"></i> LinkedIn</a></li>
+        <li><a href="https://github.com/https://github.com/synedra"><i class="fa fa-fw fa-github" aria-hidden="true"></i> Github</a></li>
+    </ul>
+  </div>
+<a class="twitter-timeline" href="https://twitter.com/search?q=%40synedra" data-widget-id="744007280098574337">Tweets about @synedra</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+<a class="twitter-timeline" href="https://twitter.com/synedra">Tweets by synedra</a>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+</aside>
+
+	</div><!-- /.medium-4.columns -->
+	
+
+
+	
+</div><!-- /.row -->
+
+
+	
+	    <div id="up-to-top" class="row">
+      <div class="small-12 columns" style="text-align: right;">
+        <a class="iconfont" href="#top-of-page">&#xf108;</a>
+      </div><!-- /.small-12.columns -->
+    </div><!-- /.row -->
+
+
+    <footer id="footer-content" class="bg-grau">
+      <div id="footer">
+        <div class="row">
+          <div class="medium-6 large-5 columns">
+            <h5 class="shadow-black">About This Site</h5>
+
+            <p class="shadow-black">
+              Princess Polymath is a website focused on programming, web design, APIs and general amusement.
+              <a href="https://www.princesspolymath.com/info/">More ›</a>
+            </p>
+          </div><!-- /.large-6.columns -->
+
+
+          <div class="small-6 medium-3 large-3 large-offset-1 columns">
+            
+              
+                <h5 class="shadow-black">Services</h5>
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+
+              <ul class="no-bullet shadow-black">
+              
+                
+                  <li >
+                    <a href="https://www.princesspolymath.com"  title=""></a>
+                  </li>
+              
+                
+                  <li >
+                    <a href="https://www.princesspolymath.com/contact/"  title="Contact">Contact</a>
+                  </li>
+              
+                
+                  <li >
+                    <a href="https://www.princesspolymath.com/feed.xml"  title="Subscribe to RSS Feed">RSS</a>
+                  </li>
+              
+                
+                  <li >
+                    <a href="https://www.princesspolymath.com/atom.xml"  title="Subscribe to Atom Feed">Atom</a>
+                  </li>
+              
+                
+                  <li >
+                    <a href="https://www.princesspolymath.com/sitemap.xml"  title="Sitemap for Google Webmaster Tools">sitemap.xml</a>
+                  </li>
+              
+              </ul>
+          </div><!-- /.large-4.columns -->
+
+
+          <div class="small-6 medium-3 large-3 columns">
+            
+              
+                <h5 class="shadow-black">Contact information</h5>
+              
+            
+              
+            
+              
+            
+
+            <ul class="no-bullet shadow-black">
+            
+              
+                <li >
+                  <a href="https://www.princesspolymath.com"  title=""></a>
+                </li>
+            
+              
+                <li class="network-entypo" >
+                  <a href="http://linkedin.com/in/synedra" target="_blank"  title="LinkedIn Contact">LinkedIn</a>
+                </li>
+            
+              
+                <li class="network-entypo" >
+                  <a href="http://twitter.com/synedra" target="_blank"  title="Twitter">Twitter</a>
+                </li>
+            
+            </ul>
+          </div><!-- /.large-3.columns -->
+        </div><!-- /.row -->
+
+      </div><!-- /#footer -->
+
+
+      <div id="subfooter">
+        <nav class="row">
+          <section id="subfooter-left" class="small-12 medium-6 columns credits">
+            <p>Created with &hearts; by <a href="/">synedra</a> with <a href="http://jekyllrb.com/" target="_blank">Jekyll</a> based on <a href="http://phlow.github.io/feeling-responsive/">Feeling Responsive</a>.</p>
+          </section>
+
+          <section id="subfooter-right" class="small-12 medium-6 columns">
+            <ul class="inline-list social-icons">
+            
+              <li><a href="http://github.com/synedra" target="_blank" class="icon-github" title="Riff Raff"></a></li>
+            
+              <li><a href="http://www.youtube.com/PhlowMedia" target="_blank" class="icon-youtube" title="Videos, Video-Anleitungen und Filme von Phlow auf YouTube"></a></li>
+            
+              <li><a href="http://twitter.com/synedra" target="_blank" class="icon-twitter" title="My 140 Character Babblings"></a></li>
+            
+              <li><a href="https://plus.google.com/u/0/+Phlow" target="_blank" class="icon-googleplus" title="YouTube Google+"></a></li>
+            
+            </ul>
+          </section>
+        </nav>
+      </div><!-- /#subfooter -->
+    </footer>
+
+	
+
+	
+
+
+<script src="https://www.princesspolymath.com/assets/js/javascript.min.js"></script>
+
+
+
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-60112281-1', 'auto');
+  ga('set', 'anonymizeIp', true);
+  ga('send', 'pageview');
+
+</script>
+
+
+
+
+
+
+
+
+</body>
+</html>
+
