@@ -10,14 +10,6 @@
   url: "http://github.com/synedra"
   side: left
 
-- title: "Presentations"
-  url: "/presentations"
-  side: left
-
-- title: "Reviews"
-  url: "/reviews"
-  side: left
-
 - title: Blog
   url: "/blog/"
   side: left
