@@ -30,13 +30,13 @@ jobs:
           name: install dependencies
           command: |
             bundle install --jobs=4 --retry=3 --path vendor/bundle
-	    bundle exec jekyll build
+            bundle exec jekyll build
 
       # run tests!
       - run:
           name: run tests
           command: |
-	    bundle exec htmlproofer ./_site --allow-hash-href --check-favicon --check-html --disable-external
+             bundle exec htmlproofer ./_site --allow-hash-href --check-favicon --check-html --disable-external
 
       - run:
           name: deploy
