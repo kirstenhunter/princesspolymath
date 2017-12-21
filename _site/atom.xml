@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 	<id>https://www.princesspolymath.com/</id>
 	<title>Princess Polymath</title>
-	<updated>2017-10-23T23:28:38-04:00</updated>
+	<updated>2017-12-21T08:42:12-08:00</updated>
 
 	<subtitle>Princess Polymath is a website focused on programming, web design, APIs and general amusement.</subtitle>
 
@@ -29,7 +29,7 @@
 			<id>https://www.princesspolymath.com/static-publication-process.html</id>
 			<title>A Static Publication Process</title>
 			<link href="https://www.princesspolymath.com/static-publication-process.html" rel="alternate" type="text/html" title="A Static Publication Process" />
-			<updated>2017-10-23T00:00:00-04:00</updated>
+			<updated>2017-10-23T00:00:00-07:00</updated>
 
 			
 				
@@ -73,14 +73,14 @@
 			
 			
 
-			<published>2017-10-23T00:00:00-04:00</published>
+			<published>2017-10-23T00:00:00-07:00</published>
 		</entry>
 	
 		<entry>
 			<id>https://www.princesspolymath.com/fitbit</id>
 			<title>Fitbit - the Best Activity Tracker for Hackers and Makers</title>
 			<link href="https://www.princesspolymath.com/fitbit" rel="alternate" type="text/html" title="Fitbit - the Best Activity Tracker for Hackers and Makers" />
-			<updated>2016-10-03T00:00:00-04:00</updated>
+			<updated>2016-10-03T00:00:00-07:00</updated>
 
 			
 				
@@ -155,14 +155,14 @@ as it has heart rate monitoring, some SMS functionality, and is generally small 
 			
 			
 
-			<published>2016-10-03T00:00:00-04:00</published>
+			<published>2016-10-03T00:00:00-07:00</published>
 		</entry>
 	
 		<entry>
 			<id>https://www.princesspolymath.com/irresistible-apis-book</id>
 			<title>Irresistible APIs Book</title>
 			<link href="https://www.princesspolymath.com/irresistible-apis-book" rel="alternate" type="text/html" title="Irresistible APIs Book" />
-			<updated>2016-09-27T00:00:00-04:00</updated>
+			<updated>2016-09-27T00:00:00-07:00</updated>
 
 			
 				
@@ -189,14 +189,14 @@ I’ll have a link to the presentation I gave at Abstractions earlier this year 
 			
 			
 
-			<published>2016-09-27T00:00:00-04:00</published>
+			<published>2016-09-27T00:00:00-07:00</published>
 		</entry>
 	
 		<entry>
 			<id>https://www.princesspolymath.com/becoming-a-polyglot</id>
 			<title>Becoming a Polyglot</title>
 			<link href="https://www.princesspolymath.com/becoming-a-polyglot" rel="alternate" type="text/html" title="Becoming a Polyglot" />
-			<updated>2016-06-30T00:00:00-04:00</updated>
+			<updated>2016-06-30T00:00:00-07:00</updated>
 
 			
 				
@@ -292,14 +292,14 @@ To insert the information from the quoteid.json file to get your DB started, use
 			
 			
 
-			<published>2016-06-30T00:00:00-04:00</published>
+			<published>2016-06-30T00:00:00-07:00</published>
 		</entry>
 	
 		<entry>
 			<id>https://www.princesspolymath.com/hacking-a-philips-hue-remote-api-in-node.html</id>
 			<title>Hacking a Philips Hue Remote API in Node</title>
 			<link href="https://www.princesspolymath.com/hacking-a-philips-hue-remote-api-in-node.html" rel="alternate" type="text/html" title="Hacking a Philips Hue Remote API in Node" />
-			<updated>2016-05-03T09:07:28-04:00</updated>
+			<updated>2016-05-03T06:07:28-07:00</updated>
 
 			
 				
@@ -461,14 +461,14 @@ http PUT http://{ip_from_meethue}/api/{username}/groups/0/action on=false
 			
 			
 
-			<published>2016-05-03T09:07:28-04:00</published>
+			<published>2016-05-03T06:07:28-07:00</published>
 		</entry>
 	
 		<entry>
 			<id>https://www.princesspolymath.com/telling-your-story-speaking-for-non-speakers.html</id>
 			<title>Telling Your Story: Speaking for Non-Speakers</title>
 			<link href="https://www.princesspolymath.com/telling-your-story-speaking-for-non-speakers.html" rel="alternate" type="text/html" title="Telling Your Story: Speaking for Non-Speakers" />
-			<updated>2015-07-23T17:31:18-04:00</updated>
+			<updated>2015-07-23T14:31:18-07:00</updated>
 
 			
 				
@@ -583,14 +583,14 @@ http PUT http://{ip_from_meethue}/api/{username}/groups/0/action on=false
 			
 			
 
-			<published>2015-07-23T17:31:18-04:00</published>
+			<published>2015-07-23T14:31:18-07:00</published>
 		</entry>
 	
 		<entry>
 			<id>https://www.princesspolymath.com/quick-docker-getting-started.html</id>
 			<title>Quick Docker Getting Started</title>
 			<link href="https://www.princesspolymath.com/quick-docker-getting-started.html" rel="alternate" type="text/html" title="Quick Docker Getting Started" />
-			<updated>2015-05-28T12:25:27-04:00</updated>
+			<updated>2015-05-28T09:25:27-07:00</updated>
 
 			
 				
@@ -678,14 +678,14 @@ root@0bef28a21e83:/opt/webapp#
 			
 			
 
-			<published>2015-05-28T12:25:27-04:00</published>
+			<published>2015-05-28T09:25:27-07:00</published>
 		</entry>
 	
 		<entry>
 			<id>https://www.princesspolymath.com/promises-promises.html</id>
 			<title>Promises, promises</title>
 			<link href="https://www.princesspolymath.com/promises-promises.html" rel="alternate" type="text/html" title="Promises, promises" />
-			<updated>2015-05-26T10:27:54-04:00</updated>
+			<updated>2015-05-26T07:27:54-07:00</updated>
 
 			
 				
@@ -730,14 +730,14 @@ root@0bef28a21e83:/opt/webapp#
 			
 			
 
-			<published>2015-05-26T10:27:54-04:00</published>
+			<published>2015-05-26T07:27:54-07:00</published>
 		</entry>
 	
 		<entry>
 			<id>https://www.princesspolymath.com/glue-ing-together-apis-for-gluecon.html</id>
 			<title>Glue-ing together APIs for GlueCon</title>
 			<link href="https://www.princesspolymath.com/glue-ing-together-apis-for-gluecon.html" rel="alternate" type="text/html" title="Glue-ing together APIs for GlueCon" />
-			<updated>2015-05-21T04:44:28-04:00</updated>
+			<updated>2015-05-21T01:44:28-07:00</updated>
 
 			
 				
@@ -770,14 +770,14 @@ root@0bef28a21e83:/opt/webapp#
 			
 			
 
-			<published>2015-05-21T04:44:28-04:00</published>
+			<published>2015-05-21T01:44:28-07:00</published>
 		</entry>
 	
 		<entry>
 			<id>https://www.princesspolymath.com/new-book-on-meap-irresistible-apis.html</id>
 			<title>New Book on MEAP: Irresistible APIs</title>
 			<link href="https://www.princesspolymath.com/new-book-on-meap-irresistible-apis.html" rel="alternate" type="text/html" title="New Book on MEAP: Irresistible APIs" />
-			<updated>2015-04-18T11:46:50-04:00</updated>
+			<updated>2015-04-18T08:46:50-07:00</updated>
 
 			
 				
@@ -804,7 +804,7 @@ root@0bef28a21e83:/opt/webapp#
 			
 			
 
-			<published>2015-04-18T11:46:50-04:00</published>
+			<published>2015-04-18T08:46:50-07:00</published>
 		</entry>
 	
 </feed>
