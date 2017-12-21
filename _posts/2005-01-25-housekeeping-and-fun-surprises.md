@@ -21,7 +21,7 @@ categories:
   
 Back to knitting! Yesterday our postal carrier was running very late and didn&#8217;t come until dark, so I was pleasantly surprised while making dinner when a package appeared on my doorstep from my [Knitty Secret Pal!](http://www.knittyboard.com/viewtopic.php?t=2061&start=345)
   
-![](http://www.perlgoddess.com/blog/images/secretpal.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/secretpal.jpg)
   
 What cool stuff!
 

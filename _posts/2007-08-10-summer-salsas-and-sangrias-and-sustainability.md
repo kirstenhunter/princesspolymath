@@ -15,7 +15,7 @@ tc-thumb-fld:
 categories:
   - Food
 ---
-<img alt="salsas_and_sangrias.jpg" src="http://www.perlgoddess.com/perlgoddess/salsas_and_sangrias.jpg" width="400" height="300" />
+<img alt="This is a picture" alt="salsas_and_sangrias.jpg" src="http://www.perlgoddess.com/perlgoddess/salsas_and_sangrias.jpg" width="400" height="300" />
   
 _Tabitha, Melissa, some sangria, and the obligatory iced tea cup_
   

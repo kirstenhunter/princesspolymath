@@ -51,7 +51,7 @@ Finally, I&#8217;m feeling human.  Between slamming my endocrine system into so
 </div>
 
 <div>
-  <span class="mt-enclosure mt-enclosure-image" style="display: inline;"><img alt="iChat Image(1592128026).jpeg" src="http://www.princesspolymath.com/princess_polymath/images/iChat%20Image%281592128026%29.jpeg" width="400" class="mt-image-none" style="" /></span>
+  <span class="mt-enclosure mt-enclosure-image" style="display: inline;"><img alt="This is a picture" alt="iChat Image(1592128026).jpeg" src="http://www.princesspolymath.com/princess_polymath/images/iChat%20Image%281592128026%29.jpeg" width="400" class="mt-image-none" style="" /></span>
 </div>
 
 <div>

@@ -15,9 +15,9 @@ tc-thumb-fld:
 categories:
   - Uncategorized
 ---
-Food: ![](http://fitness.domestigirl.com/images/stars_3_40.gif)
+Food: ![Picture here](http://fitness.domestigirl.com/images/stars_3_40.gif)
   
-Exercise: ![](http://fitness.domestigirl.com/images/stars_3_50.gif)
+Exercise: ![Picture here](http://fitness.domestigirl.com/images/stars_3_50.gif)
   
 Run/Walk 1/2 minutes: 45 minutes
   
@@ -25,6 +25,6 @@ A better job today&#8230; I had a chantico but the rest of the day was pretty da
   
 I decided that if I&#8217;m going to run in some races I should probably get started pretty soon now on the actual running thing. Running&#8230; that sounds familiar. I wonder if I might possibly have a book or two on running in my office&#8230;
   
-![](http://fitness.domestigirl.com/images/runbooks.jpg)
+![Picture here](http://fitness.domestigirl.com/images/runbooks.jpg)
   
 Ah yes, there they are. Thumbed through and found the best &#8216;getting back on the horse&#8217; program for myself and ran today. It felt really good and I definitely burned off that Chantico. Ended up going 2.75 miles with the warmup/cooldown so I&#8217;m feeling good about my goals for this whole racing thing.

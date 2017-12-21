@@ -17,7 +17,7 @@ tc-thumb-fld:
 categories:
   - Cooking
 ---
-<img alt="Project25.jpg" src="http://www.perlgoddess.com/blog/images/Project25.jpg" width="320" height="196" />
+<img alt="This is a picture" alt="Project25.jpg" src="http://www.perlgoddess.com/blog/images/Project25.jpg" width="320" height="196" />
 
 Here&#8217;s a picture of the turkey from Thanksgiving taken by my [FriendWhoCallsMeMartha](http://fickleknitterfiend.blogspot.com). I&#8217;m very fond of cooking for large groups because it gives me a chance to try new dishes. I go with a CYA approach which involves cooking enormous numbers of recipes so that if one of them doesn&#8217;t work no one goes hungry. In this case I think there were 10 things on the table for 10 people&#8230; maybe overkill but everyone looked blissful at the end, and I didn&#8217;t have to pull my hair out over the soggy weird polenta sticks.
   

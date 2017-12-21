@@ -18,7 +18,7 @@ categories:
   - Uncategorized
 ---
 <div style="float: right; margin-left: 10px; margin-bottom: 10px;">
-  <a href="http://www.flickr.com/photos/36572571@N00/102700122/" title="photo sharing"><img src="http://static.flickr.com/41/102700122_5a4b648d50_m.jpg" class="grouped_elements" rel="tc-fancybox-group122" alt="" style="border: solid 2px #000000;" /></a>
+  <a href="http://www.flickr.com/photos/36572571@N00/102700122/" title="photo sharing"><img alt="This is a picture" src="http://static.flickr.com/41/102700122_5a4b648d50_m.jpg" class="grouped_elements" rel="tc-fancybox-group122" alt="This is a picture" style="border: solid 2px #000000;" /></a>
 </div>
 
 Victoria and I went to [Pantheacon](http://www.pantheacon.com/) on Sunday and we had a wonderful time. We got matching henna tattoos on our hands, learned lots of circle dances, and attended a ritual celebrating young ladies such as herself. It was wonderful to spend the day with my daughter, celebrating and learning.

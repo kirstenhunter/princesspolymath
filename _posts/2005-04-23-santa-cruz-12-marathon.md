@@ -21,14 +21,14 @@ Well, it was called the half marathon but I only did the 10K course. Still, I ma
   
 And there are PICTURES! Actually I also got my pics back from the SF run as well but I need to scan one in&#8230; but here are the pictures from the Santa Cruz race:
   
- ![](http://fitness.domestigirl.com/images/race1.jpg)![](http://fitness.domestigirl.com/images/race2.jpg)
+ ![Picture here](http://fitness.domestigirl.com/images/race1.jpg)![Picture here](http://fitness.domestigirl.com/images/race2.jpg)
   
 Me! At the finish line but still smiling. That guy blazing along behind me was doing the 1/2 marathon, so he did his race twice as fast as I did mine. Someday I hope to be fast enough not to be lapped by anyone. Gotta keep those goals attainable 🙂
   
-![](http://fitness.domestigirl.com/images/race3.jpg)
+![Picture here](http://fitness.domestigirl.com/images/race3.jpg)
   
 Amy and myself about a mile from the finish. I told her &#8216;look happy!&#8217; hence her somewhat incredulous expression.
   
-![](http://fitness.domestigirl.com/images/race4.jpg)
+![Picture here](http://fitness.domestigirl.com/images/race4.jpg)
   
 Amy, finishing strong&#8230;

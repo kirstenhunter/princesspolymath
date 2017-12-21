@@ -15,9 +15,9 @@ tc-thumb-fld:
 categories:
   - Uncategorized
 ---
-Food: ![](http://fitness.domestigirl.com/images/stars_3_30.gif)
+Food: ![Picture here](http://fitness.domestigirl.com/images/stars_3_30.gif)
   
-Exercise: ![](http://fitness.domestigirl.com/images/stars_3_50.gif)
+Exercise: ![Picture here](http://fitness.domestigirl.com/images/stars_3_50.gif)
   
 Martial Arts, 45 minutes
   

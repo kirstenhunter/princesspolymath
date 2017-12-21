@@ -19,13 +19,13 @@ categories:
 ---
 I had a great birthday yesterday. We went to my favorite dinner spot and had a fun meal, and then we came home and had some cake which my fabulous husband baked for me (because you can&#8217;t get a bakery to make yellow cake which is my favorite):
   
-![](http://www.perlgoddess.com/blog/images/barbiecake.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/barbiecake.jpg)
   
 Why yes, that is a Barbie candle. No, I&#8217;m not 5. I just felt like having a Barbie candle, whaddya wanna make of it? In any case it was a prescient candle for the rest of my birthday.
   
 I got a bunch of cool stuff in a &#8216;pink&#8217; motif &#8211; a pink cashmere sweater from J. Jill (with pink chenille socks), some fabulous earrings in pink mother-of-pearl with rose gold, and from my amazingly crafty and cool [friend](http://recklesscraft.blogspot.com/) made me the most wonderful birthday present:
   
-![](http://www.perlgoddess.com/blog/images/bag.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/bag.jpg)
   
 My name, and &#8220;Domestigirl&#8221;. Stitched in Pink! It is just so cool. That thing dangling down from the (pink!) ribbon is a yarn cutter &#8211; she pointed out that if you have scissors, people tend to &#8216;borrow&#8217; them and you never see them again. This yarn cutter is a very specific tool and you can&#8217;t do anything but cut yarn, so everyone else leaves it alone.
   

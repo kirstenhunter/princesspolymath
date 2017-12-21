@@ -17,7 +17,7 @@ tc-thumb-fld:
 categories:
   - Uncategorized
 ---
-![](http://www.perlgoddess.com/blog/images/well4.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/well4.jpg)
   
 This is a fabulous looking and very tasty breakfast treat, again based on a recipe from [Cuisine at Home magazine](http://www.cuisinemag.com/) &#8211; you can do all the preparation the night before and then just pop it into the oven in the morning. It tastes as good as it looks, and it&#8217;s very easy to prepare.
   
@@ -55,15 +55,15 @@ Whisk 11 of the eggs together with the chives. Add them to the pan and scramble 
   
 Unfold a pastry sheet on a sheet of parchment paper. It almost always cracks at the seams, so wet your fingers and press at the seams to fix them up. You can roll it on a floured surface until it&#8217;s longer (about 12&#215;10) to get a longer pastry, but it works fine unrolled as well. You need to trim and pre-cut it so it looks like this picture:
   
-![](http://www.perlgoddess.com/blog/images/well1.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/well1.jpg)
   
 Glop about 1/2 of the egg mixture onto the pastry and start braiding:
   
-![](http://www.perlgoddess.com/blog/images/well2.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/well2.jpg)
   
 After your pastries are braided they&#8217;ll look kinda funny. Don&#8217;t worry about it&#8230;
   
-![](http://www.perlgoddess.com/blog/images/well3.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/well3.jpg)
   
 At this point you can refrigerate the prepared pastries in the refrigerator &#8211; lightly cover them with plastic wrap to prevent drying.
   

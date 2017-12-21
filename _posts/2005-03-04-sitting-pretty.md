@@ -23,10 +23,10 @@ Her description: The design is inspired by Gustav Klimt, specifically his painti
   
 Here&#8217;s some photos&#8230;
   
-![](http://www.perlgoddess.com/blog/images/chair1.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/chair1.jpg)
   
-![](http://www.perlgoddess.com/blog/images/chair2.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/chair2.jpg)
   
-![](http://www.perlgoddess.com/blog/images/chair3.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/chair3.jpg)
   
-![](http://www.perlgoddess.com/blog/images/chair4.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/chair4.jpg)

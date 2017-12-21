@@ -23,7 +23,7 @@ Remember the Continental Dishcloth? I frogged it. It was too boring. Stockinette
   
 Anyhow, seeking an actual project, I cast on for the cute sherbet sweater. And I felt very grown-up about it too &#8211; the tape yarn (yes, I know I called it ribbon yarn before, but it&#8217;s tape yarn) was too thin to hold gauge, plus I didn&#8217;t like how open the stitching ended up so I doubled the yarn and am knitting with 2 strands held together. Of course it&#8217;s a striped sweater so that means 4 balls being toted about with me, but I can handle that. It&#8217;s coming along pretty well and I&#8217;ve even managed to make the Continental stitch thing work.
   
-![](http://www.perlgoddess.com/blog/images/sweaterstart.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/sweaterstart.jpg)
   
 That light yarn is actually a super-light purple. So the sweater will look kinda like a bowl of rainbow sherbet when it&#8217;s done. I&#8217;m actually contemplating lime green buttons to finish the look &#8211; but I didn&#8217;t buy any buttons yet &#8211; I figure I can buy them when the rest of the sweater is available to hold them up to.
   

@@ -25,13 +25,13 @@ First, I received a few cool surprises in the mail.
   
 A couple of RAOKs &#8211; a beautiful card and calendar from [Uli](http://www.ulineedleworkworld.motime.com) and some excellent valentine candy from a different [Kirsten](http://www.codeheadsystems.com/kirsten).
   
-![](http://www.perlgoddess.com/blog/images/raok.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/raok.jpg)
   
 Many thanks to both of you, it&#8217;s wonderful receiving surprises in the mail!
   
 Also, I received my second package from my Knitty Secret Pal. I must have the worlds coolest and most psychic SP ever. Seriously. I came in from dinner at my favorite Thai restaurant to find this in the mail:
   
-![](http://www.perlgoddess.com/blog/images/spal.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/spal.jpg)
   
 Her favorite cookbook, and it&#8217;s beautiful &#8211; the pictures look phenomenal &#8211; I can&#8217;t wait to try them. She also made me some adorable little knitted flower pins and sent along some flowery notecards &#8211; a very springy package to be sure. I am totally feeling spoiled now 🙂
   
@@ -43,11 +43,11 @@ Then, my friend [Michelle](http://fickleknitterfiend.blogspot.com) flew up here 
   
 Let me digress a moment to remind you, gentle reader, of my current sock dilemma. I have to make a pair of socks for Sockapalooza. I will not fail to do so. I need to send it off within a month. A couple of weeks ago, I bought some Lorna&#8217;s Laces and cast on in a vain attempt to just gut it out and make my very first pair on size 1 dpns. I used some bamboo dpns I had purchased for this purpose. Well, between myself, the snaggy bamboo needles and the splitty Lorna&#8217;s Laces, I have had some major issues getting any progress made toward some reasonable socks. Deep Breath. OK, here I am at Stitches West. Surely there is something to be done here. I know, I&#8217;ll buy a few new sock things and start again. A couple of books, maybe&#8230; and some yarn, and then of course some DPNs. In a few different sizes. Just in case.
   
-![](http://www.perlgoddess.com/blog/images/socks2.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/socks2.jpg)
   
 Let&#8217;s take a closer look at that spiffy Lantern Moon box, shall we?
   
-![](http://www.perlgoddess.com/blog/images/socks1.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/socks1.jpg)
   
 Looks kind of magical, doesn&#8217;t it? All that yarn, all those needles. Not just any needles. Lantern Moon needles. In 1,2,3,4 and 6. Surely I will be able to make a usable pair of socks now. I&#8217;m sure I didn&#8217;t overbuy. Heck, I need socks. Lots of socks. There&#8217;s so much magical Lantern Moon Energy going on there, Michelle suggested that perhaps I should just put all of the needles and yarn together in the silky case, pull the drawstring, and let the socks knit themselves. Strangely, this doesn&#8217;t seem to be working. Yet. I&#8217;ve got a couple more weeks, maybe I should give it a little longer, or sacrifice a goat or something.
   
@@ -65,7 +65,7 @@ Me: No. I Do Not Need Another New Hobby.
   
 As you can see from this picture, I stood firm in my convictions:
   
-![](http://www.perlgoddess.com/blog/images/spinning.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/spinning.jpg)
   
 Or maybe not. The roving is totally beautiful though. And as you can see I&#8217;m doing a fair to middling job of the whole spinning thing.
   

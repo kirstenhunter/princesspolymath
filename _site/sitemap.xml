@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<!-- Pages: 62 links with priority=0.3, changefreq=monthly -->
+<!-- Pages: 57 links with priority=0.3, changefreq=monthly -->
 
 	
 	<url>
 	<loc>https://www.princesspolymath.com/404.html</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -22,7 +22,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/archive/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -39,7 +39,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/atom.xml</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -50,28 +50,13 @@
 	</url>
 	
 
-	
-
-	
-	<url>
-	<loc>https://www.princesspolymath.com/changelog/</loc>
-	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
-	
-	
-		<changefreq>monthly</changefreq>
-	
-	
-		<priority>0.3</priority>
-	
-	</url>
 	
 
 	
 	<url>
 	<loc>https://www.princesspolymath.com/contact/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -86,22 +71,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/design/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
-	
-	
-		<changefreq>monthly</changefreq>
-	
-	
-		<priority>0.3</priority>
-	
-	</url>
-	
-
-	
-	<url>
-	<loc>https://www.princesspolymath.com/documentation/</loc>
-	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -116,7 +86,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/feed.xml</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -131,7 +101,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/getting-started/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -146,7 +116,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/headers/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -161,7 +131,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/humans.txt</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -176,7 +146,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -191,7 +161,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -206,22 +176,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/redirect-page/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
-	
-	
-		<changefreq>monthly</changefreq>
-	
-	
-		<priority>0.3</priority>
-	
-	</url>
-	
-
-	
-	<url>
-	<loc>https://www.princesspolymath.com/roadmap/</loc>
-	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -236,7 +191,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/robots.txt</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -255,7 +210,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/search/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -270,7 +225,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/sitemap.xml</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -287,7 +242,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page2/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -302,7 +257,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page3/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -317,7 +272,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page4/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -332,7 +287,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page5/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -347,7 +302,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page6/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -362,7 +317,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page7/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -377,7 +332,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page8/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -392,7 +347,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page9/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -407,7 +362,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page10/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -422,7 +377,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page11/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -437,7 +392,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page12/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -452,7 +407,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page13/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -467,7 +422,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page14/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -482,7 +437,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page15/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -497,7 +452,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page16/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -512,7 +467,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page17/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -527,7 +482,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page18/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -542,7 +497,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page19/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -557,7 +512,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page20/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -572,7 +527,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page21/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -587,7 +542,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page22/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -602,7 +557,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page23/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -617,7 +572,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page24/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -632,7 +587,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page25/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -647,7 +602,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page26/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -662,7 +617,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page27/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -677,7 +632,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page28/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -692,7 +647,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page29/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -707,7 +662,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page30/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -722,7 +677,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page31/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -737,7 +692,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page32/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -752,7 +707,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page33/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -767,7 +722,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page34/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -782,7 +737,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page35/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -797,7 +752,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page36/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -812,7 +767,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page37/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -827,37 +782,7 @@
 	<url>
 	<loc>https://www.princesspolymath.com/blog/page38/</loc>
 	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
-	
-	
-		<changefreq>monthly</changefreq>
-	
-	
-		<priority>0.3</priority>
-	
-	</url>
-	
-
-	
-	<url>
-	<loc>https://www.princesspolymath.com/blog/page39/</loc>
-	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
-	
-	
-		<changefreq>monthly</changefreq>
-	
-	
-		<priority>0.3</priority>
-	
-	</url>
-	
-
-	
-	<url>
-	<loc>https://www.princesspolymath.com/blog/page40/</loc>
-	
-		<lastmod>2017-12-21T08:47:58-08:00</lastmod>
+		<lastmod>2017-12-21T12:01:10-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -869,7 +794,7 @@
 	
 
 
-<!-- Posts: 199 links with priority=0.5, changefreq=monthly -->
+<!-- Posts: 190 links with priority=0.5, changefreq=monthly -->
 
 	
 	<url>
@@ -1098,21 +1023,6 @@
 
 	
 	<url>
-	<loc>https://www.princesspolymath.com/api-alchemy.html</loc>
-	
-		<lastmod>2014-02-05T03:15:39-08:00</lastmod>
-	
-	
-		<changefreq>monthly</changefreq>
-	
-	
-		<priority>0.5</priority>
-	
-	</url>
-	
-
-	
-	<url>
 	<loc>https://www.princesspolymath.com/conversations.html</loc>
 	
 		<lastmod>2013-10-25T04:06:31-07:00</lastmod>
@@ -1203,21 +1113,6 @@
 
 	
 	<url>
-	<loc>https://www.princesspolymath.com/linkedin-today-sms-notification-system-using-linkedin-twilio-django-and-heroku.html</loc>
-	
-		<lastmod>2011-12-22T09:23:16-08:00</lastmod>
-	
-	
-		<changefreq>monthly</changefreq>
-	
-	
-		<priority>0.5</priority>
-	
-	</url>
-	
-
-	
-	<url>
 	<loc>https://www.princesspolymath.com/handling-sms-responses-from-twilio-using-django-on-heroku.html</loc>
 	
 		<lastmod>2011-12-22T09:16:19-08:00</lastmod>
@@ -1236,21 +1131,6 @@
 	<loc>https://www.princesspolymath.com/sending-sms-notifications-using-twilio-django-and-the-heroku-scheduler.html</loc>
 	
 		<lastmod>2011-12-21T05:07:28-08:00</lastmod>
-	
-	
-		<changefreq>monthly</changefreq>
-	
-	
-		<priority>0.5</priority>
-	
-	</url>
-	
-
-	
-	<url>
-	<loc>https://www.princesspolymath.com/using-linkedin-authentication-with-django-on-heroku.html</loc>
-	
-		<lastmod>2011-12-20T03:28:05-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -1413,21 +1293,6 @@
 
 	
 	<url>
-	<loc>https://www.princesspolymath.com/linkedins-faceted-search.html</loc>
-	
-		<lastmod>2011-06-29T04:47:26-07:00</lastmod>
-	
-	
-		<changefreq>monthly</changefreq>
-	
-	
-		<priority>0.5</priority>
-	
-	</url>
-	
-
-	
-	<url>
 	<loc>https://www.princesspolymath.com/silicon-valley-ios-developer-meetup.html</loc>
 	
 		<lastmod>2011-05-17T07:23:27-07:00</lastmod>
@@ -1461,36 +1326,6 @@
 	<loc>https://www.princesspolymath.com/adding-html5-local-storage-to-your-web-app.html</loc>
 	
 		<lastmod>2011-02-25T03:59:48-08:00</lastmod>
-	
-	
-		<changefreq>monthly</changefreq>
-	
-	
-		<priority>0.5</priority>
-	
-	</url>
-	
-
-	
-	<url>
-	<loc>https://www.princesspolymath.com/creating-an-application-using-linkedin-connect-in-3-easy-steps.html</loc>
-	
-		<lastmod>2011-02-17T02:15:03-08:00</lastmod>
-	
-	
-		<changefreq>monthly</changefreq>
-	
-	
-		<priority>0.5</priority>
-	
-	</url>
-	
-
-	
-	<url>
-	<loc>https://www.princesspolymath.com/using-faceted-search-from-the-linkedin-api.html</loc>
-	
-		<lastmod>2011-01-31T07:52:55-08:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -1821,21 +1656,6 @@
 	<loc>https://www.princesspolymath.com/twitter-badge-with-location.html</loc>
 	
 		<lastmod>2008-11-24T06:45:05-08:00</lastmod>
-	
-	
-		<changefreq>monthly</changefreq>
-	
-	
-		<priority>0.5</priority>
-	
-	</url>
-	
-
-	
-	<url>
-	<loc>https://www.princesspolymath.com/hadoop-and-aws-and-python-oh-my.html</loc>
-	
-		<lastmod>2008-10-30T05:13:35-07:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>
@@ -2718,21 +2538,6 @@
 
 	
 	<url>
-	<loc>https://www.princesspolymath.com/rising-from-the-depths.html</loc>
-	
-		<lastmod>2005-05-13T14:39:51-07:00</lastmod>
-	
-	
-		<changefreq>monthly</changefreq>
-	
-	
-		<priority>0.5</priority>
-	
-	</url>
-	
-
-	
-	<url>
 	<loc>https://www.princesspolymath.com/quest-for-addis.html</loc>
 	
 		<lastmod>2005-04-26T02:13:37-07:00</lastmod>
@@ -2811,21 +2616,6 @@
 	<loc>https://www.princesspolymath.com/upcoming-races.html</loc>
 	
 		<lastmod>2005-04-13T08:18:43-07:00</lastmod>
-	
-	
-		<changefreq>monthly</changefreq>
-	
-	
-		<priority>0.5</priority>
-	
-	</url>
-	
-
-	
-	<url>
-	<loc>https://www.princesspolymath.com/lets-talk-socks.html</loc>
-	
-		<lastmod>2005-04-12T02:01:32-07:00</lastmod>
 	
 	
 		<changefreq>monthly</changefreq>

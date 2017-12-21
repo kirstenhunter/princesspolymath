@@ -21,7 +21,7 @@ After growing up pretty much completely uninterested in anything domestic, I hav
   
 Just to get started, here&#8217;s a picture of my current knitting project, from the [Irish Hiking Scarf Knitalong](http://irishhikingknitalong.blogspot.com/). It&#8217;s a fun pattern and not too hard (I haven&#8217;t been knitting very long) although I did frog the thing 7 times before getting it to this point.
   
-<img alt="DSCN0331.jpg" src="http://www.perlgoddess.com/blog/images/DSCN0331.jpg" width="200" height="150" />
+<img alt="This is a picture" alt="DSCN0331.jpg" src="http://www.perlgoddess.com/blog/images/DSCN0331.jpg" width="200" height="150" />
   
 I&#8217;ll list a bunch of factoids about myself so you know something about me&#8230; the idea was borrowed (with gratitude) from the [Yarn Harlot](http://www.yarnharlot.ca/blog).Actually, it&#8217;s not 100 things. I&#8217;m not that interesting&#8230;
 

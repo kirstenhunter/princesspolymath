@@ -17,7 +17,7 @@ tc-thumb-fld:
 categories:
   - Geek Stuff
 ---
-<a href="/assets/img/2014/11/135634867_39bafbc3e3_m.jpg" class="grouped_elements" rel="tc-fancybox-group755"><img class="alignleft wp-image-757 size-full" src="/assets/img/2014/11/135634867_39bafbc3e3_m.jpg" alt="135634867_39bafbc3e3_m" width="240" height="180" /></a>At [Defrag](http://www.defragcon.com) this year, I gave a presentation entitled &#8220;Connect all the things&#8221; &#8211; a demo of connecting 4 IoT devices together in a rube goldbergy fashion.  The theory was this:
+<a href="/assets/img/2014/11/135634867_39bafbc3e3_m.jpg" class="grouped_elements" rel="tc-fancybox-group755"><img alt="This is a picture" class="alignleft wp-image-757 size-full" src="/assets/img/2014/11/135634867_39bafbc3e3_m.jpg" alt="135634867_39bafbc3e3_m" width="240" height="180" /></a>At [Defrag](http://www.defragcon.com) this year, I gave a presentation entitled &#8220;Connect all the things&#8221; &#8211; a demo of connecting 4 IoT devices together in a rube goldbergy fashion.  The theory was this:
 
   * My computer ran a node.js server which controlled the sphero and the Philips Hue lightbulb
   * My raspberry pi had a light sensor and a wifi connection to the drone

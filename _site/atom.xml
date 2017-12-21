@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 	<id>https://www.princesspolymath.com/</id>
 	<title>Princess Polymath</title>
-	<updated>2017-12-21T08:47:58-08:00</updated>
+	<updated>2017-12-21T12:01:10-08:00</updated>
 
 	<subtitle>Princess Polymath is a website focused on programming, web design, APIs and general amusement.</subtitle>
 
@@ -57,7 +57,7 @@
 
 &lt;p&gt;Having added the _site files to my repository, it was a simple thing to push the changes from my local system to the web server, so that only left one order of business - the original goal, purging the cache when a file had changed.  For that I used a git webhook which runs a git diff at the end of each push and clears the cache for each file that’s changed.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/git-hook.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/git-hook.png&quot; alt=&quot;Picture here&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I’ll walk through the functionality here so you can see what’s happening.&lt;/p&gt;
 
@@ -494,7 +494,7 @@ http PUT http://{ip_from_meethue}/api/{username}/groups/0/action on=false
 &lt;p&gt;&lt;span style=&quot;font-family: arial, sans-serif; font-size: 8pt;&quot;&gt;&lt;a title=&quot;Telling your Story Science and Technology Presentation&quot; href=&quot;https://www.haikudeck.com/p/2FPcOXCZCC/telling-your-story?utm_campaign=embed&amp;amp;utm_source=webapp&amp;amp;utm_medium=text-link&quot;&gt;Telling your Story&lt;/a&gt; – Created with Haiku Deck, presentation software that inspires&lt;/span&gt;&lt;/p&gt;
 
 &lt;div id=&quot;attachment_826&quot; style=&quot;width: 235px&quot; class=&quot;wp-caption alignright&quot;&gt;
-  &lt;a href=&quot;/assets/img/2015/07/19347908744_8ad04f9fe9_k.jpg&quot; class=&quot;grouped_elements&quot; rel=&quot;tc-fancybox-group818&quot;&gt;&lt;img class=&quot;wp-image-826 size-medium&quot; src=&quot;/assets/img/2015/07/19347908744_8ad04f9fe9_k-225x300.jpg&quot; alt=&quot;Sketch notes by Aaron Sumner&quot; width=&quot;225&quot; height=&quot;300&quot; srcset=&quot;/assets/img/2015/07/19347908744_8ad04f9fe9_k-225x300.jpg 225w, /assets/img/2015/07/19347908744_8ad04f9fe9_k-768x1024.jpg 768w, /assets/img/2015/07/19347908744_8ad04f9fe9_k.jpg 1536w&quot; sizes=&quot;(max-width: 225px) 100vw, 225px&quot; /&gt;&lt;/a&gt;
+  &lt;a href=&quot;/assets/img/2015/07/19347908744_8ad04f9fe9_k.jpg&quot; class=&quot;grouped_elements&quot; rel=&quot;tc-fancybox-group818&quot;&gt;&lt;img alt=&quot;Sketch notes by Aaron Sumner&quot; class=&quot;wp-image-826 size-medium&quot; src=&quot;/assets/img/2015/07/19347908744_8ad04f9fe9_k-225x300.jpg&quot; width=&quot;225&quot; height=&quot;300&quot; srcset=&quot;/assets/img/2015/07/19347908744_8ad04f9fe9_k-225x300.jpg 225w, /assets/img/2015/07/19347908744_8ad04f9fe9_k-768x1024.jpg 768w, /assets/img/2015/07/19347908744_8ad04f9fe9_k.jpg 1536w&quot; sizes=&quot;(max-width: 225px) 100vw, 225px&quot; /&gt;&lt;/a&gt;
   
   &lt;p class=&quot;wp-caption-text&quot;&gt;
     Sketch notes by &lt;a href=&quot;https://www.flickr.com/photos/rockchalk/&quot;&gt;Aaron Sumner&lt;/a&gt;
@@ -790,7 +790,7 @@ root@0bef28a21e83:/opt/webapp#
 				</author>
 			
 			<summary></summary>
-			<content type="html" xml:base="https://www.princesspolymath.com/new-book-on-meap-irresistible-apis.html">&lt;p&gt;&lt;img class=&quot; size-medium wp-image-777 alignleft&quot; src=&quot;/assets/img/2015/02/Cover-238x300.jpg&quot; alt=&quot;Cover&quot; width=&quot;238&quot; height=&quot;300&quot; srcset=&quot;/assets/img/2015/02/Cover-238x300.jpg 238w, /assets/img/2015/02/Cover-814x1024.jpg 814w&quot; sizes=&quot;(max-width: 238px) 100vw, 238px&quot; /&gt;APIs have been exploding across the internet for several years now, but we are just now getting to the point where the industry can start implementing best practices in design.  Up until now, most APIs have been designed at the architecture level, figuring out what the backend system does and exposing that functionality to users in the most direct way possible.  Unfortunately, this does not make for a usable API, and we need to start moving to a new system – a process to build APIs that are easy to understand, clear, and a delight to use.  I’m writing a book describing a better way of creating APIs that are irresistible to developers and companies – Web APIs that have the best chance of being successful.&lt;/p&gt;
+			<content type="html" xml:base="https://www.princesspolymath.com/new-book-on-meap-irresistible-apis.html">&lt;p&gt;&lt;img alt=&quot;Cover&quot; class=&quot; size-medium wp-image-777 alignleft&quot; src=&quot;/assets/img/2015/02/Cover-238x300.jpg&quot; width=&quot;238&quot; height=&quot;300&quot; srcset=&quot;/assets/img/2015/02/Cover-238x300.jpg 238w, /assets/img/2015/02/Cover-814x1024.jpg 814w&quot; sizes=&quot;(max-width: 238px) 100vw, 238px&quot; /&gt;APIs have been exploding across the internet for several years now, but we are just now getting to the point where the industry can start implementing best practices in design.  Up until now, most APIs have been designed at the architecture level, figuring out what the backend system does and exposing that functionality to users in the most direct way possible.  Unfortunately, this does not make for a usable API, and we need to start moving to a new system – a process to build APIs that are easy to understand, clear, and a delight to use.  I’m writing a book describing a better way of creating APIs that are irresistible to developers and companies – Web APIs that have the best chance of being successful.&lt;/p&gt;
 
 &lt;p&gt;The book is in early preview on the &lt;a href=&quot;http://www.manning.com/hunter/&quot;&gt;Manning Early Access Program&lt;/a&gt;, and you can download a sample chapter, purchase the book, and help me to make it the best book possible for API creators.&lt;/p&gt;
 

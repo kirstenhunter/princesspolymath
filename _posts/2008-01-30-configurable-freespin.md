@@ -21,7 +21,7 @@ A few months ago, Ketan Anjaria (aka KidBombay) made a cool [spin viewer](http:/
   
 I have an example of the [VentureSpin](http://www.perlgoddess.com/FreeSpin/FreeSpin.swf) client, which is controlled by an [XML file](http://www.perlgoddess.com/FreeSpin/freeSpin.xml) in the same directory. Similarly, there is a [FilmSpin](http://www.perlgoddess.com/FilmSpin/FreeSpin.swf) client, controlled by its own [XML file](http://www.perlgoddess.com/FilmSpin/freeSpin.xml).
   
-<span class="mt-enclosure mt-enclosure-image"><img alt="FreeSpin.jpg" src="http://www.perlgoddess.com/perlgoddess/FreeSpin.jpg" width="400" class="mt-image-left" style="float: left; margin: 0 20px 20px 0;" /></span>
+<span class="mt-enclosure mt-enclosure-image"><img alt="This is a picture" alt="FreeSpin.jpg" src="http://www.perlgoddess.com/perlgoddess/FreeSpin.jpg" width="400" class="mt-image-left" style="float: left; margin: 0 20px 20px 0;" /></span>
   
 To make this all work for you, all you need to do is grab one of the FreeSpin.swf files and put it on your own web server, and create a freeSpin.xml file (I know, the capitalization is a pain, I promise to fix that soon) in the same directory, and it should work like a charm.
   

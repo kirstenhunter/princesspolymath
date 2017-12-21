@@ -25,7 +25,7 @@ Sadly, you can&#8217;t knit while you drive. I would spend the time listening to
   
 I dunno. Is it worth it?
   
-![](http://www.perlgoddess.com/blog/images/v_cheer.JPG)
+![Picture here](http://www.perlgoddess.com/blog/images/v_cheer.JPG)
   
 Yep.
   

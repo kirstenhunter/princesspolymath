@@ -150,7 +150,7 @@ for (var friend in friends.data) {
 	}
 }</pre>
     
-    ![](/assets/img/2010/11/friendswholike.jpg)
+    ![Picture here](/assets/img/2010/11/friendswholike.jpg)
     
     ### Getting Movies for a Particular Friend
     
@@ -169,14 +169,14 @@ for (var friend in friends.data) {
 		image = unescape(params[3])
 
 		faves += '<!-- Commenting to avoid wp weirdness
-                                <img class="favepic" src="' + image + 
+                                <img alt="This is a picture" class="favepic" src="' + image + 
                                 '" width="60" id="' + tinyurl + '">--> '
 	}
 	$('#faves').html(faves)
 }) 
 </pre>
     
-    ![](/assets/img/2010/11/onefriendsmovies.jpg)
+    ![Picture here](/assets/img/2010/11/onefriendsmovies.jpg)
   
     I used the &#8220;website&#8221; information from the graph to get the id for the movie (the &#8220;movie&#8221; parameter) and the correct image to show in the application. When the user clicks on one of the movies for the user, the id is used to bring up a dialog with that movie, allowing people to navigate within the application using the graph information retrieved from Facebook.
     

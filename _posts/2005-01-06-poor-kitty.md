@@ -17,19 +17,19 @@ tc-thumb-fld:
 categories:
   - Knitting
 ---
-<img alt="storm_scarf.jpg" src="http://www.perlgoddess.com/blog/images/storm_scarf.jpg" width="300" height="225" />
+<img alt="This is a picture" alt="storm_scarf.jpg" src="http://www.perlgoddess.com/blog/images/storm_scarf.jpg" width="300" height="225" />
   
 My poor kitty has been in medical hell for the last couple of weeks. Apparently his pancreas imploded and his sugars and liver got all totally wacky and he spent 3 nights in the kitty <del>prison</del>hospital and since then we&#8217;ve been playing the dance-of-the-sugars with him where I stab his precious ear to get blood and test his sugar level. Whee. As it turns out, it might have been a transitory case of diabetes &#8211; the insulin is putting him way too low so we&#8217;re backing him off. Yesterday I had to test his sugar 5 times. Today he does not like me at all. Or perhaps it has something to do with the Irish Hiking Scarf around his neck, although I think it makes him look very distinguished. And look! It&#8217;s almost done! Just over 4 feet now, and I&#8217;m going for 5. If only I were actually knitting it for the cat I would be done already, but I&#8217;m pretty sure he doesn&#8217;t want one. All he wants is for me to stop poking at him with sharp needles.
   
 I&#8217;ve decided to ignore the extra cable which somehow slipped in there:
   
-<img alt="xtra_cable.jpg" src="http://www.perlgoddess.com/blog/images/xtra_cable.jpg" width="300" height="225" />
+<img alt="This is a picture" alt="xtra_cable.jpg" src="http://www.perlgoddess.com/blog/images/xtra_cable.jpg" width="300" height="225" />
   
 It&#8217;s a&#8230; um&#8230; &#8220;design element&#8221; (thanks to [Michelle](http://fickleknitterfiend.blogspot.com) for this concept) and not a mistake.
   
 Thank heavens, because I have forbidden myself from joining any of the new knitalongs which are starting up until this scarf is done. It&#8217;s a Christmas present and already somewhat late (duh). Plus, it&#8217;s not like I don&#8217;t have other knitting projects to do once it&#8217;s finished&#8230; I have all my dishcloth yarn to knit up, my friend is expecting me to turn this Manos Cotton Stria into something more interesting (probably an Easy Lace Scarf with some striping. But oh, the Chevron scarf from Last Minute Knitted Gifts sure looks cool. Hard, but cool. Anyhow, I have to keep reminding myself&#8230; I&#8217;ve only been knitting for 6 weeks, there&#8217;s probably time to fit all this stuff in during my knitting life. Here&#8217;s the Stria &#8211; it&#8217;s so wonderful.
   
-<img alt="stria.jpg" src="http://www.perlgoddess.com/blog/images/stria.jpg" width="300" height="225" />
+<img alt="This is a picture" alt="stria.jpg" src="http://www.perlgoddess.com/blog/images/stria.jpg" width="300" height="225" />
   
 There&#8217;s a part of me that wants a quickie knit because the IHS felt like it took me a long time. Instant Knitting Gratification, anyone?
   

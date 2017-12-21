@@ -19,14 +19,14 @@ It&#8217;s been awfully hard getting back on the horse this week. My friend is s
   
 My kids did the kids 1k and got ribbons:
   
-![](http://www.perlgoddess.com/blog/images/bigdig.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/bigdig.jpg)
   
-![](http://www.perlgoddess.com/blog/images/bitty.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/bitty.jpg)
   
-![](http://www.perlgoddess.com/blog/images/ribbon.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/ribbon.jpg)
   
 My mom did the 3k with me (I don&#8217;t have a pic of me running yet):
   
-![](http://www.perlgoddess.com/blog/images/mom.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/mom.jpg)
   
 All in all, a fun race. The next race I&#8217;m planning is a 12K across the Golden Gate bridge on 3/20 so I&#8217;d better get cracking on the training!

@@ -23,15 +23,15 @@ First, to [Knitting Arts](http://www.goknit.com/) for some stuff on my list:
   
 Yarn for Kaily&#8217;s birthday sweater. 40% off! Ribbon yarn so it&#8217;ll knit up quick!
   
-![](http://www.perlgoddess.com/blog/images/kaily_yarn.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/kaily_yarn.jpg)
   
 A sock pattern and some yarn (for myself and my sockapalooza pal). Alas, they had no size 2 dpn&#8217;s&#8230;
   
-![](http://www.perlgoddess.com/blog/images/socks.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/socks.jpg)
   
 And a knitting kit for my flu-ridden daughter, which she set to with all the gusto possible for someone with a fever:
   
-![](http://www.perlgoddess.com/blog/images/kit.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/kit.jpg)
   
 Also ran into Gunilla, the founder of the [Santa Cruz Stitch n Bitch](http://www.artyoucanwear.com/stitchnbitch/). I have to get down there one of these Saturdays!
   
@@ -41,6 +41,6 @@ Then we had a bunch of people over for tacos, tomalito, and homemade chocolate r
   
 Oh, and the continental knitting? I did get started on that late last night. It went pretty well, I think. I am still somewhat slower than with the American style, but I&#8217;m getting better. The yarn I used was pretty splitty from previous learning attempts but the stitches look even and regular. I think I&#8217;ll try continental for the sweater and socks, we&#8217;ll see how that goes. Here&#8217;s the beginning of the Continental Washcloth:
   
-![](http://www.perlgoddess.com/blog/images/cont_wash.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/cont_wash.jpg)
   
 Thank heavens it&#8217;s Monday and I can get some rest!

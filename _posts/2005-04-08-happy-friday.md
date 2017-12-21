@@ -29,7 +29,7 @@ The Spinning Prize will include:
   
 (1) nice wooden drop spindle and (1) brochure with spinning instructions
   
-![](http://www.perlgoddess.com/blog/images/spinkit.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/spinkit.jpg)
   
 (1) hank of merino/tencel roving from [Deep Color](http://www.deepcolorstudio.com). I can&#8217;t even begin to describe how incredibly yummy this stuff feels and looks. I&#8217;ve heard that it spins up just like butter and I can totally believe it. Seriously, look me straight in the eye and tell me these photos don&#8217;t start your salivary glands up.
   
@@ -37,15 +37,15 @@ You can pick either of the two colors I have:
   
 purple&#8230;
   
-![](http://www.perlgoddess.com/blog/images/purple.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/purple.jpg)
   
 or teal&#8230;
   
-![](http://www.perlgoddess.com/blog/images/teal.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/teal.jpg)
   
 here&#8217;s the money shot with both of them
   
-![](http://www.perlgoddess.com/blog/images/both.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/both.jpg)
   
 So come on! Who could possibly resist all that shimmery wool, intertwined together on the floor? [Sponsor me](https://www.revlonrunwalk.com/la/secure/myWebPage.cfm?pID=232938) and win some yummy roving&#8230;
   
@@ -57,8 +57,8 @@ Whoever searched on &#8216;SUSHI +WASHCLOTH -EAT -RICE +CUTE&#8217; I&#8217;m pr
   
 &#8216;silk & seagrass drawstring box&#8217; and &#8216;lantern moon drawstring box&#8217; &#8211; yes, I have one of those!
   
-![](http://www.perlgoddess.com/blog/images/sock_box.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/sock_box.jpg)
   
-![](http://www.perlgoddess.com/blog/images/lantern_moon.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/lantern_moon.jpg)
   
 And, strangely, someone found me by searching on &#8216;grumpy&#8217;. I don&#8217;t think I&#8217;m that grumpy, do you?

@@ -17,9 +17,9 @@ tc-thumb-fld:
 categories:
   - Uncategorized
 ---
-Food: ![](http://fitness.domestigirl.com/images/stars_3_40.gif)
+Food: ![Picture here](http://fitness.domestigirl.com/images/stars_3_40.gif)
   
-Exercise: ![](http://fitness.domestigirl.com/images/stars_3_50.gif)
+Exercise: ![Picture here](http://fitness.domestigirl.com/images/stars_3_50.gif)
   
 Run/Walk 1/2 minutes: 35 minutes, 2.25 miles, 350 calories
   

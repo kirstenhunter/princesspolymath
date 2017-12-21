@@ -23,7 +23,7 @@ In this kind of state, what is the best thing to cheer me up? I know, I know, ca
   
 So what did my excellent SP4 Secret Pal send me? (yes, I know, I am a Secret Pal Harlot. So sue me 🙂
   
-![](http://www.perlgoddess.com/blog/images/sp4.jpg.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/sp4.jpg.jpg)
   
 Look! Candy \*and\* stash enhancement. Noro yarn! And more sock yarn &#8211; goes to show how well my Secret Pal has been following along. There will soon be a sock post which doesn&#8217;t feature a picture of me tearing my hair out. I&#8217;m actually starting to enjoy this porcupine wrestling. Sort of.
   
