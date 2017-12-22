@@ -30,9 +30,8 @@ jobs:
           name: install dependencies
           command: |
             bundle install --jobs=4 --retry=3 --path vendor/bundle
-            wget https://github.com/akamai/cli/releases/download/0.4.2/akamai-0.4.2-linuxamd64
-            mv akamai-0.4.2-linuxamd64 /usr/local/bin
-            chmod 777 /usr/local/bin/akamai
+            wget https://github.com/akamai/cli/releases/download/0.4.2/akamai-0.4.2-linuxamd64 -O akamai
+            chmod 777 akamai-0.4.2-linuxamd64
             bundle exec jekyll build
 
       # run tests!
