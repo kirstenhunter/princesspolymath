@@ -48,4 +48,4 @@ jobs:
       - run:
           name: deploy
           command: |
-            rsync -va --delete ./_site synedra@origin.princesspolymath.com:/var/www/html/deploy/circle | cut -f2- -d'/' | perl -npe 's#^(.*)#https://princesspolymath.com/$1#' | ./akamai purge invalidate | tee  
+            rsync -va --delete ./_site synedra@origin.princesspolymath.com:/var/www/html/deploy/circle | perl purge.pl  
