@@ -36,6 +36,7 @@ jobs:
             bundle install --jobs=4 --retry=3 --path vendor/bundle
             wget https://github.com/akamai/cli/releases/download/0.4.2/akamai-0.4.2-linuxamd64 -O akamai
             chmod 777 akamai
+            akamai install purge
             sudo apt install rsync
             bundle exec jekyll build
 
@@ -48,4 +49,4 @@ jobs:
       - run:
           name: deploy
           command: |
-            rsync -va --delete ./_site synedra@origin.princesspolymath.com:/var/www/html/deploy/circle
+            rsync -va --delete ./_site synedra@origin.princesspolymath.com:/var/www/html/deploy/circle | cut -f2- -d'/' | perl -npe 's#^(.*)#https://princesspolymath.com/$1#' | ./akamai purge invalidate | tee  
