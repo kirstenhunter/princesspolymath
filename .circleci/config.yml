@@ -30,7 +30,7 @@ jobs:
           name: install dependencies
           command: |
             bundle install --jobs=4 --retry=3 --path vendor/bundle
-            npm install akamai-cli
+            sudo npm install akamai-cli
             akamai install purge
             bundle exec jekyll build
 
