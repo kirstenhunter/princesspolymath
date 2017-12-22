@@ -31,7 +31,7 @@ jobs:
           command: |
             bundle install --jobs=4 --retry=3 --path vendor/bundle
             wget https://github.com/akamai/cli/releases/download/0.4.2/akamai-0.4.2-linuxamd64 -O akamai
-            chmod 777 akamai-0.4.2-linuxamd64
+            chmod 777 akamai
             bundle exec jekyll build
 
       # run tests!
@@ -43,4 +43,4 @@ jobs:
       - run:
           name: deploy
           command: |
-            rsync -va --delete ./_site username@my-website:/var/html
+            rsync -va --delete ./_site synedra@origin.princesspolymath.com:/var/html/circle
