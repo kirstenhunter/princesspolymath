@@ -23,22 +23,22 @@ But flashing in the back of my head was this image of [Michelle](http://ficklekn
   
 We were almost through our first circuit, the marketplace was closing soon, so I went ahead and opened my wallet to buy some more roving. Yes, I know, I&#8217;m not very good at spinning yet. I am hoping I might get my friend to give me a lesson at spinning on a &#8220;real&#8221; wheel. Pretty harmless, one 4-oz ball of roving&#8230; well, maybe two. They&#8217;re so pretty&#8230;
   
-![](http://www.perlgoddess.com/blog/images/tencel_roving.jpg.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/tencel_roving.jpg.jpg)
   
 &#8230; once I opened my wallet, the floodgates were opened, but I still figured I was safe. After all, the marketplace closed in 15 minutes, how much trouble could I get in? Lyssa wanted to go check out some more of the cool needles near the Nature&#8217;s Palette yarn so we headed back there&#8230; and on the way I happened to see some Koigu. In my favorite colors. For $11/skein. I wrested myself away and went over to pet the Nature&#8217;s Palette. I found several colorways that I liked. But they were all \*just\* short of having enough for, you know, that project. (clapotis, clapotis, clapotis) I thought&#8230; well, I don&#8217;t know what I thought. I suspect I was beyond conscious thought at that time. The Koigu was calling me, from 4 aisles away. I don&#8217;t remember crossing those aisles but then there I was, standing in line, Koigu in hand.
   
 Koigu. It&#8217;s hip, it&#8217;s now. It&#8217;s happening. A Clapotis in Koigu, well, you can hardly get more trendy than that. I will be the coolest knitter in blogland.
   
-![](http://www.perlgoddess.com/blog/images/koigu.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/koigu.jpg)
   
 Yup, tower of iron will, thy name is DomestiGirl!
   
 On our last quick pass through, I noticed that Cat Bordhi was signing her books at the Knitters Studio booth. She is cool. Her books are cool. I had to get them because of the jester&#8217;s bag (which you can also wear on your head!) I own them both now and they are both signed.
   
-![](http://www.perlgoddess.com/blog/images/books.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/books.jpg)
   
 In one of her notes to me she said I had a great laugh. How could I not laugh after hearing the Mistress of Moebius telling me that the Fanny Basket was more properly named the Moebi-Ass (pictured here, lower left hand corner)
   
-![](http://www.perlgoddess.com/blog/images/2nd.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/2nd.jpg)
   
 So maybe I&#8217;m not the Lion of Willpower. But I sure have some great new stuff! My Secret Pal sent me an excellent package but it deserves its own entry, so I&#8217;ll do that one in the morning.

@@ -25,25 +25,25 @@ Love Sweets? Santa Cruz has 3 independent candy makers and the best cookie compa
   
 [Donnelly&#8217;s Chocolates](http://www.donnellychocolates.com)
   
-![](http://www.perlgoddess.com/blog/images/donnelly.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/donnelly.jpg)
   
 This place is amazing. Read one blogger&#8217;s [review](http://bccy.blogspot.com/2002/05/once-long-ago-i-got-my-hands-on-single.html) (and another [here](http://www.metroactive.com/papers/cruz/05.26.04/dining-0422.html). Now wipe the drool off your chin and click that sponsor link!
   
 [Marini&#8217;s Candies](http://www.mariniscandies.com/)
   
-![](http://www.perlgoddess.com/blog/images/marinis.gif)
+![Picture here](http://www.perlgoddess.com/blog/images/marinis.gif)
   
 Marini&#8217;s has more of your normal candy options &#8211; they&#8217;re mostly famous for their salt water taffy in a zillion flavors.
   
 <a href="http://www.mackenzies-chocolates.com/>MacKenzie&#8217;s Chocolates</a>
   
-![](http://www.perlgoddess.com/blog/images/mac_choc.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/mac_choc.jpg)
   
 MacKenzie&#8217;s also makes lots of yummy chocolate options &#8211; more sedate than Donnelly&#8217;s but more gourmet than Marini&#8217;s.
   
 [Pacific Cookie Company](http://www.pacificcookie.com/)
   
-![](http://www.perlgoddess.com/blog/images/dozen.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/dozen.jpg)
   
 You&#8217;ll just have to trust me on this one. These are the best cookies ever. Especially the peanut butter chocolate chip.
   

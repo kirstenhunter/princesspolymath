@@ -19,11 +19,11 @@ categories:
 ---
 Sadly (or happily, depending on your perspective), the world is full of sweet little things. Sweet adorable girls, trying to pull knitted hats off their heads&#8230;
   
-![](http://www.perlgoddess.com/blog/images/kaily.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/kaily.jpg)
   
 &#8230; and incredibly sweet small cups full of concentrated evil&#8230;
   
-![](http://www.perlgoddess.com/blog/images/evil.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/evil.jpg)
   
 Have any of the rest of you encountered this particular drink? Starbuck&#8217;s new ultra-rich chocolate drink &#8211; Chantico. 6 ounces of super-concentrated chocolate. Evil. Pure, unadulterated evil.
   

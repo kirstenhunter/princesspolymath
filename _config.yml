@@ -13,6 +13,10 @@ encoding: utf-8
 # The slogan describes your website and is used on homepage in <title> and other important places
 slogan: 'I know lots of things...'
 
+webrick:
+  headers:
+    Edge-Cache-Tag: princess
+
 # The description is used on homepage and in the footer to quickly describe your website. Use a maximum of 150 characters for SEO-purposes.
 description: 'Princess Polymath is a website focused on programming, web design, APIs and general amusement.'
 
@@ -59,6 +63,7 @@ gems:
 paginate: 5                      # Paginates all X entries
 paginate_path: "blog/page:num"   # Pagination path › Important for blog page in /blog/ to work
 
+host: 0.0.0.0
 
 
 
@@ -76,7 +81,7 @@ exclude:
     - LICENSE
     - README.md
     - INSTALL.md
-
+exclude: [vendor]
 
 # The language setting is used in /includes/header.html for html-settings
 language: 'en'

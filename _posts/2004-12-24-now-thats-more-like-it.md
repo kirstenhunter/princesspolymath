@@ -35,13 +35,13 @@ Then we had 3 leisurely hours at home before we took the Girl to art. Work was b
   
 My husband took the Girl to art, so my dad and I bravely set up the present wrapping area and got to work. 2 solid hours of wrapping, and here are the presents (pre-finishing):
   
-![](http://www.perlgoddess.com/blog/images/pile1.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/pile1.jpg)
   
 Maybe I exaggerated a little when I said there were 76 presents. Or maybe I didn&#8217;t.
   
 We basked in the glow of the mighty present pile for a few minutes before we headed out to get the kids and grab some dinnerl, then swing by the grocery store for more Sweet Potato Bread Pudding ingredients, and come home to do &#8216;finishing work&#8217; on the presents &#8211; you know, ribbons, bows, stuff to give the presents some personality. Now the poor tree looks like it&#8217;s trying to hatch an enormous batch of square eggs:
   
-![](http://www.perlgoddess.com/blog/images/pile2.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/pile2.jpg)
   
 So, we&#8217;re done, right? We had just a couple more errands on our list for tomorrow, which wouldn&#8217;t have been too bad. But lo, a lone spark fires in my overloaded brain. Isn&#8217;t the mall open until midnight tonight? Spurred by an adrenaline rush brought on by being so close to the finish line, at 8:30 we headed out to finish our list. First to Kmart to get a couple of booster seats since my mother-in-law had accidentally boosted one of them (heh, heh) during her last visit. Then we headed for the mall again, blazed through Gottschalks and finished off my dad&#8217;s list, and \*almost\* made it home in time for my husband to get out and see his movie. Pretty close. He probably just missed some previews&#8230;
   

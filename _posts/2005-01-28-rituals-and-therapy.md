@@ -25,13 +25,13 @@ Yesterday, she was supposed to go into surgery at 4:00. I lit some candles in th
   
 I didn&#8217;t find out until 8:00 that her surgery was pushed out to today, at which point my poor candles had exhausted themselves. There was no way I was blowing out my ritualistic healing candles until I knew what was up, so they just created a kinda cute flowery mosaic on the tile.
   
-![](http://www.perlgoddess.com/blog/images/candles.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/candles.jpg)
   
 I need new candles now.
   
 Just like any other nervous knitter, I&#8217;ve been using this time to work on Sherbet. The back is done. So is the front:
   
-![](http://www.perlgoddess.com/blog/images/front.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/front.jpg)
   
 I&#8217;m sure I would have the whole danged thing done if I only actually paid attention to what I was doing. I swatched on 13 needles, got the gauge right, and then cast on for the back and then did the ribbing and a stripe and a half before I remembered, oh yeah, I was supposed to do the ribbing on 11s. So I ripped back and started again. Then I started a front panel. On 13s. Again, 1-1/2 stripes and d&#8217;oh! Back I ripped. The irony here is that these two were the pieces I worked on \*before\* the accident. So I have no excuse other than general air-headedness. The \*third\* panel (started on Wednesday, after the accident) I remembered the 11 needles. Apparently I do better knitting under duress.
   

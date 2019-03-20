@@ -19,7 +19,7 @@ categories:
 ---
 I&#8217;ve been making some progress on that Irish Hiking Scarf and it&#8217;s almost 3 feet long now. I have hope that I may someday be able to present it as a finished object. In the meantime, I will be seeing one of my very small friends tomorrow and I made her a belated Christmas present:
   
-![](http://www.perlgoddess.com/blog/images/Kaily_hat.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/Kaily_hat.jpg)
   
 It&#8217;s cute. She&#8217;s cuter. The combination may be deadly. I&#8217;ll be sure and post a picture of her with the hat if I can get one. Yarn was Trendsetter Blossom, the pattern was from Last Minute Knitted Gifts. I learned how to make a pompom today. Go me.
   

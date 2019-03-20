@@ -40,7 +40,7 @@ My slide deck, as usual, is, well, not that easy to understand without my interp
 <span style="font-family: arial, sans-serif; font-size: 8pt;"><a title="Telling your Story Science and Technology Presentation" href="https://www.haikudeck.com/p/2FPcOXCZCC/telling-your-story?utm_campaign=embed&utm_source=webapp&utm_medium=text-link">Telling your Story</a> &#8211; Created with Haiku Deck, presentation software that inspires</span>
 
 <div id="attachment_826" style="width: 235px" class="wp-caption alignright">
-  <a href="/assets/img/2015/07/19347908744_8ad04f9fe9_k.jpg" class="grouped_elements" rel="tc-fancybox-group818"><img class="wp-image-826 size-medium" src="/assets/img/2015/07/19347908744_8ad04f9fe9_k-225x300.jpg" alt="Sketch notes by Aaron Sumner" width="225" height="300" srcset="/assets/img/2015/07/19347908744_8ad04f9fe9_k-225x300.jpg 225w, /assets/img/2015/07/19347908744_8ad04f9fe9_k-768x1024.jpg 768w, /assets/img/2015/07/19347908744_8ad04f9fe9_k.jpg 1536w" sizes="(max-width: 225px) 100vw, 225px" /></a>
+  <a href="/assets/img/2015/07/19347908744_8ad04f9fe9_k.jpg" class="grouped_elements" rel="tc-fancybox-group818"><img alt="This is a picture" class="wp-image-826 size-medium" src="/assets/img/2015/07/19347908744_8ad04f9fe9_k-225x300.jpg" alt="Sketch notes by Aaron Sumner" width="225" height="300" srcset="/assets/img/2015/07/19347908744_8ad04f9fe9_k-225x300.jpg 225w, /assets/img/2015/07/19347908744_8ad04f9fe9_k-768x1024.jpg 768w, /assets/img/2015/07/19347908744_8ad04f9fe9_k.jpg 1536w" sizes="(max-width: 225px) 100vw, 225px" /></a>
   
   <p class="wp-caption-text">
     Sketch notes by <a href="https://www.flickr.com/photos/rockchalk/">Aaron Sumner</a>

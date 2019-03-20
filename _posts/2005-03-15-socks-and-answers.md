@@ -19,13 +19,13 @@ categories:
 ---
 Well I&#8217;ve been an absent blogger because every free minute has been consumed by trying to finish the socks on time. Unfortunately, today is the 15th and the socks didn&#8217;t go out. Yet. They&#8217;re well underway, though:
   
-![](http://www.perlgoddess.com/blog/images/stripesocks.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/stripesocks.jpg)
   
 I hope to finish in a couple of days and then send them off. Yes, I know that I have to finish the toe on the first one, but I figured I&#8217;d do them at the same time.
   
 My pal sent me my socks, though, and they&#8217;re wonderful!
   
-![](http://www.perlgoddess.com/blog/images/palsocks.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/palsocks.jpg)
   
 They fit \*perfectly\*, as you can see, and they are comfortable and beautiful. I love them lots.
   

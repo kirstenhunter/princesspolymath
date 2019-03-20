@@ -25,7 +25,7 @@ One of the Christmas Gifts I got this year was a gift certificate for a session 
   
 &#8211; Fresh Cookie: Lime, Verbeena, Vanilla, Cinnamon
   
-![](http://www.perlgoddess.com/blog/images/perfumes.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/perfumes.jpg)
   
 They&#8217;re all totally different and all very cool. I put them all in the &#8220;Hall of Fame&#8221; &#8211; if someone wants to just buy my mix off the shelf I get some credit toward future stuff.
   

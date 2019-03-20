@@ -1,0 +1,759 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Fitbit - the Best Activity Tracker for Hackers and Makers</title>
+	<link rel="stylesheet" type="text/css" href="https://www.princesspolymath.com/assets/css/styles_feeling_responsive.css">
+	<script src="https://www.princesspolymath.com/assets/js/modernizr.min.js"></script>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
+	<script>
+		WebFont.load({
+			google: {
+				families: [ 'Lato:400,700,400italic:latin', 'Volkhov::latin' ]
+			}
+		});
+	</script>
+
+	<noscript>
+		<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic%7CVolkhov' rel='stylesheet' type='text/css'>
+	</noscript>
+
+
+	<!-- Search Engine Optimization -->
+	<meta name="description" content="One of the presentations I give frequently is a talk on Quantifying your Fitness.  In doing research for this topic, 
+I’ve worked with devices and APIs for a multitude of systems.  Everyone has their favorite device, and I want to give some reasons to consider the Fitbit family of products
+as a great tool for anyone who wants to integrate their fitness into other parts of their lives.
+
+Most fitness trackers integrate with closed systems - the Apple Watch, which I love, unfortunately only integrates with the Apple Health application.  It’s my data, I created
+it with my body, but I am contracturally disallowed from getting data out of the system to use it as I want - whether that’s integrating with other applications, making cool
+graphs and charts, integrating with IFTTT, or anything else.  Yes, many of the devices out there are “open source,” but that means something very different to me than it does
+to the makers.  If the system only allows me to integrate with a device I own, and I’m not allowed to access the data from the cloud, I consider it a closed system.
+
+So, Fitbit.  There are a variety of reasons why their devices and API are consistently featured in my talks.  Here are some of the things I’ve come to appreciate with their
+system in comparison to their competitors.
+
+Long term prospects
+One of the biggest concerns when integrating with a new system is wondering whether or not the system will be around for the long haul.  Too many times, APIs have been
+spawned, and because of business concerns or simple changes in direction, those APIs disappear into the ether, leaving your integrations out in the cold. The Fitbit API
+is a large part of Fitbit’s strategy - they have put a lot of resources into development, they have developer evangelists and a vibrant community, and the sheer number
+of integrations they support demonstrates their commitment to keeping the API around for the long term.  Contrast this with Runkeeper, a fine API with a great design, 
+but I’m unsure that their business model will be strong enough to keep them alive and kicking.  Give me a stable, strong company with a clear business model any day.
+
+Breadth
+Fitbit’s API covers not just the items their trackers track, such as steps, calories and heartrate, but also things like glucose, blood pressure, and other biometrics.  Someday
+perhaps they’ll have trackers for these items, but in the meantime it’s possible to use their API as a grand central station of health information, and as a maker or hacker,
+this means that you can combine information into a single place for consumption, whether you want to explore the measurements or simply have them stored away for future use.
+
+Subscription API
+Integrating with a fitness device is much less useful if you can’t get notified when there’s a change to the data.  Fitbit’s publication model allows API developers to listen
+for changes in any of the measurement types so they can create actions based on the change - for instance, as I go through the day, I use my philips hue lights to reflect my
+progress in activity and food logging.
+
+API Developer Experience
+The developer experience for this API is really quite excellent.
+* They’ve got good documentation
+* The signup flow is relatively painless
+* Their evangelists answer questions in the active forum
+* Nice sample code and integration examples
+
+I always say that the developer experience is one of the main drivers for an API’s success, and Fitbit does an excellent job of making this pleasant.
+
+Existing integrations
+Sure, I like writing code.  I have an app that sends me SMS messages and updates my philips hue lightbulbs based on how my activity is going throughout the day.  But for a 
+regular maker/hacker, sometimes IFTTT is just fine, and the existing integrations that Fitbit has created and maintained make it painless to add a variety of different
+notifications and behaviors based on your progress.  I like that I can use my withings scale and blood pressure monitor to put more information into the system.  I’m looking
+forward to the day when there’s a glucose monitoring watch that also integrates with Fitbit.  It’s unfortunate that Fitbit and Apple couldn’t agree on integrations together,
+but I suspect it had to do with the fact that Apple wants to own all the data going into the system and that’s not the model Fitbit uses.  I prefer having my own access to 
+my own data and it rankles a bit that I can’t get it from the Apple ecosystem.
+
+Summary
+I’ll likely write up a few more reviews of other fitness devices presently, but this one really focuses on integration and application development.  If you want to interact
+with your biometric data in a custom manner, or just work with a system that allows you to pull down the information you’ve generated for whatever reason, you should almost
+certainly go with Fitbit.  They’ve got a ton of different trackers - the one I currently like the best is the Fitbit Charge 2,
+as it has heart rate monitoring, some SMS functionality, and is generally small enough not to be annoying.
+
+Let me know if this is useful for folks, and I’ll keep writing more about various APIs and integrations going forward.">
+  	<meta name="google-site-verification" content="Vk0IOJ2jwG_qEoG7fuEXYqv0m2rLa8P778Fi_GrsgEQ">
+	<meta name="msvalidate.01" content="0FB4C028ABCF07C908C54386ABD2D97F" >
+	<link rel="author" href="https://plus.google.com/u/0/118311555303973066167">
+	
+	
+
+
+	<!-- Facebook Open Graph -->
+	<meta property="og:title" content="Fitbit - the Best Activity Tracker for Hackers and Makers">
+	<meta property="og:description" content="One of the presentations I give frequently is a talk on Quantifying your Fitness.  In doing research for this topic, 
+I’ve worked with devices and APIs for a multitude of systems.  Everyone has their favorite device, and I want to give some reasons to consider the Fitbit family of products
+as a great tool for anyone who wants to integrate their fitness into other parts of their lives.
+
+Most fitness trackers integrate with closed systems - the Apple Watch, which I love, unfortunately only integrates with the Apple Health application.  It’s my data, I created
+it with my body, but I am contracturally disallowed from getting data out of the system to use it as I want - whether that’s integrating with other applications, making cool
+graphs and charts, integrating with IFTTT, or anything else.  Yes, many of the devices out there are “open source,” but that means something very different to me than it does
+to the makers.  If the system only allows me to integrate with a device I own, and I’m not allowed to access the data from the cloud, I consider it a closed system.
+
+So, Fitbit.  There are a variety of reasons why their devices and API are consistently featured in my talks.  Here are some of the things I’ve come to appreciate with their
+system in comparison to their competitors.
+
+Long term prospects
+One of the biggest concerns when integrating with a new system is wondering whether or not the system will be around for the long haul.  Too many times, APIs have been
+spawned, and because of business concerns or simple changes in direction, those APIs disappear into the ether, leaving your integrations out in the cold. The Fitbit API
+is a large part of Fitbit’s strategy - they have put a lot of resources into development, they have developer evangelists and a vibrant community, and the sheer number
+of integrations they support demonstrates their commitment to keeping the API around for the long term.  Contrast this with Runkeeper, a fine API with a great design, 
+but I’m unsure that their business model will be strong enough to keep them alive and kicking.  Give me a stable, strong company with a clear business model any day.
+
+Breadth
+Fitbit’s API covers not just the items their trackers track, such as steps, calories and heartrate, but also things like glucose, blood pressure, and other biometrics.  Someday
+perhaps they’ll have trackers for these items, but in the meantime it’s possible to use their API as a grand central station of health information, and as a maker or hacker,
+this means that you can combine information into a single place for consumption, whether you want to explore the measurements or simply have them stored away for future use.
+
+Subscription API
+Integrating with a fitness device is much less useful if you can’t get notified when there’s a change to the data.  Fitbit’s publication model allows API developers to listen
+for changes in any of the measurement types so they can create actions based on the change - for instance, as I go through the day, I use my philips hue lights to reflect my
+progress in activity and food logging.
+
+API Developer Experience
+The developer experience for this API is really quite excellent.
+* They’ve got good documentation
+* The signup flow is relatively painless
+* Their evangelists answer questions in the active forum
+* Nice sample code and integration examples
+
+I always say that the developer experience is one of the main drivers for an API’s success, and Fitbit does an excellent job of making this pleasant.
+
+Existing integrations
+Sure, I like writing code.  I have an app that sends me SMS messages and updates my philips hue lightbulbs based on how my activity is going throughout the day.  But for a 
+regular maker/hacker, sometimes IFTTT is just fine, and the existing integrations that Fitbit has created and maintained make it painless to add a variety of different
+notifications and behaviors based on your progress.  I like that I can use my withings scale and blood pressure monitor to put more information into the system.  I’m looking
+forward to the day when there’s a glucose monitoring watch that also integrates with Fitbit.  It’s unfortunate that Fitbit and Apple couldn’t agree on integrations together,
+but I suspect it had to do with the fact that Apple wants to own all the data going into the system and that’s not the model Fitbit uses.  I prefer having my own access to 
+my own data and it rankles a bit that I can’t get it from the Apple ecosystem.
+
+Summary
+I’ll likely write up a few more reviews of other fitness devices presently, but this one really focuses on integration and application development.  If you want to interact
+with your biometric data in a custom manner, or just work with a system that allows you to pull down the information you’ve generated for whatever reason, you should almost
+certainly go with Fitbit.  They’ve got a ton of different trackers - the one I currently like the best is the Fitbit Charge 2,
+as it has heart rate monitoring, some SMS functionality, and is generally small enough not to be annoying.
+
+Let me know if this is useful for folks, and I’ll keep writing more about various APIs and integrations going forward.">
+	<meta property="og:url" content="https://www.princesspolymath.com/fitbit">
+	<meta property="og:locale" content="en_EN">
+	<meta property="og:type" content="website">
+	<meta property="og:site_name" content="Princess Polymath">
+	
+	<meta property="article:author" content="https://www.facebook.com/princesspolymath">
+
+
+	
+	<!-- Twitter -->
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:site" content="synedra">
+	<meta name="twitter:creator" content="synedra">
+	<meta name="twitter:title" content="Fitbit - the Best Activity Tracker for Hackers and Makers">
+	<meta name="twitter:description" content="One of the presentations I give frequently is a talk on Quantifying your Fitness.  In doing research for this topic, 
+I’ve worked with devices and APIs for a multitude of systems.  Everyone has their favorite device, and I want to give some reasons to consider the Fitbit family of products
+as a great tool for anyone who wants to integrate their fitness into other parts of their lives.
+
+Most fitness trackers integrate with closed systems - the Apple Watch, which I love, unfortunately only integrates with the Apple Health application.  It’s my data, I created
+it with my body, but I am contracturally disallowed from getting data out of the system to use it as I want - whether that’s integrating with other applications, making cool
+graphs and charts, integrating with IFTTT, or anything else.  Yes, many of the devices out there are “open source,” but that means something very different to me than it does
+to the makers.  If the system only allows me to integrate with a device I own, and I’m not allowed to access the data from the cloud, I consider it a closed system.
+
+So, Fitbit.  There are a variety of reasons why their devices and API are consistently featured in my talks.  Here are some of the things I’ve come to appreciate with their
+system in comparison to their competitors.
+
+Long term prospects
+One of the biggest concerns when integrating with a new system is wondering whether or not the system will be around for the long haul.  Too many times, APIs have been
+spawned, and because of business concerns or simple changes in direction, those APIs disappear into the ether, leaving your integrations out in the cold. The Fitbit API
+is a large part of Fitbit’s strategy - they have put a lot of resources into development, they have developer evangelists and a vibrant community, and the sheer number
+of integrations they support demonstrates their commitment to keeping the API around for the long term.  Contrast this with Runkeeper, a fine API with a great design, 
+but I’m unsure that their business model will be strong enough to keep them alive and kicking.  Give me a stable, strong company with a clear business model any day.
+
+Breadth
+Fitbit’s API covers not just the items their trackers track, such as steps, calories and heartrate, but also things like glucose, blood pressure, and other biometrics.  Someday
+perhaps they’ll have trackers for these items, but in the meantime it’s possible to use their API as a grand central station of health information, and as a maker or hacker,
+this means that you can combine information into a single place for consumption, whether you want to explore the measurements or simply have them stored away for future use.
+
+Subscription API
+Integrating with a fitness device is much less useful if you can’t get notified when there’s a change to the data.  Fitbit’s publication model allows API developers to listen
+for changes in any of the measurement types so they can create actions based on the change - for instance, as I go through the day, I use my philips hue lights to reflect my
+progress in activity and food logging.
+
+API Developer Experience
+The developer experience for this API is really quite excellent.
+* They’ve got good documentation
+* The signup flow is relatively painless
+* Their evangelists answer questions in the active forum
+* Nice sample code and integration examples
+
+I always say that the developer experience is one of the main drivers for an API’s success, and Fitbit does an excellent job of making this pleasant.
+
+Existing integrations
+Sure, I like writing code.  I have an app that sends me SMS messages and updates my philips hue lightbulbs based on how my activity is going throughout the day.  But for a 
+regular maker/hacker, sometimes IFTTT is just fine, and the existing integrations that Fitbit has created and maintained make it painless to add a variety of different
+notifications and behaviors based on your progress.  I like that I can use my withings scale and blood pressure monitor to put more information into the system.  I’m looking
+forward to the day when there’s a glucose monitoring watch that also integrates with Fitbit.  It’s unfortunate that Fitbit and Apple couldn’t agree on integrations together,
+but I suspect it had to do with the fact that Apple wants to own all the data going into the system and that’s not the model Fitbit uses.  I prefer having my own access to 
+my own data and it rankles a bit that I can’t get it from the Apple ecosystem.
+
+Summary
+I’ll likely write up a few more reviews of other fitness devices presently, but this one really focuses on integration and application development.  If you want to interact
+with your biometric data in a custom manner, or just work with a system that allows you to pull down the information you’ve generated for whatever reason, you should almost
+certainly go with Fitbit.  They’ve got a ton of different trackers - the one I currently like the best is the Fitbit Charge 2,
+as it has heart rate monitoring, some SMS functionality, and is generally small enough not to be annoying.
+
+Let me know if this is useful for folks, and I’ll keep writing more about various APIs and integrations going forward.">
+	
+	
+
+	<link type="text/plain" rel="author" href="https://www.princesspolymath.com/humans.txt">
+
+	
+
+	
+
+	<link rel="icon" sizes="32x32" href="https://www.princesspolymath.com/assets/img/favicon-32x32.png">
+
+	<link rel="icon" sizes="192x192" href="https://www.princesspolymath.com/assets/img/touch-icon-192x192.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="180x180" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-180x180-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="152x152" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-152x152-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-144x144-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="120x120" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-120x120-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-114x114-precomposed.png">
+
+	
+	<link rel="apple-touch-icon-precomposed" sizes="76x76" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-76x76-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-72x72-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" href="https://www.princesspolymath.com/assets/img/apple-touch-icon-precomposed.png">	
+
+	<meta name="msapplication-TileImage" content="https://www.princesspolymath.com/assets/img/msapplication_tileimage.png">
+
+	<meta name="msapplication-TileColor" content="#fabb00">
+
+
+	
+
+</head>
+<body id="top-of-page" class="">
+	
+	<div id="navigation" class="sticky">
+  <nav class="top-bar" role="navigation" data-topbar>
+    <ul class="title-area">
+      <li class="name">
+      <h1 class="show-for-small-only"><a href="https://www.princesspolymath.com" class="icon-tree"> Princess Polymath</a></h1>
+    </li>
+       <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+      <li class="toggle-topbar menu-icon"><a href="#"><span>Navigation</span></a></li>
+    </ul>
+    <section class="top-bar-section">
+
+      <ul class="right">
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+            
+            
+              <li class="divider"></li>
+              <li><a href="https://www.princesspolymath.com/search/">Search</a></li>
+
+            
+            
+          
+        
+
+              
+
+          
+          
+            
+            
+              <li class="divider"></li>
+              <li><a href="https://www.princesspolymath.com/contact/">Contact</a></li>
+
+            
+            
+          
+        
+        
+      </ul>
+
+      <ul class="left">
+        
+
+              
+
+          
+          
+
+            
+            
+	    
+		<li><a href="https://www.princesspolymath.com/">Home</a></li>
+              <li class="divider"></li>
+		
+            
+            
+          
+        
+
+              
+
+          
+          
+
+            
+            
+	    
+		<li><a href="https://www.princesspolymath.com/resume">Resume</a></li>
+              <li class="divider"></li>
+		
+            
+            
+          
+        
+
+              
+
+          
+          
+
+            
+            
+	    
+		<li><a href="http://github.com/synedra" target="_blank">CODE</a></li>
+              <li class="divider"></li>
+		
+            
+            
+          
+        
+
+              
+
+          
+          
+
+            
+            
+
+              <li class="has-dropdown">
+                <a href="https://www.princesspolymath.com/blog/">Blog</a>
+
+                  <ul class="dropdown">
+                    
+
+                      
+
+                      <li><a href="https://www.princesspolymath.com/blog/archive/">Blog Archive</a></li>
+                    
+                  </ul>
+
+              </li>
+              <li class="divider"></li>
+            
+          
+        
+
+              
+
+          
+          
+        
+
+              
+
+          
+          
+        
+        
+      </ul>
+    </section>
+  </nav>
+</div><!-- /#navigation -->
+
+	
+	
+	
+
+<div id="masthead-no-image-header">
+	<div class="row">
+		<div class="small-12 columns">
+			<a id="logo" href="https://www.princesspolymath.com" title="Princess Polymath – I know lots of things...">
+				<img src="https://www.princesspolymath.com/assets/img/logo-words.png" alt="Princess Polymath – I know lots of things...">
+			</a>
+		</div><!-- /.small-12.columns -->
+	</div><!-- /.row -->
+</div><!-- /#masthead -->
+
+
+
+
+
+
+
+
+
+	
+
+	<div class="row t30">
+	<div class="medium-8 columns medium-push-4">
+		<article itemscope itemtype="http://schema.org/Article">
+			<header>
+				
+
+				<div itemprop="name">
+					
+					<h1>Fitbit - the Best Activity Tracker for Hackers and Makers</h1>
+				</div>
+			</header>
+
+
+			
+
+			<div itemprop="articleSection">
+			<p>One of the presentations I give frequently is a talk on <a href="https://www.youtube.com/watch?v=5J87wPapTiw">Quantifying your Fitness</a>.  In doing research for this topic, 
+I’ve worked with devices and APIs for a multitude of systems.  Everyone has their favorite device, and I want to give some reasons to consider the Fitbit family of products
+as a great tool for anyone who wants to integrate their fitness into other parts of their lives.</p>
+
+<p>Most fitness trackers integrate with closed systems - the Apple Watch, which I love, unfortunately only integrates with the Apple Health application.  It’s my data, I created
+it with my body, but I am contracturally disallowed from getting data out of the system to use it as I want - whether that’s integrating with other applications, making cool
+graphs and charts, integrating with IFTTT, or anything else.  Yes, many of the devices out there are “open source,” but that means something very different to me than it does
+to the makers.  If the system only allows me to integrate with a device I own, and I’m not allowed to access the data from the cloud, I consider it a closed system.</p>
+
+<p>So, Fitbit.  There are a variety of reasons why their devices and API are consistently featured in my talks.  Here are some of the things I’ve come to appreciate with their
+system in comparison to their competitors.</p>
+
+<h2 id="long-term-prospects">Long term prospects</h2>
+<p>One of the biggest concerns when integrating with a new system is wondering whether or not the system will be around for the long haul.  Too many times, APIs have been
+spawned, and because of business concerns or simple changes in direction, those APIs disappear into the ether, leaving your integrations out in the cold. The Fitbit API
+is a large part of Fitbit’s strategy - they have put a lot of resources into development, they have developer evangelists and a vibrant community, and the sheer number
+of integrations they support demonstrates their commitment to keeping the API around for the long term.  Contrast this with Runkeeper, a fine API with a great design, 
+but I’m unsure that their business model will be strong enough to keep them alive and kicking.  Give me a stable, strong company with a clear business model any day.</p>
+
+<h2 id="breadth">Breadth</h2>
+<p>Fitbit’s API covers not just the items their trackers track, such as steps, calories and heartrate, but also things like glucose, blood pressure, and other biometrics.  Someday
+perhaps they’ll have trackers for these items, but in the meantime it’s possible to use their API as a grand central station of health information, and as a maker or hacker,
+this means that you can combine information into a single place for consumption, whether you want to explore the measurements or simply have them stored away for future use.</p>
+
+<h2 id="subscription-api">Subscription API</h2>
+<p>Integrating with a fitness device is much less useful if you can’t get notified when there’s a change to the data.  Fitbit’s publication model allows API developers to listen
+for changes in any of the measurement types so they can create actions based on the change - for instance, as I go through the day, I use my philips hue lights to reflect my
+progress in activity and food logging.</p>
+
+<h2 id="api-developer-experience">API Developer Experience</h2>
+<p>The developer experience for this API is really quite excellent.<br />
+* They’ve got good documentation
+* The signup flow is relatively painless
+* Their evangelists answer questions in the active forum
+* Nice sample code and integration examples</p>
+
+<p>I always say that the developer experience is one of the main drivers for an API’s success, and Fitbit does an excellent job of making this pleasant.</p>
+
+<h2 id="existing-integrations">Existing integrations</h2>
+<p>Sure, I like writing code.  I have an app that sends me SMS messages and updates my philips hue lightbulbs based on how my activity is going throughout the day.  But for a 
+regular maker/hacker, sometimes IFTTT is just fine, and the existing integrations that Fitbit has created and maintained make it painless to add a variety of different
+notifications and behaviors based on your progress.  I like that I can use my withings scale and blood pressure monitor to put more information into the system.  I’m looking
+forward to the day when there’s a glucose monitoring watch that also integrates with Fitbit.  It’s unfortunate that Fitbit and Apple couldn’t agree on integrations together,
+but I suspect it had to do with the fact that Apple wants to own all the data going into the system and that’s not the model Fitbit uses.  I prefer having my own access to 
+my own data and it rankles a bit that I can’t get it from the Apple ecosystem.</p>
+
+<h2 id="summary">Summary</h2>
+<p>I’ll likely write up a few more reviews of other fitness devices presently, but this one really focuses on integration and application development.  If you want to interact
+with your biometric data in a custom manner, or just work with a system that allows you to pull down the information you’ve generated for whatever reason, you should almost
+certainly go with Fitbit.  They’ve got a ton of different trackers - the one I currently like the best is the <a href="https://www.amazon.com/dp/B01K9S247E/ref=sr_ph_1_a_it?ie=UTF8&amp;qid=1475551315&amp;sr=sr-1&amp;keywords=fitbit+charge+2">Fitbit Charge 2</a>,
+as it has heart rate monitoring, some SMS functionality, and is generally small enough not to be annoying.</p>
+
+<p>Let me know if this is useful for folks, and I’ll keep writing more about various APIs and integrations going forward.</p>
+
+			</div>
+
+			
+						<div id="page-meta" class="t30">
+				<p>
+					<!-- Look the author details up from the site config. -->
+					
+					<!-- Output author details if some exist. -->
+					
+
+				
+				<time class="icon-calendar pr20" datetime="2016-10-03" itemprop="datePublished"> 2016-10-03</time>
+				
+
+				<span class="icon-archive pr20"> GEEK STUFF · WEB APIS</span>
+				<br />
+				<span class="pr20"></span>
+			</p>
+
+			<div id="post-nav" class="row">
+				
+				<div class="small-5 columns"><a class="button small radius prev" href="https://www.princesspolymath.com/irresistible-apis-book">&laquo; Irresistible APIs Book</a></div><!-- /.small-4.columns -->
+				
+				<div class="small-2 columns text-center"><a class="radius button small" href="https://www.princesspolymath.com/blog/archive/" title="Blog Archive">Archive</a></div><!-- /.small-4.columns -->
+				
+				<div class="small-5 columns text-right"><a class="button small radius next" href="https://www.princesspolymath.com/static-publication-process.html">A Static Publication Process &raquo;</a></div><!-- /.small-4.columns -->
+				
+			</div>
+			</div><!--  /.page-meta -->
+			
+
+			
+						
+				<h3 id="comments" class="t60">Dialogue &amp; Discussion</h3>
+			    <div id="disqus_thread"></div>
+			    <script type="text/javascript">
+			        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+			        var disqus_shortname = 'princesspolymath'; 
+			        var disqus_identifier = '/fitbit';
+
+			        /* * * DON'T EDIT BELOW THIS LINE * * */
+			        (function() {
+			            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+			            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+			            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+			        })();
+			    </script>
+			    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+			
+
+
+
+			
+		</article>
+	</div><!-- /.medium-8.columns -->
+
+
+	
+	<div class="medium-4 columns medium-pull-8">
+		<aside>
+<div itemscope itemtype="http://schema.org/Person">
+
+  <div class="author__avatar">
+    	<img src="http://princesspolymath.com/assets/img/headshot.jpg" alt="Kirsten Hunter">
+  </div>
+
+  <div class="author__content">
+    <h3 class="author__name">Kirsten Hunter</h3>
+    <p class="author__bio">I know lots of things...</p>
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls ">
+        <li><i class="fa fa-fw fa-map-marker" aria-hidden="true"></i> Santa Cruz</li>
+        <li><a href="mailto:synedra@gmail.com"><i class="fa fa-fw fa-envelope-square" aria-hidden="true"></i> Email</a></li>
+        <li><a href="https://twitter.com/@synedra"><i class="fa fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        <li><a href="https://www.linkedin.com/in/http://linkedin.com/in/synedra"><i class="fa fa-fw fa-linkedin-square" aria-hidden="true"></i> LinkedIn</a></li>
+        <li><a href="https://github.com/https://github.com/synedra"><i class="fa fa-fw fa-github" aria-hidden="true"></i> Github</a></li>
+    </ul>
+  </div>
+<a class="twitter-timeline" href="https://twitter.com/search?q=%40synedra" data-widget-id="744007280098574337">Tweets about @synedra</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+<a class="twitter-timeline" href="https://twitter.com/synedra">Tweets by synedra</a>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+</div>
+</aside>
+
+	</div><!-- /.medium-4.columns -->
+	
+
+
+	
+</div><!-- /.row -->
+
+
+	
+	    <div id="up-to-top" class="row">
+      <div class="small-12 columns" style="text-align: right;">
+        <a class="iconfont" href="#top-of-page">&#xf108;</a>
+      </div><!-- /.small-12.columns -->
+    </div><!-- /.row -->
+
+
+    <footer id="footer-content" class="bg-grau">
+      <div id="footer">
+        <div class="row">
+          <div class="medium-6 large-5 columns">
+            <h5 class="shadow-black">About This Site</h5>
+
+            <p class="shadow-black">
+              Princess Polymath is a website focused on programming, web design, APIs and general amusement.
+              <a href="https://www.princesspolymath.com/info/">More ›</a>
+            </p>
+          </div><!-- /.large-6.columns -->
+
+
+          <div class="small-6 medium-3 large-3 large-offset-1 columns">
+            
+              
+                <h5 class="shadow-black">Services</h5>
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+
+              <ul class="no-bullet shadow-black">
+              
+                
+                  <li >
+                    <a href="https://www.princesspolymath.com"  title=""></a>
+                  </li>
+              
+                
+                  <li >
+                    <a href="https://www.princesspolymath.com/contact/"  title="Contact">Contact</a>
+                  </li>
+              
+                
+                  <li >
+                    <a href="https://www.princesspolymath.com/feed.xml"  title="Subscribe to RSS Feed">RSS</a>
+                  </li>
+              
+                
+                  <li >
+                    <a href="https://www.princesspolymath.com/atom.xml"  title="Subscribe to Atom Feed">Atom</a>
+                  </li>
+              
+                
+                  <li >
+                    <a href="https://www.princesspolymath.com/sitemap.xml"  title="Sitemap for Google Webmaster Tools">sitemap.xml</a>
+                  </li>
+              
+              </ul>
+          </div><!-- /.large-4.columns -->
+
+
+          <div class="small-6 medium-3 large-3 columns">
+            
+              
+                <h5 class="shadow-black">Contact information</h5>
+              
+            
+              
+            
+              
+            
+
+            <ul class="no-bullet shadow-black">
+            
+              
+                <li >
+                  <a href="https://www.princesspolymath.com"  title=""></a>
+                </li>
+            
+              
+                <li class="network-entypo" >
+                  <a href="http://linkedin.com/in/synedra" target="_blank"  title="LinkedIn Contact">LinkedIn</a>
+                </li>
+            
+              
+                <li class="network-entypo" >
+                  <a href="http://twitter.com/synedra" target="_blank"  title="Twitter">Twitter</a>
+                </li>
+            
+            </ul>
+          </div><!-- /.large-3.columns -->
+        </div><!-- /.row -->
+
+      </div><!-- /#footer -->
+
+
+      <div id="subfooter">
+        <nav class="row">
+          <section id="subfooter-left" class="small-12 medium-6 columns credits">
+            <p>Created with &hearts; by <a href="/">synedra</a> with <a href="http://jekyllrb.com/" target="_blank">Jekyll</a> based on <a href="http://phlow.github.io/feeling-responsive/">Feeling Responsive</a>.</p>
+          </section>
+
+          <section id="subfooter-right" class="small-12 medium-6 columns">
+            <ul class="inline-list social-icons">
+            
+              <li><a href="http://github.com/synedra" target="_blank" class="icon-github" title="Riff Raff"></a></li>
+            
+              <li><a href="http://www.youtube.com/PhlowMedia" target="_blank" class="icon-youtube" title="Videos, Video-Anleitungen und Filme von Phlow auf YouTube"></a></li>
+            
+              <li><a href="http://twitter.com/synedra" target="_blank" class="icon-twitter" title="My 140 Character Babblings"></a></li>
+            
+              <li><a href="https://plus.google.com/u/0/+Phlow" target="_blank" class="icon-googleplus" title="YouTube Google+"></a></li>
+            
+            </ul>
+          </section>
+        </nav>
+      </div><!-- /#subfooter -->
+    </footer>
+
+	
+
+	
+
+
+<script src="https://www.princesspolymath.com/assets/js/javascript.min.js"></script>
+
+
+
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-60112281-1', 'auto');
+  ga('set', 'anonymizeIp', true);
+  ga('send', 'pageview');
+
+</script>
+
+
+
+
+
+
+
+
+</body>
+</html>
+

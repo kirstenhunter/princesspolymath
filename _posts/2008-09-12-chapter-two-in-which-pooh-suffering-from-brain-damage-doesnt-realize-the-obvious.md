@@ -46,7 +46,7 @@ Last week after returning from burning man, I rejoined the work world from my st
 </div>
 
 <div>
-  <img src="http://icanhascheezburger.files.wordpress.com/2008/07/funny-pictures-cat-cannot-brain-today.jpg" />
+  <img alt="This is a picture" src="http://icanhascheezburger.files.wordpress.com/2008/07/funny-pictures-cat-cannot-brain-today.jpg" />
 </div>
 
 <div>

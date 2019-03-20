@@ -15,7 +15,7 @@ tc-thumb-fld:
 categories:
   - Uncategorized
 ---
-![](http://farm3.static.flickr.com/2007/2336881194_fef98a5d70_m.jpg)
+![Picture here](http://farm3.static.flickr.com/2007/2336881194_fef98a5d70_m.jpg)
   
 I haven&#8217;t knitted in forever. Life just keeps getting in my way. But then a [fickle friend](http://www.fickleknitter.com/) pulled me back into the knitting world, and I figured it was ok as long as I limited myself to only one kind of knitting, so I picked socks.
   

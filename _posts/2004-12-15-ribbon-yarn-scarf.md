@@ -36,13 +36,13 @@ On the bright side, I found this fabulous yarn at my LYS called Gedifra Byzanz a
 Repeat rows 2-5 until you have a scarf. I started last night and finished this morning during a phone meeting with work (might as well get something done during that downtime). I used 3 balls of the stuff, and it&#8217;s beautiful:
   
 
-![](http://www.perlgoddess.com/blog/images/momscarf.jpg) 
+![Picture here](http://www.perlgoddess.com/blog/images/momscarf.jpg) 
 
 In the quest to get our holiday checklist under control, last night we tried to get pictures of the kids in front of the Christmas trees so we can send them out with our cards. Their school pictures will very helpfully be arriving sometime mid-January. I&#8217;m not sure why the photographer thought that was a good arrival schedule, but it left us high and dry with no Christmas card photos and I&#8217;m sure you can imagine that the withdrawl symptoms are not enjoyable when the relatives don&#8217;t get their cards before the actual day of Christmas. Waiting until January was not an option, so we went with Plan B.
   
 We crammed the protesting kids into the matching jammies and tried to pose them cutely in front of the tree. After many, many shots featuring outthrust bottoms and tortured expressions, we managed to snap one that was pretty cute.
   
 
-![](http://www.perlgoddess.com/blog/images/kidtree.jpg) 
+![Picture here](http://www.perlgoddess.com/blog/images/kidtree.jpg) 
 
 Even after my minor holiday victory, I&#8217;m still anxious, always more to do and tons of people coming for the weekend&#8230; Resorted to Hamburger Helper for dinner tonight so that I can go to martial arts, and I feel marginally guilty about that. Ah well, can&#8217;t be supermom everyday, I suppose. At least I have a cool scarf to look at!

@@ -17,6 +17,6 @@ categories:
 ---
 &#8230; to mention that I now have red hair.
   
-<span class="mt-enclosure mt-enclosure-image"><img alt="" src="http://www.perlgoddess.com/perlgoddess/redhair.jpg/IMG_0125.JPG" width="300" height="400" class="mt-image-left" style="float: left; margin: 0 20px 20px 0;" /></span>
+<span class="mt-enclosure mt-enclosure-image"><img alt="This is a picture" alt="This is a picture" src="http://www.perlgoddess.com/perlgoddess/redhair.jpg/IMG_0125.JPG" width="300" height="400" class="mt-image-left" style="float: left; margin: 0 20px 20px 0;" /></span>
   
 And now, back to the program.

@@ -10,22 +10,6 @@
   url: "http://github.com/synedra"
   side: left
 
-- title: Irresistible APIs Book
-  url: "http://irresistibleapis.com"
-  side: left
-
-- title: "Schedule"
-  url: "/schedule"
-  side: left
-
-- title: "Presentations"
-  url: "/presentations"
-  side: left
-
-- title: "Reviews"
-  url: "/reviews"
-  side: left
-
 - title: Blog
   url: "/blog/"
   side: left

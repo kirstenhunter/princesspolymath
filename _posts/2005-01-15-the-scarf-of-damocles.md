@@ -19,7 +19,7 @@ categories:
 ---
 Say, what color is the albatross around \*your\* neck? Mine is red!
   
-![](http://www.perlgoddess.com/blog/images/scarf.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/scarf.jpg)
   
 And&#8230; it&#8217;s finished! Free at last, free at last, thank g*d almighty I&#8217;m free at last! The really funny thing is that this project wasn&#8217;t very hard or complicated or even very extensive. But I started it a week before Christmas as a Christmas present (and I&#8217;ve had lots of other intervening things on my plate) and so it&#8217;s been hanging over my head like the [sword of Damocles](http://www.geocities.com/Hollywood/2549/damocles.html), haunting me until I finally finished it. Today. Hit 60 inches, bound off, wove in ends, woo!
   

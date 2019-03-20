@@ -19,7 +19,7 @@ categories:
   - Uncategorized
   - Web APIs
 ---
-[<img src="https://farm7.staticflickr.com/6070/6034445855_7ca9b2f897.jpg" class="grouped_elements" rel="tc-fancybox-group666" width="500" height="333" alt="USACE, EUCOM deliver special needs playground to Croatian community" />](https://www.flickr.com/photos/europedistrict/6034445855 "USACE, EUCOM deliver special needs playground to Croatian community by U.S. Army Corps of Engineers Europe District, on Flickr")
+[<img alt="This is a picture" src="https://farm7.staticflickr.com/6070/6034445855_7ca9b2f897.jpg" class="grouped_elements" rel="tc-fancybox-group666" width="500" height="333" alt="USACE, EUCOM deliver special needs playground to Croatian community" />](https://www.flickr.com/photos/europedistrict/6034445855 "USACE, EUCOM deliver special needs playground to Croatian community by U.S. Army Corps of Engineers Europe District, on Flickr")
 
 As a developer evangelist who frequently works with other developer evangelists, we sometimes find it hard to get people to understand what&#8217;s awesome about APIs. I&#8217;ve gotten pretty good at API 101 &#8211; teaching people what an API is and how it can create opportunities for a company, but now I&#8217;m ready to move on and create the upper division course &#8211; API 201. How to play. How to really put these things together and make them sing. 
 

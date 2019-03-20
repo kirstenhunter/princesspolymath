@@ -18,7 +18,7 @@ categories:
   - Uncategorized
 ---
 
-![](http://www.perlgoddess.com/blog/images/pudding_1.jpg) 
+![Picture here](http://www.perlgoddess.com/blog/images/pudding_1.jpg) 
 
 I find lots of my favorite recipes in magazines and recently I&#8217;ve become very enamored of [Cuisine at Home](http://www.cuisinemag.com/). Of the 10 dishes I cooked over Thanksgiving weekend, 3 of them came from their November issue, and one of them was so popular I&#8217;ve made it for every gathering this year, always to rave reviews. The tang from the orange and cranberry combine with the sweet potato and streusel to create a wonderful alternative to the yam-marshmellow side dish at holiday gatherings. This dish is popular even with people who don&#8217;t care for sweet potatoes.
   
@@ -70,4 +70,4 @@ If you like a finer streusel, throw this in the cuisinart and blend until it&#82
   
 Pour the pudding into the casserole dish and cover with the streusel. Bake for 30 minutes or until a knife inserted in the center comes out clean. Enjoy!
   
-![](http://www.perlgoddess.com/blog/images/pudding_2.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/pudding_2.jpg)

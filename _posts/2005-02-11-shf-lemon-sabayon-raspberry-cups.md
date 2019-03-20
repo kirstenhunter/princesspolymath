@@ -17,7 +17,7 @@ tc-thumb-fld:
 categories:
   - Uncategorized
 ---
-![](http://cook.domestigirl.com/images/lemoncup.jpg)
+![Picture here](http://cook.domestigirl.com/images/lemoncup.jpg)
   
 My first entry into the Sugar High Fridays. I went ahead and used the freezer pastry dough because as I recall Jacques Torres said it was just fine to do. So here it is. Frankly, it&#8217;s a little oozier than I would have liked, I probably should have cooked it for longer but I was tired of stirring &#8211; sabayon takes some serious arm strength! Still, it tasted great and the raspberries really set off the sabayon nicely.
   

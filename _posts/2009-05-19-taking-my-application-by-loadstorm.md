@@ -61,14 +61,14 @@ One of my work projects has gotten to the point where we really need to have som
 </div>
 
 <div>
-  <span class="mt-enclosure mt-enclosure-image" style="display: inline;"><img alt="users.jpg" src="/assets/img/2009/08/users.jpg" width="600" class="mt-image-none" style="" /></span>
+  <span class="mt-enclosure mt-enclosure-image" style="display: inline;"><img alt="This is a picture" alt="users.jpg" src="/assets/img/2009/08/users.jpg" width="600" class="mt-image-none" style="" /></span>
 </div>
 
 <div>
 </div>
 
 <div>
-  <span class="mt-enclosure mt-enclosure-image" style="display: inline;"><img alt="errors.jpg" src="/assets/img/2009/08/errors.jpg" width="600" class="mt-image-none" style="" /></span>
+  <span class="mt-enclosure mt-enclosure-image" style="display: inline;"><img alt="This is a picture" alt="errors.jpg" src="/assets/img/2009/08/errors.jpg" width="600" class="mt-image-none" style="" /></span>
 </div>
 
 <div>

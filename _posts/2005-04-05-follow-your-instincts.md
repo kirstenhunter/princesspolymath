@@ -23,7 +23,7 @@ Both of these projects call for a size 15 needle, and the book says, very clearl
   
 As it turns out, it&#8217;s almost certainly possible that \*some\* moebius projects can be done on a 40&#8243;. Probably the ones which aren&#8217;t on bulky yarn and wanting 100+ stitches cast on. I squished and squished until my fingers were sore but I could \*not\* get more than 100 of the 150 stitches needed for the kitty bed. Sigh. OK, I figured, I&#8217;ll just make Susan&#8217;s scarf. The yarn isn&#8217;t bulky, it&#8217;s worsted carried double (so, kinda &#8216;virtual&#8217; bulky). It&#8217;s got 130 stitches&#8230; And it \*kind\* of works:
   
-![](http://www.perlgoddess.com/blog/images/scrunch.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/scrunch.jpg)
   
 Don&#8217;t those stitches look cozy all scrunched up there on the needle? This project has also been hurty on the hands. And while I&#8217;m whining let me just mention that I am not fond of the plastic Inox needles (and I love all my other Inox!) because between them and the not-very-stretchy cotton yarn I had to seriously fight to get the first round done. Yank, tug, pull&#8230; every stitch fought me with every fiber of its being, resisting my efforts to pull it up into a knittable spot on the squeaky plastic needle.
   

@@ -21,19 +21,19 @@ Anyhow, without further ado, I present pictures from the race&#8230;
   
 My children:
   
-![](http://fitness.domestigirl.com/images/kids.jpg)
+![Picture here](http://fitness.domestigirl.com/images/kids.jpg)
   
 My mom:
   
-![](http://fitness.domestigirl.com/images/mom.jpg)
+![Picture here](http://fitness.domestigirl.com/images/mom.jpg)
   
 Me:
   
-![](http://fitness.domestigirl.com/images/me.jpg)
+![Picture here](http://fitness.domestigirl.com/images/me.jpg)
   
 Me and Amy:
   
-![](http://fitness.domestigirl.com/images/race3.jpg)
+![Picture here](http://fitness.domestigirl.com/images/race3.jpg)
   
 I&#8217;ve been doing well with martial arts, but won&#8217;t have a class tomorrow so I&#8217;ll use that day for a running workout (woo!). Looking forward to it. I sure wish the Ipod shuffle wasn&#8217;t sold out everywhere. I reallyreallyreally want one!
   

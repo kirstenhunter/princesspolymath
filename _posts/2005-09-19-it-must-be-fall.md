@@ -19,25 +19,25 @@ categories:
 ---
 As the title says, it must be fall. The Santa Cruz county fair is in town, and we went to check it out this week. Please bear with me for these fuzzy camera-phone pictures. I was too lazy to bring my actual camera.
   
-![](http://www.perlgoddess.com/blog/images/Image032.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/Image032.jpg)
   
-![](http://www.perlgoddess.com/blog/images/Image035.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/Image035.jpg)
   
 We checked out the pig races&#8230;
   
-![](http://www.perlgoddess.com/blog/images/Image031.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/Image031.jpg)
   
 My daughter, also a ham.
   
-![](http://www.perlgoddess.com/blog/images/Image039.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/Image039.jpg)
   
 Devon, climbing a wall
   
-![](http://www.perlgoddess.com/blog/images/Image048.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/Image048.jpg)
   
 Waiting, um, patiently for his funnel cake.
   
-![](http://www.perlgoddess.com/blog/images/Image049.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/Image049.jpg)
   
 All right!
   
@@ -47,6 +47,6 @@ This weekend at Victoria&#8217;s game I managed to finish one of the books I was
   
 In other horror news, look what I found outside of my grocery store:
   
-![](http://www.perlgoddess.com/blog/images/Image038.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/Image038.jpg)
   
 No, those are not Sugar Pie Pumpkins. They are not. They are jack-o-lantern pumpkins and it&#8217;s just the middle of September. Fortunately, I did not encounter Jolly old Saint Nick near the display, although I&#8217;m sure he&#8217;ll be there sometime next week.

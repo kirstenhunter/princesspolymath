@@ -23,7 +23,7 @@ In any case, here&#8217;s my update on all the recent chaos in my life. I&#8217;
   
 **Cheerleading**: I know, it&#8217;s not really new. But driving V back and forth to practices and games eats up a lot of my time, so it&#8217;s worth mentioning. Plus the only picture I have available for this entry is Victoria cheering. This weekend we had a game on Saturday (we won) and a cheer competition on Sunday (the girls came in 3rd out of 16, and I am so proud of all of them!)
   
-![](http://www.perlgoddess.com/blog/images/Victoria.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/Victoria.jpg)
   
 **Job**: I believe I mentioned that I was looking for a new job, and I am happy to report that as of Monday I will be spending my geeky working hours in the service of [SocialText](http://www.socialtext.com/). It&#8217;s a fantastic opportunity to work with some of the smartest folks in my particular geeky industry and I&#8217;m really excited.
   

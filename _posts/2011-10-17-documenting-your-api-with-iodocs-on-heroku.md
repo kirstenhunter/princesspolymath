@@ -31,7 +31,7 @@ Neil Mansilla over at [Mashery](http://www.mashery.com) has created an awesome n
 
 Thanks in part to a heavy piece of furniture (which fell on me on Friday, relegating me to bed rest for the weekend) I got it working. You can visit the [LinkedIn API Documentation](http://electric-meadow-1119.herokuapp.com/linkedin) site and use your [LinkedIn API key and secret](https://www.linkedin.com/secure/developer) to browse through the many API resources LinkedIn has to offer.
 
-<a href="/assets/img/2011/10/companies.png" class="grouped_elements" rel="tc-fancybox-group489"><img class="alignnone size-medium wp-image-500" title="companies" src="/assets/img/2011/10/companies-300x176.png" alt="" width="300" height="176" srcset="/assets/img/2011/10/companies-300x176.png 300w, /assets/img/2011/10/companies.png 1008w" sizes="(max-width: 300px) 100vw, 300px" /></a>
+<a href="/assets/img/2011/10/companies.png" class="grouped_elements" rel="tc-fancybox-group489"><img alt="This is a picture" class="alignnone size-medium wp-image-500" title="companies" src="/assets/img/2011/10/companies-300x176.png" alt="This is a picture" width="300" height="176" srcset="/assets/img/2011/10/companies-300x176.png 300w, /assets/img/2011/10/companies.png 1008w" sizes="(max-width: 300px) 100vw, 300px" /></a>
 
 Getting the IODocs system running on Heroku required several steps, but once you have them it&#8217;s pretty straightforward. So I share them with you here so you can get IODocs running on your own Heroku instance, in the hopes that all of the OAuth APIs out there can leverage this functionality and improve developers&#8217; lives.
 

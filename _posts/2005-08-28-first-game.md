@@ -21,9 +21,9 @@ The Itty Bitty&#8217;s team had their first game today&#8230; well, technically 
   
 Here&#8217;s my daughter cheering on her valiant Sea Lions:
   
- ![](http://www.perlgoddess.com/blog/images/that.jpg)![](http://www.perlgoddess.com/blog/images/line.jpg)
+ ![Picture here](http://www.perlgoddess.com/blog/images/that.jpg)![Picture here](http://www.perlgoddess.com/blog/images/line.jpg)
   
- ![](http://www.perlgoddess.com/blog/images/hold.jpg) ![](http://www.perlgoddess.com/blog/images/fierce.jpg)![](http://www.perlgoddess.com/blog/images/joyful.jpg)
+ ![Picture here](http://www.perlgoddess.com/blog/images/hold.jpg) ![Picture here](http://www.perlgoddess.com/blog/images/fierce.jpg)![Picture here](http://www.perlgoddess.com/blog/images/joyful.jpg)
   
 I&#8217;m going out of town tomorrow so I wasn&#8217;t even bright enough to bring anything to keep me entertained (except, obviously, for the all-important camera).
   

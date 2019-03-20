@@ -23,7 +23,7 @@ Until I solve this mystery, I&#8217;m getting started on some [Broad Ripple sock
   
 In the meantime, some wonderful anonymous person sponsored me for the Revlon Run/Walk, bringing my online total to $396! A friend has promised $50 so I&#8217;m over $400&#8230; the mind boggles. The pictures have been posted from my race last Sunday &#8211; I put them on my [Fitness Blog](http://fitness.domestigirl.com/). Go ahead, take a look! I love race photos, they&#8217;re my favorite part of racing. OK, I can tell you&#8217;re not going to go look, so I&#8217;ll include a gratuitous race photo here too:
   
-![](http://fitness.domestigirl.com/images/race2.jpg)
+![Picture here](http://fitness.domestigirl.com/images/race2.jpg)
   
 Even though I have somehow lost a $20 skein of yarn it&#8217;s been a good week:
   

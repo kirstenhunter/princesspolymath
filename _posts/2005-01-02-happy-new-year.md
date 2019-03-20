@@ -19,11 +19,11 @@ categories:
 ---
 Happy New Year! I know, it&#8217;s a day late, but what the heck. We had a nice New Years Eve, went down to First Night Santa Cruz and saw [Zun Zun](http://www.zunzuntunes.com) and the [Taiko Drummers](http://www.watsonvilletaiko.org) (who were, if anything, better than ever this year!). We came home and hung out. Some of us made it to midnight&#8230; some of us didn&#8217;t:
   
-![](http://www.perlgoddess.com/blog/images/vicsleep.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/vicsleep.jpg)
   
 I was hanging out trying to work on the Irish Hiking Scarf yesterday. Making good progress, the thing is now 37 inches long and I&#8217;ve just about finished my second skein, so I&#8217;m about 2/3 done (I intend it to be a little over 60 inches):
   
-![](http://www.perlgoddess.com/blog/images/redscarf.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/redscarf.jpg)
   
 I&#8217;ve been working on my resolutions for the year. Like I said, I don&#8217;t like &#8216;lose 10 pounds&#8217; or anything like that because you can lose it in January, gain it back in February, and have accomplished precisely nothing.
   
@@ -35,7 +35,7 @@ I will do my very best this year to:
   
 &#8211; Turn all these balls of cotton yarn in to dishcloths from the [Dishcloth Boutique](http://www.jimsyldesign.com/~dishbout/kpatterns/knitting.html)
   
-![](http://www.perlgoddess.com/blog/images/cottonball.jpg)
+![Picture here](http://www.perlgoddess.com/blog/images/cottonball.jpg)
   
 &#8211; Eat out for dinner no more than once a week
   
@@ -51,6 +51,6 @@ My big plan is to take control of my life back away from the demons of chaos. I 
   
 [Femail Creations](http://www.femailcreations.com), one of my favorite catalogs, is having a special deal on one of their plaques which is very apropos to my goals for the year. For every one they sell, they&#8217;ll donate $5 to the Red Cross tsunami relief fund. The image is linked to the catalog entry:
   
-[<img src="http://www.perlgoddess.com/blog/images/findthetime.jpg" class="grouped_elements" rel="tc-fancybox-group47" />](http://www.femailcreations.com/shopping/catalog/all/all/104116/)
+[<img alt="This is a picture" src="http://www.perlgoddess.com/blog/images/findthetime.jpg" class="grouped_elements" rel="tc-fancybox-group47" />](http://www.femailcreations.com/shopping/catalog/all/all/104116/)
   
 That&#8217;s my big resolution for this year. Find the time. Make the time. And of course&#8230; be the change I want to see in the world.
