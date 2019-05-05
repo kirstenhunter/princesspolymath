@@ -4,7 +4,7 @@ gem 'jekyll', '3.0.2'
 gem 'jekyll-gist'
 gem 'jekyll-paginate'
 gem 'html-proofer' 
- 
+gem "rake"
  
  
  
